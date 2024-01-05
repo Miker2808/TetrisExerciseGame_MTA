@@ -14,14 +14,14 @@ class Tetromino {
 
 private:
 	char* shape = nullptr;
-	int shape_index;
 	int x_pos;
 	int y_pos;
-	int rotation;
+	
 	
 
 public:
-
+	int rotation;
+	int shape_index;
 	Tetromino(); // randomly generate a tetromino
 	void print();
 	int rotate(int x, int y, int rotation);
