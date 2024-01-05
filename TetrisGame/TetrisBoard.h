@@ -8,6 +8,8 @@ class TetrisBoard {
 
 public:
 	char** board = nullptr;
+	const int board_start_x; // X offset from console edge of board location
+	const int board_start_y;  // Y offset from console edge of board location
 	const int board_width;
 	const int board_height;
 	
@@ -17,9 +19,14 @@ private:
 
 // methods
 public:
-	explicit TetrisBoard(int width = DEFAULT_BOARD_WIDTH, int height = DEFAULT_BOARD_HEIGHT);
+	explicit TetrisBoard(
+		int pos_x = 0,
+		int pos_y = 0,
+		int width = DEFAULT_BOARD_WIDTH, 
+		int height = DEFAULT_BOARD_HEIGHT
+		);
 	~TetrisBoard();
-	void printBoard(int x, int y);
+	void printBoard();
 
 private:
 	
