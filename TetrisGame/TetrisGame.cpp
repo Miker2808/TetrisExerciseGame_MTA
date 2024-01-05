@@ -27,6 +27,9 @@ void TetrisGame::play() {
             else if (curr_key == 's' || curr_key == 'S') {
                 mino.transform(0, 0, -1);
             }
+            else if (curr_key == 'x' || curr_key == 'X') {
+                mino.transform(0, 1, 0);
+            }
         }
 
         if (drop_counter > 20){
