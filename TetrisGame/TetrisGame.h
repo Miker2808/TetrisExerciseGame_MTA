@@ -3,4 +3,7 @@
 
 class TetrisGame {
 
+public:
+
+	void play();
 };

@@ -2,23 +2,26 @@
 #include "TetrisBoard.h"
 #include "Tetromino.h"
 
-int main()
-{
-    srand((unsigned)time(NULL));
-    int test_i = 0;
-    int test_j = 0;
-    system("cls");
-    TetrisBoard board(12, 18);
-    std::cout << "test success" << std::endl;
-    Tetromino item = Tetromino();
-    
+
+void TetrisGame::play() {
+
+    TetrisBoard game_board;
+    Tetromino mino;
+    int test = 1;
     while (true) {
         Sleep(500);
-        item.transform(10, 7 + (test_i++));
-        board.printBoard(5, 5);
-        item.print();
-        
+        mino.transform(10, 7 + (test++));
+        game_board.printBoard(5, 5);
+        mino.print();
+
     }
+}
+
+
+int main()
+{
+    
+    
     
     
 }

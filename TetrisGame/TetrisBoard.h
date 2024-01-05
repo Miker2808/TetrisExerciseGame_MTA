@@ -1,6 +1,8 @@
 #pragma once
 #include "Utility.h"
 
+constexpr long DEFAULT_BOARD_WIDTH = 12;
+constexpr long DEFAULT_BOARD_HEIGHT = 18;
 
 class TetrisBoard {
 
@@ -15,7 +17,7 @@ private:
 
 // methods
 public:
-	TetrisBoard(int width, int height);
+	explicit TetrisBoard(int width = DEFAULT_BOARD_WIDTH, int height = DEFAULT_BOARD_HEIGHT);
 	~TetrisBoard();
 	void printBoard(int x, int y);
 
