@@ -40,6 +40,24 @@ void TetrisGame::play() {
     }
 }
 
+bool TetrisGame::checkCollision(Tetromino object, TetrisBoard  board, int posX, int posY) {
+    int pi;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            pi = object.rotate(posX + i, posY + j, object.rotation);
+            if (tetromino_shapes[object.shape_index][pi] != ' ' && board.board[i][j] != ' ') {
+                std::cout << "collisionsfnajfbhafbhabfhasbfhassbfjabfjasbfija" << std::endl;
+                return false;
+                
+            }
+                
+
+        }
+    }
+
+    return true;
+}
+
 
 int main()
 {
