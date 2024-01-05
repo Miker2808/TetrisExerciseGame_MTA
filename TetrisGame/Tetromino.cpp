@@ -1,9 +1,10 @@
 #include "Tetromino.h"
 
-Tetromino::Tetromino() {
+// Randomly generate a
+Tetromino::Tetromino(int start_x, int start_y) {
 	this->shape_index = (rand() % 5);
-	this->x_pos = 0;
-	this->y_pos = 0;
+	this->x_pos = start_x;
+	this->y_pos = start_y;
 	this->rotation = 0;
 	this->shape = new char[TETROMINO_SIZE*TETROMINO_SIZE + 1];
 	strcpy_s(this->shape, TETROMINO_SIZE*TETROMINO_SIZE + 1,tetromino_shapes[this->shape_index]);
@@ -38,16 +39,17 @@ void Tetromino::print()
 	
 }
 
-for (
-	for (
-		shape[x][y] ==? "X"
-		)
-	)
-
 // Rotates 
 void Tetromino::transform(int move_x, int move_y, int rotate) {
 	this->x_pos += move_x;
 	this->y_pos += move_y;
 	this->rotation += rotate;
+
+	if (this->rotation > 3) {
+		this->rotation = 0;
+	}
+	else if (this->rotation < 0) {
+		this->rotation += 4;
+	}
 }
 

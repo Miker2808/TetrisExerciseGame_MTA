@@ -1,7 +1,7 @@
 #include "TetrisBoard.h"
 
 // constructor
-TetrisBoard::TetrisBoard(int pos_x = 0, int pos_y = 0, int width, int height)
+TetrisBoard::TetrisBoard(int pos_x, int pos_y, int width, int height)
 	: board_start_x(pos_x), board_start_y(pos_y), board_width(width), board_height(height)
 {
 	allocateBoard(height, width);
