@@ -1,8 +1,8 @@
 #include "TetrisBoard.h"
 
 // constructor
-TetrisBoard::TetrisBoard(int width, int height)
-	: board_width(width), board_height(height)
+TetrisBoard::TetrisBoard(int pos_x = 0, int pos_y = 0, int width, int height)
+	: board_start_x(pos_x), board_start_y(pos_y), board_width(width), board_height(height)
 {
 	allocateBoard(height, width);
 	std::cout << "allocated board" << std::endl;
@@ -46,17 +46,17 @@ TetrisBoard::~TetrisBoard() {
 }
 
 // prints the board at x, y position
-void TetrisBoard::printBoard(int x, int y) {
+void TetrisBoard::printBoard() {
 	
 	for (int curr_height = 0; curr_height < board_height; curr_height++) {
-		gotoxy(x, y + curr_height);
+		gotoxy(this->board_start_x, this->board_start_y + curr_height);
 		std::cout << wall;
 		for (int j = 0; j < board_width; j++) {
 			std::cout << board[curr_height][j];
 		}
 		std::cout << wall;
 	}
-	gotoxy(x, y + this->board_height);
+	gotoxy(this->board_start_x, this->board_start_y + this->board_height);
 	for (int i = 0; i <= board_width + 1; i++) {
 		std::cout << wall;
 	}

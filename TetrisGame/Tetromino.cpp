@@ -2,7 +2,7 @@
 
 Tetromino::Tetromino() {
 	this->shape_index = (rand() % 5);
-	this->x_pos = 5;
+	this->x_pos = 0;
 	this->y_pos = 0;
 	this->rotation = 0;
 	this->shape = new char[TETROMINO_SIZE*TETROMINO_SIZE + 1];
@@ -26,19 +26,28 @@ void Tetromino::print()
 {
 	int curr_pixel_index;
 	for (int y = 0; y < TETROMINO_SIZE; y++) {
-		gotoxy(this->x_pos, this->y_pos + y);
 		for (int x = 0; x < TETROMINO_SIZE; x++) {
+			gotoxy(this->x_pos + x, this->y_pos + y);
 			curr_pixel_index = rotate(x, y, this->rotation);
-			std::cout << (this->shape)[curr_pixel_index];
+			if ((this->shape)[curr_pixel_index] == 'X') {
+				std::cout << (this->shape)[curr_pixel_index];
+			}
 		}
 		
 	}
 	
 }
 
-// modify x, y and r
-void Tetromino::transform(int x, int y, int r) {
-	this->x_pos = x;
-	this->y_pos = y;
-	this->rotation = r;
+for (
+	for (
+		shape[x][y] ==? "X"
+		)
+	)
+
+// Rotates 
+void Tetromino::transform(int move_x, int move_y, int rotate) {
+	this->x_pos += move_x;
+	this->y_pos += move_y;
+	this->rotation += rotate;
 }
+

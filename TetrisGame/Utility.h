@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <windows.h>
 #include <string>
+#include <conio.h>
 
 constexpr unsigned char TETROMINO_SIZE = 4; // meaning tetrominos are 4 by 4 shape;
 constexpr unsigned int BOARD_OFFSET_X = 5;

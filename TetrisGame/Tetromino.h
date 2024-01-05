@@ -25,5 +25,5 @@ public:
 	Tetromino(); // randomly generate a tetromino
 	void print();
 	int rotate(int x, int y, int rotation);
-	void transform(int x, int y, int r=0);
+	void transform(int move_x, int move_y, int rotate = 0);
 };

@@ -7,12 +7,23 @@ void TetrisGame::play() {
 
     TetrisBoard game_board;
     Tetromino mino;
-    int test = 1;
-    while (true) {
-        Sleep(500);
-        mino.transform(10, 7 + (test++));
-        game_board.printBoard(5, 5);
-        mino.print();
+    unsigned char curr_key = 0;
+    unsigned char iter_counter = 0;
+
+    while (curr_key != 27) { // 27 is "ESC" key
+        Sleep(50); // clock
+        iter_counter++;
+
+        if (iter_counter > 20){
+            mino.transform(7, 7);
+            iter_counter++;
+        }
+            game_board.printBoard(5, 5);
+            mino.print();
+
+            iter_counter = 0;
+        }
+        
 
     }
 }
@@ -38,8 +49,9 @@ bool TetrisGame::checkCollision(Tetromino object, TetrisBoard  board, int posX, 
 
 int main()
 {
-
-
+    
+    TetrisGame game = TetrisGame();
+    game.play();
     
     
 }
