@@ -1,8 +1,8 @@
 #pragma once
 #include "Utility.h"
 
-constexpr long DEFAULT_BOARD_WIDTH = 12;
-constexpr long DEFAULT_BOARD_HEIGHT = 18;
+constexpr long DEFAULT_BOARD_WIDTH = 14;
+constexpr long DEFAULT_BOARD_HEIGHT = 19;
 
 class TetrisBoard {
 

@@ -3,6 +3,8 @@
 #include "TetrisBoard.h"
 #include "Tetromino.h"
 
+#define Board_OFFEST_T_X 10
+#define Board_OFFEST_T_Y 10
 class TetrisGame {
 
 public:

@@ -5,8 +5,8 @@
 
 void TetrisGame::play() {
 
-    TetrisBoard game_board = TetrisBoard(2, 2); // start board and set it to be x=10,y=10 relative to console
-    Tetromino mino = Tetromino(8, 2);
+    TetrisBoard game_board = TetrisBoard(5, 5); // start board and set it to be x=10,y=10 relative to console
+    Tetromino mino = Tetromino( 1 , 0 , game_board); // relative to the board
     
     unsigned char iter_counter = 0;
     unsigned char drop_counter = 0;
@@ -44,10 +44,10 @@ bool TetrisGame::checkCollision(Tetromino& object, TetrisBoard&  board, int move
     next_y += move_y;
     next_rot = (next_rot + move_rot) % 4;
     int pi;
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            pi = object.rotate(next_rot + i, next_y + j, next_rot);
-            if (tetromino_shapes[shape_index][pi] != ' ' && board.board[next_x][next_y] != ' ') {
+    for (int y_off = 0; y_off < 4; y_off++) {
+        for (int x_off = 0; x_off < 4; x_off++) {
+            pi = object.rotate(x_off , y_off, next_rot);
+            if (tetromino_shapes[shape_index][pi] != ' ' && board.board[next_y + y_off][next_x + x_off] != ' ') {
                 return false;
                 
             }
@@ -64,21 +64,24 @@ unsigned char TetrisGame::inputHandler(Tetromino& object, TetrisBoard& board, un
 {
     if (curr_key == 'a' || curr_key == 'A') {
         // TODO: check if possible
-        if (true) {
+        if (checkCollision(object , board, -1 , 0 , 0))
             object.transform(-1, 0, 0);
-        }
     }
     else if (curr_key == 'd' || curr_key == 'D'){
-        object.transform(1, 0, 0);
+        if (checkCollision(object, board, 1, 0, 0))
+            object.transform(1, 0, 0);
     }
     else if (curr_key == 'w' || curr_key == 'W') {
-        object.transform(0, 0, 1);
+        if (checkCollision(object, board, 0, 0, 1))
+            object.transform(0, 0, 1);
     }
     else if (curr_key == 's' || curr_key == 'S') {
-        object.transform(0, 0, -1);
+        if (checkCollision(object, board, 0, 0, -1))
+            object.transform(0, 0, -1);
     }
     else if (curr_key == 'x' || curr_key == 'X') {
-        object.transform(0, 1, 0);
+        if (checkCollision(object, board, 0, 1, 0))
+            object.transform(0, 1, 0);
     }
 
     return curr_key;

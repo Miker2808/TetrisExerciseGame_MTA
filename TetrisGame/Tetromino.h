@@ -1,6 +1,8 @@
 #pragma once
 #include "Utility.h"
 
+class TetrisBoard;
+
 const char tetromino_shapes[5][17] = {
 		{"  X   X   X   X "}, // vertical line shape
 		{"     XX  XX     "}, // square shape
@@ -17,13 +19,14 @@ private:
 	int rotation;
 	int x_pos;
 	int y_pos;
-
 	int shape_index;
+	int board_offset_x;
+	int board_offset_y;
 	
 
 public:
 
-	Tetromino(int start_x, int start_y);
+	Tetromino(int start_x, int start_y, TetrisBoard& board);
 	void print();
 	int rotate(int x, int y, int rotation); 
 	void transform(int move_x, int move_y, int rotate = 0);

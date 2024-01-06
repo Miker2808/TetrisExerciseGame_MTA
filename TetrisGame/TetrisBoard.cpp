@@ -24,7 +24,11 @@ void TetrisBoard::allocateBoard(int rows, int cols)
 			exit(-3);
 		}
 		for (int j = 0; j < cols; j++) {
-			this->board[i][j] = ' ';
+			if (i == (rows - 1) || j == 0 || j == (cols - 1))
+				this->board[i][j] = wall;
+			else {
+				this->board[i][j] = def_empty;
+			}
 		}
 	}
 }
@@ -50,14 +54,8 @@ void TetrisBoard::printBoard() {
 	
 	for (int curr_height = 0; curr_height < board_height; curr_height++) {
 		gotoxy(this->board_start_x, this->board_start_y + curr_height);
-		std::cout << wall;
 		for (int j = 0; j < board_width; j++) {
 			std::cout << board[curr_height][j];
 		}
-		std::cout << wall;
-	}
-	gotoxy(this->board_start_x, this->board_start_y + this->board_height);
-	for (int i = 0; i <= board_width + 1; i++) {
-		std::cout << wall;
 	}
 }
