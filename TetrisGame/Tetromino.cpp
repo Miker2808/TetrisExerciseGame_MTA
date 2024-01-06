@@ -53,3 +53,14 @@ void Tetromino::transform(int move_x, int move_y, int rotate) {
 	}
 }
 
+//function recives 3 refrence int and returns the current position of the tetromino
+void Tetromino::getTransform(int& curr_x_pos , int& curr_y_pos , int& curr_rot) {
+	curr_x_pos = this->x_pos;
+	curr_y_pos = this->y_pos;
+	curr_rot = this->rotation;
+}
+
+//function recives a refence to an int and returns its shape index
+void Tetromino::getShapeIndex(int& shape_index) {
+	shape_index = this->shape_index;
+}

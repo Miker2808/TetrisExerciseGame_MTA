@@ -14,18 +14,19 @@ class Tetromino {
 
 private:
 	char* shape = nullptr;
-	
+	int rotation;
+	int x_pos;
+	int y_pos;
+
+	int shape_index;
 	
 
 public:
-
-	int shape_index;
-	int x_pos;
-	int y_pos;
-	int rotation;
 
 	Tetromino(int start_x, int start_y);
 	void print();
 	int rotate(int x, int y, int rotation); 
 	void transform(int move_x, int move_y, int rotate = 0);
+	void getTransform(int& currXpos, int& currYpos, int& currRot);
+	void getShapeIndex(int& shape_index);
 };
