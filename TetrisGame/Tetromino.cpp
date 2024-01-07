@@ -1,18 +1,18 @@
 #include "Tetromino.h"
 #include "TetrisBoard.h"
 
-// Randomly generate a
-Tetromino::Tetromino(int start_x, int start_y, TetrisBoard& board) {
+// Randomly generate a tetromino piece, places it at (start_x, start_y) relative to (board_x, board_y)
+Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_start_y) {
 	// test (rand() % 5)
 	this->shape_index = 2;
 	this->x_pos = start_x;
 	this->y_pos = start_y;
 	this->rotation = 0;
 	this->shape = new char[TETROMINO_SIZE*TETROMINO_SIZE + 1];
-	this->board_offset_x = board.board_start_x ;
-	this->board_offset_y = board.board_start_y ;
+	this->board_offset_x = board_start_x ;
+	this->board_offset_y = board_start_y ;
 	strcpy_s(this->shape, TETROMINO_SIZE*TETROMINO_SIZE + 1,tetromino_shapes[this->shape_index]);
-	std::cout << "tetromino shape is: " << this->shape_index << std::endl;
+	std::cout << "generated tetromino shape index: " << this->shape_index << std::endl;
 }
 
 // returns point of 1D with rotation from 2D coordinates

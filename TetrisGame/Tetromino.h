@@ -26,7 +26,7 @@ private:
 
 public:
 
-	Tetromino(int start_x, int start_y, TetrisBoard& board);
+	Tetromino(int start_x, int start_y, int board_start_x, int board_start_y);
 	void print();
 	int rotate(int x, int y, int rotation); 
 	void transform(int move_x, int move_y, int rotate = 0);
