@@ -15,21 +15,23 @@ const char tetromino_shapes[5][17] = {
 class Tetromino {
 
 private:
-	char* shape = nullptr;
 	int rotation;
 	int x_pos;
 	int y_pos;
 	int shape_index;
 	int board_offset_x;
 	int board_offset_y;
+	int start_pos_x;
+	int start_pos_y;
 	
 
 public:
 
-	Tetromino(int start_x, int start_y, TetrisBoard& board);
 	void print();
-	int rotate(int x, int y, int rotation); 
+	Tetromino(int start_x, int start_y, int board_offset_x, int board_offset_y);
+	int rotate(int x, int y, int rotation);
 	void transform(int move_x, int move_y, int rotate = 0);
 	void getTransform(int& currXpos, int& currYpos, int& currRot);
 	void getShapeIndex(int& shape_index);
+	void resetTetromino();
 };

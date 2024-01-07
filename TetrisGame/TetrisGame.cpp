@@ -6,7 +6,7 @@
 void TetrisGame::play() {
 
     TetrisBoard game_board = TetrisBoard(5, 5); // start board and set it to be x=10,y=10 relative to console
-    Tetromino mino = Tetromino( 1 , 0 , game_board); // relative to the board
+    Tetromino mino = Tetromino( 5 , 0 , game_board.board_start_x, game_board.board_start_y); // starting position relative to the board
     
     unsigned char iter_counter = 0;
     unsigned char drop_counter = 0;
@@ -15,19 +15,24 @@ void TetrisGame::play() {
         Sleep(50); // clock
         drop_counter++;
 
+        //can be a part of a print manager
+        game_board.printBoard();
+        mino.print();
+
         if (_kbhit()) {
             curr_key = _getch();
             // take action depending on user key
             this->inputHandler(mino, game_board, curr_key);
         }
 
-        if (drop_counter > 20){
-            mino.transform(0, 1, 0);
-            drop_counter = 0;
-        }
 
-        game_board.printBoard();
-        mino.print();
+        movePiceDown(drop_counter, mino, game_board);
+        //if (drop_counter > 20){
+        //    mino.transform(0, 1, 0);
+        //    drop_counter = 0;
+        //}
+
+
         
     }
 }
@@ -51,8 +56,6 @@ bool TetrisGame::checkCollision(Tetromino& object, TetrisBoard&  board, int move
                 return false;
                 
             }
-                
-
         }
     }
 
@@ -63,7 +66,6 @@ bool TetrisGame::checkCollision(Tetromino& object, TetrisBoard&  board, int move
 unsigned char TetrisGame::inputHandler(Tetromino& object, TetrisBoard& board, unsigned char curr_key)
 {
     if (curr_key == 'a' || curr_key == 'A') {
-        // TODO: check if possible
         if (checkCollision(object , board, -1 , 0 , 0))
             object.transform(-1, 0, 0);
     }
@@ -86,6 +88,49 @@ unsigned char TetrisGame::inputHandler(Tetromino& object, TetrisBoard& board, un
 
     return curr_key;
     
+}
+
+
+//!!not implemented yet!!
+//a fucntion that fixes a tetromino to the board. 
+//than destructs the tetromino object
+void TetrisGame::fixTetrominoToBoard(Tetromino& object, TetrisBoard& board) {
+    int obj_x_pos, obj_y_pos, obj_rot, obj_shape_index, pi, lines_destroyed = 0;
+    object.getTransform(obj_x_pos, obj_y_pos, obj_rot);
+    object.getShapeIndex(obj_shape_index);
+    
+    for (int y_off = 0; y_off < 4; y_off++) {
+        for (int x_off = 0; x_off < 4; x_off++) {
+            pi = object.rotate(x_off, y_off, obj_rot);
+            if(tetromino_shapes[obj_shape_index][pi] != ' ')
+                board.writeCellToBoard(obj_x_pos + x_off, obj_y_pos + y_off, tetromino_shapes[obj_shape_index][pi]);
+        }
+        //TODO: find some other place to put his check and make it better as a whole
+        if ((obj_y_pos + y_off) < board.board_height-1)
+            if (board.isALine(obj_y_pos + y_off)) {
+                lines_destroyed++;
+                board.destroyLine(obj_y_pos + y_off);
+            }
+    }
+    if (lines_destroyed > 0) {
+        board.shiftBoardDown(lines_destroyed);
+    }
+}
+
+
+//function that moves the tetromino down evere X*'drop_counter'*50ms
+//can be used to change game speed
+void TetrisGame::movePiceDown(unsigned char& drop_counter , Tetromino& object, TetrisBoard& board) {
+    if (drop_counter > 20) {
+
+        if(checkCollision(object, board, 0, 1, 0))
+        object.transform(0, 1, 0);
+        else {
+            fixTetrominoToBoard( object, board);
+            object.resetTetromino();
+        }
+        drop_counter = 0;
+    }
 }
 
 

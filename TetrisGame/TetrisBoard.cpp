@@ -23,13 +23,16 @@ void TetrisBoard::allocateBoard(int rows, int cols)
 			std::cout << "Failed to allocated memory for board object" << std::endl;
 			exit(-3);
 		}
-		for (int j = 0; j < cols; j++) {
-			if (i == (rows - 1) || j == 0 || j == (cols - 1))
-				this->board[i][j] = wall;
-			else {
-				this->board[i][j] = def_empty;
-			}
+		this->board[i][0] = wall;
+		this->board[i][cols - 1] = wall;
+
+		for (int j = 1; j < cols - 1; j++) {
+			this->board[i][j] = def_empty;
 		}
+		
+	}
+	for (int j = 0; j < cols; j++) {
+		this->board[rows - 1][j] = wall;
 	}
 }
 
@@ -59,3 +62,45 @@ void TetrisBoard::printBoard() {
 		}
 	}
 }
+
+//writes a given 'cell content' into a cell
+void TetrisBoard::writeCellToBoard(int x_coor , int y_coor , char cell_contents) {
+	this->board[y_coor][x_coor] = cell_contents;
+}
+
+//checks a row of the board array, returns true if the row is filled
+bool TetrisBoard::isALine(int y_coor) {
+	for (int x = 1; x < board_width-1; x++) {
+		if (board[y_coor][x] == ' ')
+			return false;
+	}
+	return true;
+}
+
+void TetrisBoard::destroyLine(int y_coor) {
+	for (int x = 1; x < board_width - 1; x++) {
+		board[y_coor][x] = '=';
+		this->printBoard();
+	}
+	for (int x = 1; x < board_width - 1; x++) {
+		board[y_coor][x] = ' ';
+		this->printBoard();
+	}
+}
+
+void TetrisBoard::shiftBoardDown(int y_shift) {
+	for (int y = board_height - y_shift - 1; y >= 0; y--) {
+		for (int x = 1; x < board_width - 1; x++) {
+			board[y + y_shift - 1][x] = board[y][x];
+		}
+	}
+	for (int y = 0; y < y_shift; y++) {
+		for (int x = 1; x < board_width - 1; x++) {
+			board[y][x] = ' ';
+		}
+	}
+}
+
+
+
+

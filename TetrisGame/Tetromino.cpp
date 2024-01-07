@@ -2,16 +2,16 @@
 #include "TetrisBoard.h"
 
 // Randomly generate a
-Tetromino::Tetromino(int start_x, int start_y, TetrisBoard& board) {
-	// test (rand() % 5)
-	this->shape_index = 2;
-	this->x_pos = start_x;
-	this->y_pos = start_y;
+Tetromino::Tetromino(int start_x, int start_y, int board_offset_x , int board_offset_y) {
+	//test (rand() % 5)
+	this->shape_index = 0;
+	this->start_pos_x = start_x;
+	this->start_pos_y = start_y;
+	this->x_pos = this->start_pos_x;
+	this->y_pos = this->start_pos_y;
 	this->rotation = 0;
-	this->shape = new char[TETROMINO_SIZE*TETROMINO_SIZE + 1];
-	this->board_offset_x = board.board_start_x ;
-	this->board_offset_y = board.board_start_y ;
-	strcpy_s(this->shape, TETROMINO_SIZE*TETROMINO_SIZE + 1,tetromino_shapes[this->shape_index]);
+	this->board_offset_x = board_offset_x;
+	this->board_offset_y = board_offset_y;
 	std::cout << "tetromino shape is: " << this->shape_index << std::endl;
 }
 
@@ -29,15 +29,15 @@ int Tetromino::rotate(int x, int y, int rotation) {
 // prints the shape at x,y based on rotation using the "rotate" method
 void Tetromino::print()
 {
-	int x_rel = this->x_pos + this->board_offset_x;
-	int y_rel = this->y_pos + this->board_offset_y;
+	int x_absolute = this->x_pos + this->board_offset_x;
+	int y_absolute = this->y_pos + this->board_offset_y;
 	int curr_pixel_index;
 	for (int y = 0; y < TETROMINO_SIZE; y++) {
 		for (int x = 0; x < TETROMINO_SIZE; x++) {
-			gotoxy(x_rel +x , y_rel + y);
+			gotoxy(x_absolute +x , y_absolute + y);
 			curr_pixel_index = rotate(x, y, this->rotation);
-			if ((this->shape)[curr_pixel_index] == 'X') {
-				std::cout << (this->shape)[curr_pixel_index];
+			if (tetromino_shapes[this->shape_index][curr_pixel_index] == 'X') {
+				std::cout << tetromino_shapes[this->shape_index][curr_pixel_index];
 			}
 		}
 		
@@ -69,4 +69,14 @@ void Tetromino::getTransform(int& curr_x_pos , int& curr_y_pos , int& curr_rot) 
 //function recives a refence to an int and returns its shape index
 void Tetromino::getShapeIndex(int& shape_index) {
 	shape_index = this->shape_index;
+}
+
+void Tetromino::resetTetromino() {
+	//test (rand() % 5)
+	this->shape_index = 0;
+	this->x_pos = this->start_pos_x;
+	this->y_pos = this->start_pos_y;
+	this->rotation = 0;
+	gotoxy(0 , 1);
+	std::cout << "tetromino shape is: " << this->shape_index << std::endl;
 }

@@ -27,6 +27,11 @@ public:
 		);
 	~TetrisBoard();
 	void printBoard();
+	void writeCellToBoard(int x_coor, int y_coor, char cell_contents);
+	bool isALine(int y_coor);
+	void destroyLine(int y_coor);
+
+	void shiftBoardDown(int y_shift);
 
 private:
 	
