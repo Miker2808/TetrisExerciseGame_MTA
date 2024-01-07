@@ -92,8 +92,28 @@ unsigned char TetrisGame::inputHandler(Tetromino& object, TetrisBoard& board, un
 int main()
 {
     srand(time(NULL));
-    TetrisGame game = TetrisGame();
-    game.play();
+    TetrisGame game_p1 = TetrisGame();
+    TetrisGame game_p2 = TetrisGame();
     
+    unsigned char curr_key = 0;
+    
+    while (curr_key != 27) { // 27 is "ESC" key
+        Sleep(50); // clock
+
+        if (_kbhit()) {
+            curr_key = _getch();
+            // take action depending on user key
+            this->inputHandler(mino, game_board, curr_key);
+        }
+
+        if (drop_counter > 20) {
+            mino.transform(0, 1, 0);
+            drop_counter = 0;
+        }
+
+        game_board.printBoard();
+        mino.print();
+
+    }
     
 }

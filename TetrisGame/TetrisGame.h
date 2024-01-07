@@ -3,11 +3,12 @@
 #include "TetrisBoard.h"
 #include "Tetromino.h"
 
-#define Board_OFFEST_T_X 10
-#define Board_OFFEST_T_Y 10
 class TetrisGame {
 
 public:
+
+	static constexpr unsigned int BOARD_OFFSET_X = 10;
+	static constexpr unsigned int BOARD_OFFSET_Y = 10;
 
 	void play();
 	bool checkCollision(Tetromino& object, TetrisBoard& board, int move_x, int move_y, int move_rot);
