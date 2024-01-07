@@ -3,8 +3,7 @@
 
 // Randomly generate a tetromino piece, places it at (start_x, start_y) relative to (board_x, board_y)
 Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_start_y) {
-	// test (rand() % 5)
-	this->shape_index = 2;
+	this->shape_index = rand() % 5;
 	this->x_pos = start_x;
 	this->y_pos = start_y;
 	this->rotation = 0;
@@ -13,6 +12,11 @@ Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_star
 	this->board_offset_y = board_start_y ;
 	strcpy_s(this->shape, TETROMINO_SIZE*TETROMINO_SIZE + 1,tetromino_shapes[this->shape_index]);
 	std::cout << "generated tetromino shape index: " << this->shape_index << std::endl;
+}
+
+// destructor for the tetromino piece
+Tetromino::~Tetromino() {
+	delete[] this->shape;
 }
 
 // returns point of 1D with rotation from 2D coordinates
@@ -36,7 +40,7 @@ void Tetromino::print()
 		for (int x = 0; x < TETROMINO_SIZE; x++) {
 			gotoxy(x_rel +x , y_rel + y);
 			curr_pixel_index = rotate(x, y, this->rotation);
-			if ((this->shape)[curr_pixel_index] == 'X') {
+			if ((this->shape)[curr_pixel_index] != ' ') {
 				std::cout << (this->shape)[curr_pixel_index];
 			}
 		}
@@ -45,7 +49,7 @@ void Tetromino::print()
 	
 }
 
-// Rotates 
+// updates the coordinates of the tetromino piece.
 void Tetromino::transform(int move_x, int move_y, int rotate) {
 	this->x_pos += move_x;
 	this->y_pos += move_y;
@@ -59,14 +63,14 @@ void Tetromino::transform(int move_x, int move_y, int rotate) {
 	}
 }
 
-//function recives 3 refrence int and returns the current position of the tetromino
+//function recives 3 reference int and returns the current position of the tetromino
 void Tetromino::getTransform(int& curr_x_pos , int& curr_y_pos , int& curr_rot) {
 	curr_x_pos = this->x_pos;
 	curr_y_pos = this->y_pos;
 	curr_rot = this->rotation;
 }
 
-//function recives a refence to an int and returns its shape index
+//function recives a reference to an int and returns its shape index
 void Tetromino::getShapeIndex(int& shape_index) {
 	shape_index = this->shape_index;
 }

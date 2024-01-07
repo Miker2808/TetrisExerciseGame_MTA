@@ -4,6 +4,7 @@
 #include "Tetromino.h"
 #include "Player.h"
 
+
 class TetrisGame {
 
 public:
@@ -16,7 +17,7 @@ public:
 	Player* player;
 	
 private:
-	int tick_counter = 0; // counts iterations each for given game session;
+	unsigned int tick_counter = 0; // counts iterations each for given game session;
 	unsigned int ticks_per_drop = 20; // kept as a variable to potentionally control drop speed
 
 public:

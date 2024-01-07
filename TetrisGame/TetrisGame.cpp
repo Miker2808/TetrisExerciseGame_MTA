@@ -1,8 +1,7 @@
 #include "TetrisGame.h"
-#include "TetrisBoard.h"
-#include "Tetromino.h"
 
 
+// constructor for the game object, basically sets up a start point for the game
 TetrisGame::TetrisGame(int start_x, int start_y)
 {
     this->board = new TetrisBoard(start_x, start_y); // start board and set it to be x=10,y=10 relative to console
@@ -11,12 +10,14 @@ TetrisGame::TetrisGame(int start_x, int start_y)
 
 }
 
+// destructor for the game, free's dynamically allocated memory for the object
 TetrisGame::~TetrisGame() {
     delete this->board;
     delete this->currentMino;
     delete this->player;
 }
 
+// runs a single cycle of playing the game
 void TetrisGame::play(unsigned char curr_key) {
 
     this->tick_counter += 1;
@@ -58,7 +59,7 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     return true;
 }
 
-// given input character, will move object accordingly or deny movement
+// given input character, will move the tetromino piece accordingly or deny movement
 void TetrisGame::movementHandler( unsigned char curr_key)
 {
     if (curr_key == this->player->MOVE_LEFT_KEY_1 || curr_key == this->player->MOVE_LEFT_KEY_2) {
@@ -88,8 +89,9 @@ void TetrisGame::movementHandler( unsigned char curr_key)
 int main()
 {
     srand(time(NULL));
-    TetrisGame game_p1 = TetrisGame();
-    TetrisGame game_p2 = TetrisGame();
+    TetrisGame game_p1 = TetrisGame(1,8);
+    TetrisGame game_p2 = TetrisGame(25, 8);
+    TetrisGame game_p3 = TetrisGame(50, 8);
     
     unsigned char curr_key = 0;
     
@@ -98,11 +100,14 @@ int main()
 
         if (_kbhit()) {
             curr_key = _getch();
-            // take action depending on user key
-            game_p1.play(curr_key);
-            game_p2.play(curr_key);
         }
 
+        // take action depending on user key
+        game_p1.play(curr_key);
+        game_p2.play(curr_key);
+        game_p3.play(curr_key);
+
+        curr_key = 0;
 
     }
     
