@@ -3,8 +3,7 @@
 
 // Randomly generate a
 Tetromino::Tetromino(int start_x, int start_y, int board_offset_x , int board_offset_y) {
-	//test (rand() % 5)
-	this->shape_index = 0;
+	this->shape_index = (rand() % 5);
 	this->start_pos_x = start_x;
 	this->start_pos_y = start_y;
 	this->x_pos = this->start_pos_x;
@@ -72,8 +71,7 @@ void Tetromino::getShapeIndex(int& shape_index) {
 }
 
 void Tetromino::resetTetromino() {
-	//test (rand() % 5)
-	this->shape_index = 0;
+	this->shape_index = (rand() % 5);
 	this->x_pos = this->start_pos_x;
 	this->y_pos = this->start_pos_y;
 	this->rotation = 0;
