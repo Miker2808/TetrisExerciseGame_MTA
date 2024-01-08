@@ -24,10 +24,12 @@ void TetrisGame::play(unsigned char curr_key) {
 
     this->movementHandler(curr_key);
 
-    if (this->tick_counter > this->ticks_per_drop){
-        this->currentMino->transform(0, 1, 0);
-        this->tick_counter = 0;
-    }
+    //if (this->tick_counter > this->ticks_per_drop){
+    //    this->currentMino->transform(0, 1, 0);
+    //    this->tick_counter = 0;
+    //}
+
+    movePiceDown();
 
     this->board->printBoard();
     this->currentMino->print();
@@ -83,8 +85,6 @@ void TetrisGame::movementHandler( unsigned char curr_key)
         if (checkCollision(0, 1, 0))
             this->currentMino->transform(0, 1, 0);
     }
-
-    return curr_key;
     
 }
 
@@ -92,42 +92,44 @@ void TetrisGame::movementHandler( unsigned char curr_key)
 //!!not implemented yet!!
 //a fucntion that fixes a tetromino to the board. 
 //than destructs the tetromino object
-void TetrisGame::fixTetrominoToBoard(Tetromino& object, TetrisBoard& board) {
+void TetrisGame::fixTetrominoToBoard() {
     int obj_x_pos, obj_y_pos, obj_rot, obj_shape_index, pi, lines_destroyed = 0;
-    object.getTransform(obj_x_pos, obj_y_pos, obj_rot);
-    object.getShapeIndex(obj_shape_index);
+    this->currentMino->getTransform(obj_x_pos, obj_y_pos, obj_rot);
+    this->currentMino->getShapeIndex(obj_shape_index);
     
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
-            pi = object.rotate(x_off, y_off, obj_rot);
+            pi = this->currentMino->rotate(x_off, y_off, obj_rot);
             if(tetromino_shapes[obj_shape_index][pi] != ' ')
-                board.writeCellToBoard(obj_x_pos + x_off, obj_y_pos + y_off, tetromino_shapes[obj_shape_index][pi]);
+                this->board->writeCellToBoard(obj_x_pos + x_off, obj_y_pos + y_off, tetromino_shapes[obj_shape_index][pi]);
         }
         //TODO: find some other place to put his check and make it better as a whole
-        if ((obj_y_pos + y_off) < board.board_height-1)
-            if (board.isALine(obj_y_pos + y_off)) {
+        if ((obj_y_pos + y_off) < this->board->board_height -1)
+            if (this->board->isALine(obj_y_pos + y_off)) {
                 lines_destroyed++;
-                board.destroyLine(obj_y_pos + y_off);
+                this->board->destroyLine(obj_y_pos + y_off);
             }
     }
     if (lines_destroyed > 0) {
-        board.shiftBoardDown(lines_destroyed);
+        this->board->destroyLine(lines_destroyed);
+        //not working as intended
+        this->board->shiftBoardDown(lines_destroyed);
     }
 }
 
 
 //function that moves the tetromino down evere X*'drop_counter'*50ms
 //can be used to change game speed
-void TetrisGame::movePiceDown(unsigned char& drop_counter , Tetromino& object, TetrisBoard& board) {
-    if (drop_counter > 20) {
+void TetrisGame::movePiceDown() {
+    if (this->tick_counter > this->ticks_per_drop) {
 
-        if(checkCollision(object, board, 0, 1, 0))
-        object.transform(0, 1, 0);
+        if(checkCollision( 0, 1, 0))
+        this->currentMino->transform(0, 1, 0);
         else {
-            fixTetrominoToBoard( object, board);
-            object.resetTetromino();
+            fixTetrominoToBoard();
+            this->currentMino->resetTetromino();
         }
-        drop_counter = 0;
+        this->tick_counter = 0;
     }
 }
 
@@ -150,8 +152,8 @@ int main()
 
         // take action depending on user key
         game_p1.play(curr_key);
-        game_p2.play(curr_key);
-        game_p3.play(curr_key);
+        //game_p2.play(curr_key);
+        //game_p3.play(curr_key);
 
         curr_key = 0;
 

@@ -30,7 +30,6 @@ public:
 	Tetromino(int start_x, int start_y, int board_start_x, int board_start_y);
 	~Tetromino();
 	void print();
-	Tetromino(int start_x, int start_y, int board_offset_x, int board_offset_y);
 	int rotate(int x, int y, int rotation);
 	void transform(int move_x, int move_y, int rotate = 0);
 	void getTransform(int& currXpos, int& currYpos, int& currRot);

@@ -80,12 +80,13 @@ bool TetrisBoard::isALine(int y_coor) {
 void TetrisBoard::destroyLine(int y_coor) {
 	for (int x = 1; x < board_width - 1; x++) {
 		board[y_coor][x] = '=';
-		this->printBoard();
 	}
+	this->printBoard();
+	Sleep(50);
 	for (int x = 1; x < board_width - 1; x++) {
 		board[y_coor][x] = ' ';
-		this->printBoard();
 	}
+	this->printBoard();
 }
 
 void TetrisBoard::shiftBoardDown(int y_shift) {

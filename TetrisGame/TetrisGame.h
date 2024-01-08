@@ -26,4 +26,6 @@ public:
 	void play(unsigned char curr_key);
 	bool checkCollision(int move_x, int move_y, int move_rot);
 	void movementHandler(unsigned char curr_key);
+	void fixTetrominoToBoard();
+	void movePiceDown();
 };

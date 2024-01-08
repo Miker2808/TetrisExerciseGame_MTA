@@ -4,19 +4,19 @@
 // Randomly generate a tetromino piece, places it at (start_x, start_y) relative to (board_x, board_y)
 Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_start_y) {
 	this->shape_index = rand() % 5;
+	this->start_pos_x = start_x;
+	this->start_pos_y = start_y;
 	this->x_pos = start_x;
 	this->y_pos = start_y;
 	this->rotation = 0;
-	this->shape = new char[TETROMINO_SIZE*TETROMINO_SIZE + 1];
 	this->board_offset_x = board_start_x ;
 	this->board_offset_y = board_start_y ;
-	strcpy_s(this->shape, TETROMINO_SIZE*TETROMINO_SIZE + 1,tetromino_shapes[this->shape_index]);
 	std::cout << "generated tetromino shape index: " << this->shape_index << std::endl;
 }
 
 // destructor for the tetromino piece
 Tetromino::~Tetromino() {
-	delete[] this->shape;
+	
 }
 
 // returns point of 1D with rotation from 2D coordinates
@@ -40,7 +40,7 @@ void Tetromino::print()
 		for (int x = 0; x < TETROMINO_SIZE; x++) {
 			gotoxy(x_absolute +x , y_absolute + y);
 			curr_pixel_index = rotate(x, y, this->rotation);
-			if (tetromino_shapes[this->shape_index][curr_pixel_index] == 'X') {
+			if (tetromino_shapes[this->shape_index][curr_pixel_index] != ' ') {
 				std::cout << tetromino_shapes[this->shape_index][curr_pixel_index];
 			}
 		}
