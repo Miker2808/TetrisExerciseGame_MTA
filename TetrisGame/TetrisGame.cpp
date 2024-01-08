@@ -1,60 +1,57 @@
 #include "TetrisGame.h"
-#include "TetrisBoard.h"
-#include "Tetromino.h"
 
 
-void TetrisGame::play() {
+// constructor for the game object, basically sets up a start point for the game
+TetrisGame::TetrisGame(int start_x, int start_y)
+{
+    this->board = new TetrisBoard(start_x, start_y); // start board and set it to be x=10,y=10 relative to console
+    this->currentMino = new Tetromino(4, 0, start_x, start_y); // relative to the board
+    this->player = new Player();
 
-    TetrisBoard game_board = TetrisBoard(5, 5); // start board and set it to be x=10,y=10 relative to console
-    Tetromino mino = Tetromino( 5 , 0 , game_board.board_start_x, game_board.board_start_y); // starting position relative to the board
-    
-    unsigned char iter_counter = 0;
-    unsigned char drop_counter = 0;
-    unsigned char curr_key = false;
-    while (curr_key != 27) { // 27 is "ESC" key
-        Sleep(50); // clock
-        drop_counter++;
+}
 
-        //can be a part of a print manager
-        game_board.printBoard();
-        mino.print();
+// destructor for the game, free's dynamically allocated memory for the object
+TetrisGame::~TetrisGame() {
+    delete this->board;
+    delete this->currentMino;
+    delete this->player;
+}
 
-        if (_kbhit()) {
-            curr_key = _getch();
-            // take action depending on user key
-            this->inputHandler(mino, game_board, curr_key);
-        }
+// runs a single cycle of playing the game
+void TetrisGame::play(unsigned char curr_key) {
 
+    this->tick_counter += 1;
 
-        movePiceDown(drop_counter, mino, game_board);
-        //if (drop_counter > 20){
-        //    mino.transform(0, 1, 0);
-        //    drop_counter = 0;
-        //}
+    this->movementHandler(curr_key);
 
-
-        
+    if (this->tick_counter > this->ticks_per_drop){
+        this->currentMino->transform(0, 1, 0);
+        this->tick_counter = 0;
     }
+
+    this->board->printBoard();
+    this->currentMino->print();
+        
+    
 }
 
 //function recives a ref to a tetromino object and the the disired move offset
 //function calls the tetromino to recive its current position 
 //function than calls rotate method to index of the object at the desired position and checks it with the board
 //if the space is not empty and there is a cilision function will return false
-bool TetrisGame::checkCollision(Tetromino& object, TetrisBoard&  board, int move_x, int move_y , int move_rot ) {
+bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     int next_x, next_y, next_rot , shape_index;
-    object.getTransform(next_x, next_y, next_rot);
-    object.getShapeIndex(shape_index);
+    this->currentMino->getTransform(next_x, next_y, next_rot);
+    this->currentMino->getShapeIndex(shape_index);
     next_x += move_x;
     next_y += move_y;
     next_rot = (next_rot + move_rot) % 4;
     int pi;
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
-            pi = object.rotate(x_off , y_off, next_rot);
-            if (tetromino_shapes[shape_index][pi] != ' ' && board.board[next_y + y_off][next_x + x_off] != ' ') {
-                return false;
-                
+            pi = this->currentMino->rotate(x_off , y_off, next_rot);
+            if (tetromino_shapes[shape_index][pi] != ' ' && this->board->board[next_y + y_off][next_x + x_off] != ' ') {
+                return false;   
             }
         }
     }
@@ -62,28 +59,29 @@ bool TetrisGame::checkCollision(Tetromino& object, TetrisBoard&  board, int move
     return true;
 }
 
-// given input character, will move object accordingly, or 
-unsigned char TetrisGame::inputHandler(Tetromino& object, TetrisBoard& board, unsigned char curr_key)
+// given input character, will move the tetromino piece accordingly or deny movement
+void TetrisGame::movementHandler( unsigned char curr_key)
 {
-    if (curr_key == 'a' || curr_key == 'A') {
-        if (checkCollision(object , board, -1 , 0 , 0))
-            object.transform(-1, 0, 0);
+    if (curr_key == this->player->MOVE_LEFT_KEY_1 || curr_key == this->player->MOVE_LEFT_KEY_2) {
+        // TODO: check if possible
+        if (checkCollision(-1 , 0 , 0))
+            this->currentMino->transform(-1, 0, 0);
     }
-    else if (curr_key == 'd' || curr_key == 'D'){
-        if (checkCollision(object, board, 1, 0, 0))
-            object.transform(1, 0, 0);
+    else if (curr_key == this->player->MOVE_RIGHT_KEY_1 || curr_key == this->player->MOVE_RIGHT_KEY_2){
+        if (checkCollision(1, 0, 0))
+            this->currentMino->transform(1, 0, 0);
     }
-    else if (curr_key == 'w' || curr_key == 'W') {
-        if (checkCollision(object, board, 0, 0, 1))
-            object.transform(0, 0, 1);
+    else if (curr_key == this->player->ROT_RIGHT_KEY_1 || curr_key == this->player->ROT_RIGHT_KEY_2) {
+        if (checkCollision(0, 0, 1))
+            this->currentMino->transform(0, 0, 1);
     }
-    else if (curr_key == 's' || curr_key == 'S') {
-        if (checkCollision(object, board, 0, 0, -1))
-            object.transform(0, 0, -1);
+    else if (curr_key == this->player->ROT_LEFT_KEY_1 || curr_key == this->player->ROT_LEFT_KEY_2) {
+        if (checkCollision( 0, 0, -1))
+            this->currentMino->transform(0, 0, -1);
     }
-    else if (curr_key == 'x' || curr_key == 'X') {
-        if (checkCollision(object, board, 0, 1, 0))
-            object.transform(0, 1, 0);
+    else if (curr_key == this->player->DROP_KEY_1 || curr_key == this->player->DROP_KEY_2) {
+        if (checkCollision(0, 1, 0))
+            this->currentMino->transform(0, 1, 0);
     }
 
     return curr_key;
@@ -137,8 +135,26 @@ void TetrisGame::movePiceDown(unsigned char& drop_counter , Tetromino& object, T
 int main()
 {
     srand(time(NULL));
-    TetrisGame game = TetrisGame();
-    game.play();
+    TetrisGame game_p1 = TetrisGame(1,8);
+    TetrisGame game_p2 = TetrisGame(25, 8);
+    TetrisGame game_p3 = TetrisGame(50, 8);
     
+    unsigned char curr_key = 0;
+    
+    while (curr_key != 27) { // 27 is "ESC" key
+        Sleep(TetrisGame::TICKS_TIME); // clock
+
+        if (_kbhit()) {
+            curr_key = _getch();
+        }
+
+        // take action depending on user key
+        game_p1.play(curr_key);
+        game_p2.play(curr_key);
+        game_p3.play(curr_key);
+
+        curr_key = 0;
+
+    }
     
 }

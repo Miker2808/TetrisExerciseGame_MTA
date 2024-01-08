@@ -4,11 +4,11 @@
 class TetrisBoard;
 
 const char tetromino_shapes[5][17] = {
-		{"  X   X   X   X "}, // vertical line shape
-		{"     XX  XX     "}, // square shape
-		{"X   X   X   XX  "}, // L shape
-		{" X   XX   X     "}, // S shape
-		{"     X  XXX     "}  // T shape
+		{"  A   A   A   A "}, // vertical line shape
+		{"     BB  BB     "}, // square shape
+		{"C   C   C   CC  "}, // L shape
+		{" D   DD   D     "}, // S shape
+		{"     E  EEE     "}  // T shape
 };
 
 // the class of the shapes that move in the game
@@ -27,6 +27,8 @@ private:
 
 public:
 
+	Tetromino(int start_x, int start_y, int board_start_x, int board_start_y);
+	~Tetromino();
 	void print();
 	Tetromino(int start_x, int start_y, int board_offset_x, int board_offset_y);
 	int rotate(int x, int y, int rotation);
