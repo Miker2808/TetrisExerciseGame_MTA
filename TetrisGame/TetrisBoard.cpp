@@ -71,7 +71,7 @@ void TetrisBoard::writeCellToBoard(int x_coor , int y_coor , char cell_contents)
 //checks a row of the board array, returns true if the row is filled
 bool TetrisBoard::isALine(int y_coor) {
 	for (int x = 1; x < board_width-1; x++) {
-		if (board[y_coor][x] == ' ')
+		if (board[y_coor][x] == def_empty)
 			return false;
 	}
 	return true;
@@ -84,22 +84,22 @@ void TetrisBoard::destroyLine(int y_coor) {
 	this->printBoard();
 	Sleep(50);
 	for (int x = 1; x < board_width - 1; x++) {
-		board[y_coor][x] = ' ';
+		board[y_coor][x] = def_empty;
 	}
 	this->printBoard();
 }
 
-void TetrisBoard::shiftBoardDown(int y_shift) {
-	for (int y = board_height - y_shift - 1; y >= 0; y--) {
+void TetrisBoard::shiftBoardDown(int destroyed_line_y ) {
+	for (int y = destroyed_line_y -1 ; y >= 0; y--) {
 		for (int x = 1; x < board_width - 1; x++) {
-			board[y + y_shift - 1][x] = board[y][x];
+			board[y+1][x] = board[y][x];
 		}
 	}
-	for (int y = 0; y < y_shift; y++) {
-		for (int x = 1; x < board_width - 1; x++) {
-			board[y][x] = ' ';
-		}
+
+	for (int x = 1; x < board_width - 1; x++) {
+		board[0][x] = def_empty;
 	}
+
 }
 
 

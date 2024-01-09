@@ -15,7 +15,7 @@ public:
 	
 private:
 	const char wall = '#';
-	const char def_empty = ' '; // space
+	const char def_empty = '.'; // space
 
 // methods
 public:

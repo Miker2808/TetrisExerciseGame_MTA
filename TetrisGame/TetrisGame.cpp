@@ -52,7 +52,7 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
             pi = this->currentMino->rotate(x_off , y_off, next_rot);
-            if (tetromino_shapes[shape_index][pi] != ' ' && this->board->board[next_y + y_off][next_x + x_off] != ' ') {
+            if (tetromino_shapes[shape_index][pi] != ' ' && this->board->board[next_y + y_off][next_x + x_off] != '.') {
                 return false;   
             }
         }
@@ -106,14 +106,9 @@ void TetrisGame::fixTetrominoToBoard() {
         //TODO: find some other place to put his check and make it better as a whole
         if ((obj_y_pos + y_off) < this->board->board_height -1)
             if (this->board->isALine(obj_y_pos + y_off)) {
-                lines_destroyed++;
                 this->board->destroyLine(obj_y_pos + y_off);
+                this->board->shiftBoardDown(obj_y_pos + y_off);
             }
-    }
-    if (lines_destroyed > 0) {
-        this->board->destroyLine(lines_destroyed);
-        //not working as intended
-        this->board->shiftBoardDown(lines_destroyed);
     }
 }
 
