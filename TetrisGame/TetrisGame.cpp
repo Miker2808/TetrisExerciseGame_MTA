@@ -89,7 +89,7 @@ void TetrisGame::movementHandler( unsigned char curr_key)
 }
 
 
-//!!not implemented yet!!
+
 //a fucntion that fixes a tetromino to the board. 
 //than destructs the tetromino object
 void TetrisGame::fixTetrominoToBoard() {
