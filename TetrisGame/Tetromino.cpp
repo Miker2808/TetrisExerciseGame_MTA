@@ -1,5 +1,4 @@
 #include "Tetromino.h"
-#include "TetrisBoard.h"
 
 // Randomly generate a tetromino piece, places it at (start_x, start_y) relative to (board_x, board_y)
 Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_start_y) {

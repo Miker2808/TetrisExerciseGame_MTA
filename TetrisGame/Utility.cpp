@@ -11,3 +11,8 @@ void gotoxy(int x, int y)
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hConsoleOutput, dwCursorPosition);
 }
+
+// a - dividend , b - modulus
+int pyMod(int a , int b) {
+	return (b + (a % b)) % b;
+}

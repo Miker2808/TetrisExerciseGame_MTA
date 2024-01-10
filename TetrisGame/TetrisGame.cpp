@@ -47,7 +47,8 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     this->currentMino->getShapeIndex(shape_index);
     next_x += move_x;
     next_y += move_y;
-    next_rot = (next_rot + move_rot) % 4;
+    //next_rot = (next_rot + move_rot) % 4;
+    next_rot = pyMod((next_rot + move_rot), 4);
     int pi;
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
@@ -92,23 +93,37 @@ void TetrisGame::movementHandler( unsigned char curr_key)
 
 //a fucntion that fixes a tetromino to the board. 
 //than destructs the tetromino object
-void TetrisGame::fixTetrominoToBoard() {
+void TetrisGame::updateBoardStatus() {
     int obj_x_pos, obj_y_pos, obj_rot, obj_shape_index, pi, lines_destroyed = 0;
     this->currentMino->getTransform(obj_x_pos, obj_y_pos, obj_rot);
     this->currentMino->getShapeIndex(obj_shape_index);
     
+    writeTetrominoToBoard(obj_x_pos, obj_y_pos, obj_rot, obj_shape_index);
+    findAndDestroyLines(obj_y_pos);
+}
+
+//checks for lines in the tetromino object position, and destroyes them
+void TetrisGame::findAndDestroyLines(int obj_y_pos) {
+    
     for (int y_off = 0; y_off < 4; y_off++) {
-        for (int x_off = 0; x_off < 4; x_off++) {
-            pi = this->currentMino->rotate(x_off, y_off, obj_rot);
-            if(tetromino_shapes[obj_shape_index][pi] != ' ')
-                this->board->writeCellToBoard(obj_x_pos + x_off, obj_y_pos + y_off, tetromino_shapes[obj_shape_index][pi]);
-        }
-        //TODO: find some other place to put his check and make it better as a whole
-        if ((obj_y_pos + y_off) < this->board->board_height -1)
+        if ((obj_y_pos + y_off) < this->board->board_height - 1)
             if (this->board->isALine(obj_y_pos + y_off)) {
                 this->board->destroyLine(obj_y_pos + y_off);
                 this->board->shiftBoardDown(obj_y_pos + y_off);
             }
+    }
+}
+
+//wirites the tetromino object into the board array
+void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index) {
+    int pixel;
+    
+    for (int y_off = 0; y_off < 4; y_off++) {
+        for (int x_off = 0; x_off < 4; x_off++) {
+            pixel = this->currentMino->rotate(x_off, y_off, obj_rot);
+            if (tetromino_shapes[obj_shape_index][pixel] != ' ')
+                this->board->writeCellToBoard(obj_x_pos + x_off, obj_y_pos + y_off, tetromino_shapes[obj_shape_index][pixel]);
+        }
     }
 }
 
@@ -121,7 +136,7 @@ void TetrisGame::movePiceDown() {
         if(checkCollision( 0, 1, 0))
         this->currentMino->transform(0, 1, 0);
         else {
-            fixTetrominoToBoard();
+            updateBoardStatus();
             this->currentMino->resetTetromino();
         }
         this->tick_counter = 0;

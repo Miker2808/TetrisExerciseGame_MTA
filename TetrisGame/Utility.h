@@ -14,5 +14,6 @@ constexpr unsigned int BOARD_OFFSET_Y = 5;
 
 // moves cursor to x,y of terminal
 void gotoxy(int x, int y);
+int pyMod(int a, int b);
 
 
