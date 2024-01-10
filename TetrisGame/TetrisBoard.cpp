@@ -12,17 +12,11 @@ TetrisBoard::TetrisBoard(int pos_x, int pos_y, int width, int height)
 void TetrisBoard::allocateBoard(int rows, int cols)
 {
 	this->board = new char* [rows];
-	if (this->board == nullptr) {
-		std::cout << "Failed to allocated memory for board object" << std::endl;
-		exit(-3);
-	}
+
 
 	for (int i = 0; i < rows; i++) {
 		(this->board)[i] = new char[cols];
-		if ((this->board)[i] == nullptr) {
-			std::cout << "Failed to allocated memory for board object" << std::endl;
-			exit(-3);
-		}
+
 		this->board[i][0] = wall;
 		this->board[i][cols - 1] = wall;
 
