@@ -1,7 +1,6 @@
 #pragma once
 #include "Utility.h"
 
-class TetrisBoard;
 
 const char tetromino_shapes[5][17] = {
 		{"  A   A   A   A "}, // vertical line shape
