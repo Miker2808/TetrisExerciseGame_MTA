@@ -3,6 +3,7 @@
 #include "TetrisBoard.h"
 #include "Tetromino.h"
 #include "Player.h"
+#include "MenuManager.h"
 
 
 class TetrisGame {

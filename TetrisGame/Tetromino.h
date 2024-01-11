@@ -2,12 +2,14 @@
 #include "Utility.h"
 
 
-const char tetromino_shapes[5][17] = {
+const char tetromino_shapes[7][17] = {
 		{"  A   A   A   A "}, // vertical line shape
 		{"     BB  BB     "}, // square shape
 		{"    C   C   CC  "}, // L shape
 		{" D   DD   D     "}, // S shape
-		{"     E  EEE     "}  // T shape
+		{"     E  EEE     "}, // T shape
+		{"       F   F  FF"}, // inverted L shape
+		{"  G  GG  G      "}  //inverted S shape
 };
 
 // the class of the shapes that move in the game
