@@ -5,10 +5,9 @@
 
 
 class MenuManager {
+public:
 
-
-
-
-	int mainMenu();
+	void mainMenu(int& curr_token);
+	void mainMenuLogic(int& curr_token);
 
 };
