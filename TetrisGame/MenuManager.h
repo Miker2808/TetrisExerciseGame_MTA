@@ -8,6 +8,7 @@ class MenuManager {
 public:
 
 	void mainMenu(int& curr_token);
-	void mainMenuLogic(int& curr_token);
+	bool mainMenuLogic(int& curr_token);
+	void optionsMenu();
 
 };

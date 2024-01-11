@@ -139,8 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="TetrisBoard.cpp" />
     <ClCompile Include="TetrisGame.cpp" />
@@ -149,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="TetrisBoard.h" />
     <ClInclude Include="TetrisGame.h" />
     <ClInclude Include="Tetromino.h" />
