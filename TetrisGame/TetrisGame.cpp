@@ -94,7 +94,7 @@ void TetrisGame::movementHandler( unsigned char curr_key)
 //a fucntion that fixes a tetromino to the board. 
 //than destructs the tetromino object
 void TetrisGame::updateBoardStatus() {
-    int obj_x_pos, obj_y_pos, obj_rot, obj_shape_index, pi, lines_destroyed = 0;
+    int obj_x_pos, obj_y_pos, obj_rot, obj_shape_index, lines_destroyed = 0;
     this->currentMino->getTransform(obj_x_pos, obj_y_pos, obj_rot);
     this->currentMino->getShapeIndex(obj_shape_index);
     

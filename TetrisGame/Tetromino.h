@@ -5,7 +5,7 @@
 const char tetromino_shapes[5][17] = {
 		{"  A   A   A   A "}, // vertical line shape
 		{"     BB  BB     "}, // square shape
-		{"C   C   C   CC  "}, // L shape
+		{"    C   C   CC  "}, // L shape
 		{" D   DD   D     "}, // S shape
 		{"     E  EEE     "}  // T shape
 };
