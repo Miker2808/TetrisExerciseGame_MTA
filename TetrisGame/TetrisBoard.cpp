@@ -1,11 +1,10 @@
 #include "TetrisBoard.h"
 
-// constructor
+// constructor that initializes a dynamic 2D array and position of the board
 TetrisBoard::TetrisBoard(int pos_x, int pos_y, int width, int height)
 	: board_start_x(pos_x), board_start_y(pos_y), board_width(width), board_height(height)
 {
 	allocateBoard(height, width);
-	std::cout << "allocated board" << std::endl;
 }
 
 // allocates dynamic memory for the board and initializes with spaces
@@ -38,12 +37,14 @@ void TetrisBoard::freeBoard(int rows) {
 	delete[] this->board;
 
 	this->board = nullptr;
+	
 }
 
 // destructor
 TetrisBoard::~TetrisBoard() {
 	freeBoard(board_height);
-	std::cout << "Freed board" << std::endl;
+	gotoxy(1, 22);
+	std::cout << "Destroyed tetris board object" << std::endl;
 }
 
 // prints the board at x, y position

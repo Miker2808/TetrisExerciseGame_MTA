@@ -1,17 +1,20 @@
 #pragma once
 #include "Utility.h"
 
-constexpr long DEFAULT_BOARD_WIDTH = 14;
-constexpr long DEFAULT_BOARD_HEIGHT = 19;
+
 
 class TetrisBoard {
 
 public:
+	static const long DEFAULT_BOARD_WIDTH = 14;
+	static const long DEFAULT_BOARD_HEIGHT = 19;
+
 	char** board = nullptr;
 	const int board_start_x; // X offset from console edge of board location
 	const int board_start_y;  // Y offset from console edge of board location
 	const int board_width;
 	const int board_height;
+	
 	
 private:
 	const char wall = '#';

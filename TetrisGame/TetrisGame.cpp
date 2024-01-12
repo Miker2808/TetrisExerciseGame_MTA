@@ -15,6 +15,8 @@ TetrisGame::~TetrisGame() {
     delete this->board;
     delete this->currentMino;
     delete this->player;
+    gotoxy(1, 21);
+    std::cout << "Destroyed tetris game object" << std::endl;
 }
 
 // runs a single cycle of playing the game
@@ -23,11 +25,6 @@ void TetrisGame::play(unsigned char curr_key) {
     this->tick_counter += 1;
 
     this->movementHandler(curr_key);
-
-    //if (this->tick_counter > this->ticks_per_drop){
-    //    this->currentMino->transform(0, 1, 0);
-    //    this->tick_counter = 0;
-    //}
 
     movePiceDown();
 
@@ -47,8 +44,7 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     this->currentMino->getShapeIndex(shape_index);
     next_x += move_x;
     next_y += move_y;
-    //next_rot = (next_rot + move_rot) % 4;
-    next_rot = pyMod((next_rot + move_rot), 4);
+    next_rot = pyMod((next_rot + move_rot), 4); // map rotation by using modulu
     int pi;
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
@@ -62,11 +58,10 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     return true;
 }
 
-// given input character, will move the tetromino piece accordingly or deny movement
+// given input character, will move the tetromino piece accordingly or do nothing
 void TetrisGame::movementHandler( unsigned char curr_key)
 {
     if (curr_key == this->player->MOVE_LEFT_KEY_1 || curr_key == this->player->MOVE_LEFT_KEY_2) {
-        // TODO: check if possible
         if (checkCollision(-1 , 0 , 0))
             this->currentMino->transform(-1, 0, 0);
     }
@@ -88,7 +83,6 @@ void TetrisGame::movementHandler( unsigned char curr_key)
     }
     
 }
-
 
 
 //a fucntion that fixes a tetromino to the board. 
@@ -128,7 +122,7 @@ void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot
 }
 
 
-//function that moves the tetromino down evere X*'drop_counter'*50ms
+//function that moves the tetromino down every game tick
 //can be used to change game speed
 void TetrisGame::movePiceDown() {
     if (this->tick_counter > this->ticks_per_drop) {
@@ -141,4 +135,11 @@ void TetrisGame::movePiceDown() {
         }
         this->tick_counter = 0;
     }
+}
+// prints stats of the game under the board of the game
+void TetrisGame::printGameStats() {
+    int print_x = this->board->board_start_x + 1;
+    int print_y = this->board->board_start_y + this->board->board_height + 1;
+    gotoxy(print_x, print_y);
+    std::cout << "Player " << this->player->id << "  Score:" << this->player->score;
 }
