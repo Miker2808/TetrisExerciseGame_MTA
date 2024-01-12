@@ -25,6 +25,7 @@ public:
 	void printControls();
 	GameState mainMenuLogic(unsigned char curr_key);
 	GameState optionsMenu();
+	void printGameOverMenu(int player_indx);
 	void printOptionsMenu();
 
 };

@@ -2,7 +2,7 @@
 
 Settings global_settings;
 
-void playGame(TetrisGame* players[], GameState& game_state);
+void playGame(TetrisGame* players[], GameState& game_state, MenuManager* menu);
 void initNewGame(TetrisGame* players[]);
 
 int main()
@@ -24,7 +24,7 @@ int main()
             game_state = GameState::IN_PROGRESS_GAME;
         }
 
-        playGame(players, game_state);
+        playGame(players, game_state, &menu);
 
     }
     std::cout << "\nColors:" << global_settings.game_colors;
@@ -33,7 +33,7 @@ int main()
 
 }
 
-void playGame(TetrisGame* players[], GameState& game_state)
+void playGame(TetrisGame* players[], GameState& game_state, MenuManager* menu)
 {
     while (game_state == GameState::IN_PROGRESS_GAME)
     {
@@ -55,8 +55,12 @@ void playGame(TetrisGame* players[], GameState& game_state)
         }
 
         if (players[0]->game_over || players[1]->game_over) {
+            if (players[0]->game_over)
+                menu->printGameOverMenu(2);
+            else
+                menu->printGameOverMenu(1);
             game_state = GameState::NO_GAME_STATE;
-            //TODO: Print game over menu
+            
         }
             // keep at bottom
             curr_key = 0;
