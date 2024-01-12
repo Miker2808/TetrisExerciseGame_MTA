@@ -8,10 +8,8 @@ void initNewGame(TetrisGame* players[]);
 int main()
 {
     srand(time(NULL));
-
     GameState game_state = GameState::NO_GAME_STATE;
     MenuManager menu;
-
     TetrisGame* players[2] = { NULL,NULL };
 
     unsigned char curr_key = 0;

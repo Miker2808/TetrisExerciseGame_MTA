@@ -5,7 +5,7 @@
 TetrisGame::TetrisGame(int start_x, int start_y)
 {
     this->board = new TetrisBoard(start_x, start_y); // start board and set it to be x=10,y=10 relative to console
-    this->currentMino = new Tetromino(4, 0, start_x, start_y); // relative to the board
+    this->currentMino = new Tetromino(5, 0, start_x, start_y); // relative to the board
     this->player = new Player();
 
 }
@@ -15,7 +15,7 @@ TetrisGame::~TetrisGame() {
     delete this->board;
     delete this->currentMino;
     delete this->player;
-    gotoxy(1, 21);
+    gotoxy(1, 25);
     std::cout << "Destroyed tetris game object" << std::endl;
 }
 
@@ -33,6 +33,7 @@ void TetrisGame::play(unsigned char curr_key) {
 
     this->board->printBoard();
     this->currentMino->print();
+    this->printGameStats();
         
     
 }
@@ -101,14 +102,18 @@ void TetrisGame::updateBoardStatus() {
 
 //checks for lines in the tetromino object position, and destroyes them
 void TetrisGame::findAndDestroyLines(int obj_y_pos) {
-    
+    int destroyed_lines = 0;
     for (int y_off = 0; y_off < 4; y_off++) {
         if ((obj_y_pos + y_off) < this->board->board_height - 1)
             if (this->board->isALine(obj_y_pos + y_off)) {
+                destroyed_lines++;
                 this->board->destroyLine(obj_y_pos + y_off);
                 this->board->shiftBoardDown(obj_y_pos + y_off);
+                this->player->score += (this->base_score_inc) * 4 * destroyed_lines;
             }
     }
+    if (destroyed_lines == 0)
+        this->player->score += this->base_score_inc;
 }
 
 //wirites the tetromino object into the board array

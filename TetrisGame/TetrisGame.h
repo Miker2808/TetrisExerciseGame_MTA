@@ -16,6 +16,7 @@ public:
 	Tetromino* currentMino;
 	Player* player;
 	bool game_over = false;
+	int base_score_inc = 25;
 	
 private:
 	// private members
