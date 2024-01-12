@@ -31,7 +31,7 @@ int main()
 
 }
 
-void playGame(TetrisGame* players[], GameState& game_state, MenuManager* menu)
+void playGame(TetrisGame* players_arr[], GameState& game_state, MenuManager* menu)
 {
     while (game_state == GameState::IN_PROGRESS_GAME)
     {
@@ -43,20 +43,20 @@ void playGame(TetrisGame* players[], GameState& game_state, MenuManager* menu)
         Sleep(TetrisGame::TICKS_TIME); //game clock
 
         // take action based on user key CHANGE TO GENERALIZE
-        players[0]->play(curr_key);
+        players_arr[0]->play(curr_key);
         Sleep(3); // fixes stuttering of second game screen
-        players[1]->play(curr_key);
+        players_arr[1]->play(curr_key);
 
         // 27 is "ESC" key
         if (curr_key == 27) {
             game_state = GameState::PAUSED_GAME;
         }
 
-        if (players[0]->game_over || players[1]->game_over) {
-            if (players[0]->game_over)
-                menu->printGameOverMenu(2);
+        if (players_arr[0]->game_over || players_arr[1]->game_over) {
+            if (players_arr[0]->game_over)
+                menu->printGameOverMenu(players_arr[1]->player->id , players_arr[1]->player->score);
             else
-                menu->printGameOverMenu(1);
+                menu->printGameOverMenu(players_arr[0]->player->id, players_arr[0]->player->score);
             game_state = GameState::NO_GAME_STATE;
             
         }

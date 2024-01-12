@@ -142,12 +142,12 @@ GameState MenuManager::optionsMenu() {
 
 
 
-void MenuManager::printGameOverMenu(int player_indx)
+void MenuManager::printGameOverMenu(int player_indx, int score)
 {
 	system("cls");
-	std::cout << "\n\n   GameOver!\n";
+	std::cout << "\n\n   Game Over!\n";
 	std::cout << "   player"<< player_indx <<" won\n";
-	std::cout << "     Score : "<< "inplement score"<< "\n";
+	std::cout << "   Score : "<< score << "\n";
 	std::cout << "~~~~~~~~~~~~~~\n\n";
 	std::cout << "Press any key to continue\n";
 	this->game_started = false;
