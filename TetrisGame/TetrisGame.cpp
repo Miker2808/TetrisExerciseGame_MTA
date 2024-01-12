@@ -28,6 +28,9 @@ void TetrisGame::play(unsigned char curr_key) {
 
     movePiceDown();
 
+    if (!checkCollision(0, 0, 0))
+        this->game_over = true;
+
     this->board->printBoard();
     this->currentMino->print();
         
@@ -61,23 +64,23 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
 // given input character, will move the tetromino piece accordingly or do nothing
 void TetrisGame::movementHandler( unsigned char curr_key)
 {
-    if (curr_key == this->player->MOVE_LEFT_KEY_1 || curr_key == this->player->MOVE_LEFT_KEY_2) {
+    if (curr_key == this->player->my_ctrl.MOVE_LEFT_KEY_1 || curr_key == this->player->my_ctrl.MOVE_LEFT_KEY_2) {
         if (checkCollision(-1 , 0 , 0))
             this->currentMino->transform(-1, 0, 0);
     }
-    else if (curr_key == this->player->MOVE_RIGHT_KEY_1 || curr_key == this->player->MOVE_RIGHT_KEY_2){
+    else if (curr_key == this->player->my_ctrl.MOVE_RIGHT_KEY_1 || curr_key == this->player->my_ctrl.MOVE_RIGHT_KEY_2){
         if (checkCollision(1, 0, 0))
             this->currentMino->transform(1, 0, 0);
     }
-    else if (curr_key == this->player->ROT_RIGHT_KEY_1 || curr_key == this->player->ROT_RIGHT_KEY_2) {
+    else if (curr_key == this->player->my_ctrl.ROT_RIGHT_KEY_1 || curr_key == this->player->my_ctrl.ROT_RIGHT_KEY_2) {
         if (checkCollision(0, 0, 1))
             this->currentMino->transform(0, 0, 1);
     }
-    else if (curr_key == this->player->ROT_LEFT_KEY_1 || curr_key == this->player->ROT_LEFT_KEY_2) {
+    else if (curr_key == this->player->my_ctrl.ROT_LEFT_KEY_1 || curr_key == this->player->my_ctrl.ROT_LEFT_KEY_2) {
         if (checkCollision( 0, 0, -1))
             this->currentMino->transform(0, 0, -1);
     }
-    else if (curr_key == this->player->DROP_KEY_1 || curr_key == this->player->DROP_KEY_2) {
+    else if (curr_key == this->player->my_ctrl.DROP_KEY_1 || curr_key == this->player->my_ctrl.DROP_KEY_2) {
         if (checkCollision(0, 1, 0))
             this->currentMino->transform(0, 1, 0);
     }

@@ -2,19 +2,8 @@
 
 Settings global_settings;
 
-void initNewGame(TetrisGame ** game_p1, TetrisGame ** game_p2) {
-    if (game_p1 != nullptr) {
-        delete game_p1;
-    }
-    if (game_p2 != nullptr) {
-        delete game_p2;
-    }
-
-    *game_p1 = new TetrisGame(10, 5);
-    *game_p2 = new TetrisGame(30, 5);
-
-    (*game_p2)->player->setSecondaryControls();
-}
+void playGame(TetrisGame* players[], GameState& game_state);
+void initNewGame(TetrisGame* players[]);
 
 int main()
 {
@@ -23,44 +12,66 @@ int main()
     GameState game_state = GameState::NO_GAME_STATE;
     MenuManager menu;
 
-    TetrisGame* game_p1 = new TetrisGame(10, 5);;
-    TetrisGame* game_p2 = new TetrisGame(30, 5);
-
-    game_state = menu.mainMenu(game_state);
-
+    TetrisGame* players[2] = { NULL,NULL };
 
     unsigned char curr_key = 0;
     while (game_state != GameState::EXIT_GAME) {
+        game_state = menu.mainMenu(game_state);
+
+        if (game_state == GameState::NEW_GAME) 
+        {
+            initNewGame(players);
+            game_state = GameState::IN_PROGRESS_GAME;
+        }
+
+        playGame(players, game_state);
+
+    }
+    std::cout << "\nColors:" << global_settings.game_colors;
+    delete players[0];
+    delete players[1];
+
+}
+
+void playGame(TetrisGame* players[], GameState& game_state)
+{
+    while (game_state == GameState::IN_PROGRESS_GAME)
+    {
+        unsigned char curr_key = 0;
         // get key from input -- keep at top of loop
         if (_kbhit()) {
             curr_key = _getch();
         }
-
-        //if (game_state == GameState::NEW_GAME) {
-        //    game_p1 = TetrisGame(10, 5);
-        //    game_p2 = TetrisGame(30, 5);
-        //}
-
         Sleep(TetrisGame::TICKS_TIME); //game clock
 
-        // take action based on user key
-        game_p2->play(curr_key);
-        Sleep(1); // fixes stuttering of second game screen
-        game_p1->play(curr_key);
-            
+        // take action based on user key CHANGE TO GENERALIZE
+        players[0]->play(curr_key);
+        Sleep(3); // fixes stuttering of second game screen
+        players[1]->play(curr_key);
 
         // 27 is "ESC" key
         if (curr_key == 27) {
             game_state = GameState::PAUSED_GAME;
-            game_state = menu.mainMenu(game_state);
         }
 
-        // keep at bottom
-        curr_key = 0;
-
+        if (players[0]->game_over || players[1]->game_over) {
+            game_state = GameState::NO_GAME_STATE;
+            //TODO: Print game over menu
+        }
+            // keep at bottom
+            curr_key = 0;
     }
-    std::cout << "\nColors:" << global_settings.game_colors;
-    delete game_p1;
-    delete game_p2;
+}
+
+void initNewGame(TetrisGame* players[]) {
+    if (players[0] != nullptr) {
+        delete players[0];
+    }
+    if (players[1] != nullptr) {
+        delete players[1];
+    }
+
+    players[0] = new TetrisGame(global_settings.screen_offset_x, 5);
+    players[1] = new TetrisGame(global_settings.screen_offset_x + global_settings.screen_offset_inter, 5);
 
 }

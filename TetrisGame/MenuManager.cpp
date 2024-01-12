@@ -7,21 +7,20 @@ GameState MenuManager::mainMenu(GameState state) {
 	unsigned char curr_key = 0;
 	GameState current_state = state;
 
-	while (current_state != GameState::NEW_GAME && current_state != GameState::EXIT_GAME && current_state != GameState::RESUME_GAME)
+	while (current_state != GameState::NEW_GAME && current_state != GameState::EXIT_GAME && current_state != GameState::IN_PROGRESS_GAME)
 	{
 		this->printMainMenu();
-		Sleep(50);
 
-		if (_kbhit()) {
-			curr_key = _getch();
-		}
+
+		curr_key = _getch();
+
 
 		current_state = mainMenuLogic(curr_key);
 
 		// keep at bottom
 		curr_key = 0;
 	}
-
+	system("cls");
 	return current_state;
 }
 
@@ -48,25 +47,25 @@ void MenuManager::printControls()
 	gotoxy(x, y++);
 	std::cout << "Player 1 controls:";
 	gotoxy(x, y++);
-	std::cout << "Left: " << ControlsPresetOne::MOVE_LEFT_KEY_1 << " or " << ControlsPresetOne::MOVE_LEFT_KEY_2;
-	std::cout << " || Right: " << ControlsPresetOne::MOVE_RIGHT_KEY_1 << " or " << ControlsPresetOne::MOVE_RIGHT_KEY_2;
+	std::cout << "Left: " << ctrl_presets[0].MOVE_LEFT_KEY_1 << " or " << ctrl_presets[0].MOVE_LEFT_KEY_2;
+	std::cout << " || Right: " << ctrl_presets[0].MOVE_RIGHT_KEY_1 << " or " << ctrl_presets[0].MOVE_RIGHT_KEY_2;
 	gotoxy(x, y++);
-	std::cout << "Rotate Clockwise: " << ControlsPresetOne::ROT_RIGHT_KEY_1 << " or " << ControlsPresetOne::ROT_RIGHT_KEY_2;
-	std::cout << " || Rotate Counterclock: " << ControlsPresetOne::ROT_LEFT_KEY_1 << " or " << ControlsPresetOne::ROT_LEFT_KEY_1;
+	std::cout << "Rotate Clockwise: " << ctrl_presets[0].ROT_RIGHT_KEY_1 << " or " << ctrl_presets[0].ROT_RIGHT_KEY_2;
+	std::cout << " || Rotate Counterclock: " << ctrl_presets[0].ROT_LEFT_KEY_1 << " or " << ctrl_presets[0].ROT_LEFT_KEY_1;
 	gotoxy(x, y++);
-	std::cout << "Drop: " << ControlsPresetOne::DROP_KEY_1 << " or " << ControlsPresetOne::DROP_KEY_2;
+	std::cout << "Drop: " << ctrl_presets[0].DROP_KEY_1 << " or " << ctrl_presets[0].DROP_KEY_2;
 	y += 2;
 	gotoxy(x, y++);
 	std::cout << "Player 2 controls:";
 	gotoxy(x, y++);
 	
-	std::cout << "Left: " << ControlsPresetTwo::MOVE_LEFT_KEY_1 << " or " << ControlsPresetTwo::MOVE_LEFT_KEY_2;
-	std::cout << " || Right: " << ControlsPresetTwo::MOVE_RIGHT_KEY_1 << " or " << ControlsPresetTwo::MOVE_RIGHT_KEY_2;
+	std::cout << "Left: " << ctrl_presets[1].MOVE_LEFT_KEY_1 << " or " << ctrl_presets[1].MOVE_LEFT_KEY_2;
+	std::cout << " || Right: " << ctrl_presets[1].MOVE_RIGHT_KEY_1 << " or " << ctrl_presets[1].MOVE_RIGHT_KEY_2;
 	gotoxy(x, y++);
-	std::cout << "Rotate Clockwise: " << ControlsPresetTwo::ROT_RIGHT_KEY_1 << " or " << ControlsPresetTwo::ROT_RIGHT_KEY_2;
-	std::cout << " || Rotate Counterclock: " << ControlsPresetTwo::ROT_LEFT_KEY_1 << " or " << ControlsPresetTwo::ROT_LEFT_KEY_1;
+	std::cout << "Rotate Clockwise: " << ctrl_presets[1].ROT_RIGHT_KEY_1 << " or " << ctrl_presets[1].ROT_RIGHT_KEY_2;
+	std::cout << " || Rotate Counterclock: " << ctrl_presets[1].ROT_LEFT_KEY_1 << " or " << ctrl_presets[1].ROT_LEFT_KEY_1;
 	gotoxy(x, y++);
-	std::cout << "Drop: " << ControlsPresetTwo::DROP_KEY_1 << " or " << ControlsPresetTwo::DROP_KEY_2;
+	std::cout << "Drop: " << ctrl_presets[1].DROP_KEY_1 << " or " << ctrl_presets[1].DROP_KEY_2;
 }
 
 
@@ -80,7 +79,7 @@ GameState MenuManager::mainMenuLogic(unsigned char curr_key)
 			break;
 		case '2':
 			if (this->game_started) {
-				return GameState::RESUME_GAME;
+				return GameState::IN_PROGRESS_GAME;
 			}
 			break;
 		case '8':
@@ -120,11 +119,11 @@ GameState MenuManager::optionsMenu() {
 	{	
 		this->printOptionsMenu();
 		this->printControls();
-		Sleep(50);
 
-		if (_kbhit()) {
-			curr_key = _getch();
-		}
+
+
+		curr_key = _getch();
+
 
 		switch (curr_key) {
 			case '1':

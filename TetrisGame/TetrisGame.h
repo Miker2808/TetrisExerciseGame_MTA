@@ -11,12 +11,11 @@ class TetrisGame {
 
 public:
 	// public members
-	static const unsigned int BOARD_OFFSET_X = 10;
-	static const unsigned int BOARD_OFFSET_Y = 10;
 	static const unsigned int TICKS_TIME = 50;
 	TetrisBoard* board;
 	Tetromino* currentMino;
 	Player* player;
+	bool game_over = false;
 	
 private:
 	// private members

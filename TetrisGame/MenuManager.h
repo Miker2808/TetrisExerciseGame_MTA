@@ -7,7 +7,7 @@
 extern Settings global_settings;
 
 // enume has to be all caps
-enum class GameState { NEW_GAME = 500, PAUSED_GAME, RESUME_GAME, EXIT_GAME, GAME_OPTIONS, NO_GAME_STATE};
+enum class GameState { NEW_GAME = 500, PAUSED_GAME, RESUME_GAME, EXIT_GAME, GAME_OPTIONS, NO_GAME_STATE, IN_PROGRESS_GAME};
 
 class MenuManager {
 public:
