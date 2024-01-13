@@ -1,7 +1,6 @@
 #pragma once
 #include "Utility.h"
 #include "Player.h"
-#include "Settings.h"
 
 
 extern Settings global_settings;
@@ -16,7 +15,6 @@ public:
 private:
 	
 	bool game_started = false;
-	//GameState state = GameState::NO_GAME_STATE;
 
 public:
 	

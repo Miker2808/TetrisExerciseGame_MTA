@@ -11,17 +11,19 @@ class TetrisGame {
 
 public:
 	// public members
-	static const unsigned int TICKS_TIME = 50;
+	static const unsigned int TICKS_TIME = Settings::TICKS_TIME;
+	int base_score_inc = Settings::BASE_SCORE_INCREMENT;
+
 	TetrisBoard* board;
 	Tetromino* currentMino;
 	Player* player;
 	bool game_over = false;
-	int base_score_inc = 25;
+	
 	
 private:
 	// private members
 	unsigned int tick_counter = 0; // counts iterations each for given game session;
-	unsigned int ticks_per_drop = 20; // kept as a variable to potentionally control drop speed
+	unsigned int ticks_per_drop = Settings::TICKS_PER_DROP; // kept as a variable to potentionally control drop speed
 
 public:
 	TetrisGame(int start_x, int start_y);

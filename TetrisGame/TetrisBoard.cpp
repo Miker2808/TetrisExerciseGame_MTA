@@ -43,8 +43,7 @@ void TetrisBoard::freeBoard(int rows) {
 // destructor
 TetrisBoard::~TetrisBoard() {
 	freeBoard(board_height);
-	gotoxy(1, 22);
-	std::cout << "Destroyed tetris board object" << std::endl;
+	debugPrint("Tetris board destructed", 0,1, 24);
 }
 
 // prints the board at x, y position
@@ -77,7 +76,7 @@ void TetrisBoard::destroyLine(int y_coor) {
 		board[y_coor][x] = '=';
 	}
 	this->printBoard();
-	Sleep(50);
+	Sleep(Settings::TICKS_TIME * 2);
 	for (int x = 1; x < board_width - 1; x++) {
 		board[y_coor][x] = def_empty;
 	}

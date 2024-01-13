@@ -10,7 +10,7 @@ int main()
     srand(time(NULL));
     GameState game_state = GameState::NO_GAME_STATE;
     MenuManager menu;
-    TetrisGame* players[2] = { NULL,NULL };
+    TetrisGame* players[Settings::NUMBER_OF_PLAYERS] = {nullptr, nullptr};
 
     unsigned char curr_key = 0;
     while (game_state != GameState::EXIT_GAME) {
@@ -25,7 +25,7 @@ int main()
         playGame(players, game_state, &menu);
 
     }
-    std::cout << "\nColors:" << global_settings.game_colors;
+
     delete players[0];
     delete players[1];
 
@@ -73,7 +73,7 @@ void initNewGame(TetrisGame* players[]) {
         delete players[1];
     }
 
-    players[0] = new TetrisGame(global_settings.screen_offset_x, 5);
-    players[1] = new TetrisGame(global_settings.screen_offset_x + global_settings.screen_offset_inter, 5);
+    players[0] = new TetrisGame(Settings::SCREEN_OFFSET_X, Settings::SCREEN_OFFSET_Y);
+    players[1] = new TetrisGame(Settings::SCREEN_OFFSET_X + Settings::SCREEN_OFFSET_INTERVAL, Settings::SCREEN_OFFSET_Y);
 
 }

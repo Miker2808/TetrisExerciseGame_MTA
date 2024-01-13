@@ -9,7 +9,7 @@ const char tetromino_shapes[7][17] = {
 		{" D   DD   D     "}, // S shape
 		{"     E  EEE     "}, // T shape
 		{"       F   F  FF"}, // inverted L shape
-		{"  G  GG  G      "}  //inverted S shape
+		{"  G  GG  G      "}  // inverted S shape
 };
 
 // the class of the shapes that move in the game

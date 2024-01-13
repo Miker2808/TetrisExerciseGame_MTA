@@ -117,6 +117,7 @@ void TetrisGame::findAndDestroyLines(int obj_y_pos) {
 }
 
 //wirites the tetromino object into the board array
+// TODO: Check what the if statement does, and why it is compared to `' '` (space)
 void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index) {
     int pixel;
     
@@ -146,7 +147,7 @@ void TetrisGame::movePiceDown() {
 }
 // prints stats of the game under the board of the game
 void TetrisGame::printGameStats() {
-    int print_x = this->board->board_start_x + 1;
+    int print_x = this->board->board_start_x;
     int print_y = this->board->board_start_y + this->board->board_height + 1;
     gotoxy(print_x, print_y);
     std::cout << "Player " << this->player->id << "  Score:" << this->player->score;

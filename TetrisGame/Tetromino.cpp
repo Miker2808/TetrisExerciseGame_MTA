@@ -10,12 +10,13 @@ Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_star
 	this->rotation = 0;
 	this->board_offset_x = board_start_x ;
 	this->board_offset_y = board_start_y ;
-	std::cout << "generated tetromino shape index: " << this->shape_index << std::endl;
+
+	debugPrint("Generated tetromino shape", this->shape_index, 1, 23);
 }
 
 // destructor for the tetromino piece
 Tetromino::~Tetromino() {
-	
+	debugPrint("Destroyed tetromino shape", 0 , 1, 23);
 }
 
 // returns point of 1D with rotation from 2D coordinates
@@ -79,6 +80,5 @@ void Tetromino::resetTetromino() {
 	this->x_pos = this->start_pos_x;
 	this->y_pos = this->start_pos_y;
 	this->rotation = 0;
-	gotoxy(0 , 1);
-	std::cout << "tetromino shape is: " << this->shape_index << std::endl;
+	debugPrint("Tetromino shape was reset to:", this->shape_index, 1, 23);
 }

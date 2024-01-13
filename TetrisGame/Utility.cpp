@@ -16,3 +16,8 @@ void gotoxy(int x, int y)
 int pyMod(int a , int b) {
 	return (b + (a % b)) % b;
 }
+
+void debugPrint(const char* string, int param, int x, int y) {
+	gotoxy(x, y);
+	std::cout << "DEBUG: " << string << " " << param << std::endl;
+}
