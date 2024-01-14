@@ -1,6 +1,8 @@
 #pragma once
 #include "Utility.h"
 
+extern Settings global_settings;
+
 class TetrisBoard {
 
 public:
@@ -34,11 +36,12 @@ public:
 	bool isALine(int y_coor);
 	void destroyLine(int y_coor);
 	void shiftBoardDown(int y_shift);
+	void printTetrisColor(char c, HANDLE& hConsole);
 
 private:
 	
 	void allocateBoard(int rows, int cols);
-
+	
 	void freeBoard(int rows);
 
 

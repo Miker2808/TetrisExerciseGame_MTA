@@ -43,16 +43,61 @@ void TetrisBoard::freeBoard(int rows) {
 // destructor
 TetrisBoard::~TetrisBoard() {
 	freeBoard(board_height);
-	debugPrint("Tetris board destructed", 0,1, 24);
+	debugPrint("Tetris board destructed", 0,1, 2);
+}
+
+// changes terminal colors based on symbols on the board
+void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) {
+	switch (c) {
+	case 'A': 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY); 
+		break;
+	case 'B': 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY); 
+		break;
+	case 'C': 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_INTENSITY); 
+		break;
+	case 'D': 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_GREEN | BACKGROUND_INTENSITY); 
+		break;
+	case 'E': 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY); 
+		break;
+	case 'F': 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN); 
+		break;
+	case 'G': 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_INTENSITY); 
+		break;
+	case Settings::DEFAULT_WALL_SIGN: 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED); 
+		break;
+	case Settings::DEFAULT_EMPTY: 
+		SetConsoleTextAttribute(hConsole, 0); 
+		break;
+	default: 
+		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+	}
+	std::cout << ' ';
+
 }
 
 // prints the board at x, y position
 void TetrisBoard::printBoard() {
 	
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 	for (int curr_height = 0; curr_height < board_height; curr_height++) {
 		gotoxy(this->board_start_x, this->board_start_y + curr_height);
 		for (int j = 0; j < board_width; j++) {
-			std::cout << board[curr_height][j];
+
+			if (global_settings.game_colors) {
+				printTetrisColor(board[curr_height][j], hConsole);
+			}
+			else {
+				std::cout << board[curr_height][j];
+			}
 		}
 	}
 }
