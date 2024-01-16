@@ -36,12 +36,13 @@ public:
 	bool isALine(int y_coor);
 	void destroyLine(int y_coor);
 	void shiftBoardDown(int y_shift);
-	void printTetrisColor(char c, HANDLE& hConsole);
 
 private:
 	
+	void printTetrisColor(char c, HANDLE& hConsole);
+	void printBoardColor();
+	void printBoardBNW();
 	void allocateBoard(int rows, int cols);
-	
 	void freeBoard(int rows);
 
 

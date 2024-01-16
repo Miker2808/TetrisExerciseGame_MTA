@@ -1,6 +1,8 @@
 #pragma once
 #include "Utility.h"
 
+extern Settings global_settings;
+
 
 const char tetromino_shapes[7][17] = {
 		{"  A   A   A   A "}, // vertical line shape
@@ -36,4 +38,7 @@ public:
 	void getTransform(int& currXpos, int& currYpos, int& currRot);
 	void getShapeIndex(int& shape_index);
 	void resetTetromino();
+	void printBNW();
+	void printColor();
+	void printCharColor(char c, HANDLE& hConsole);
 };

@@ -86,19 +86,11 @@ void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) {
 // prints the board at x, y position
 void TetrisBoard::printBoard() {
 	
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-	for (int curr_height = 0; curr_height < board_height; curr_height++) {
-		gotoxy(this->board_start_x, this->board_start_y + curr_height);
-		for (int j = 0; j < board_width; j++) {
-
-			if (global_settings.game_colors) {
-				printTetrisColor(board[curr_height][j], hConsole);
-			}
-			else {
-				std::cout << board[curr_height][j];
-			}
-		}
+	if (global_settings.game_colors) {
+		printBoardColor();
+	}
+	else {
+		printBoardBNW();
 	}
 }
 
@@ -142,5 +134,28 @@ void TetrisBoard::shiftBoardDown(int destroyed_line_y ) {
 }
 
 
+void TetrisBoard::printBoardBNW() 
+{
+	for (int curr_height = 0; curr_height < board_height; curr_height++) {
+		gotoxy(this->board_start_x, this->board_start_y + curr_height);
+		for (int j = 0; j < board_width; j++) {
 
+			std::cout << board[curr_height][j];
+		}
+	}
+}
+
+void TetrisBoard::printBoardColor()
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	for (int curr_height = 0; curr_height < board_height; curr_height++) {
+		gotoxy(this->board_start_x, this->board_start_y + curr_height);
+		for (int j = 0; j < board_width; j++) {
+
+			printTetrisColor(board[curr_height][j], hConsole);
+		}
+	}
+	SetConsoleTextAttribute(hConsole , FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+}
 

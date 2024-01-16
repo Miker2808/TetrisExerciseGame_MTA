@@ -33,18 +33,11 @@ int Tetromino::rotate(int x, int y, int rotation) {
 // prints the shape at x,y based on rotation using the "rotate" method
 void Tetromino::print()
 {
-	int x_absolute = this->x_pos + this->board_offset_x;
-	int y_absolute = this->y_pos + this->board_offset_y;
-	int curr_pixel_index;
-	for (int y = 0; y < TETROMINO_SIZE; y++) {
-		for (int x = 0; x < TETROMINO_SIZE; x++) {
-			gotoxy(x_absolute +x , y_absolute + y);
-			curr_pixel_index = rotate(x, y, this->rotation);
-			if (tetromino_shapes[this->shape_index][curr_pixel_index] != ' ') {
-				std::cout << tetromino_shapes[this->shape_index][curr_pixel_index];
-			}
-		}
-		
+	if (global_settings.game_colors) {
+		printColor();
+	}
+	else {
+		printBNW();
 	}
 	
 }
@@ -81,4 +74,79 @@ void Tetromino::resetTetromino() {
 	this->y_pos = this->start_pos_y;
 	this->rotation = 0;
 	debugPrint("Tetromino shape was reset to:", this->shape_index, 1, 23);
+}
+
+
+void Tetromino::printBNW() {
+
+	int x_absolute = this->x_pos + this->board_offset_x;
+	int y_absolute = this->y_pos + this->board_offset_y;
+	int curr_pixel_index;
+	for (int y = 0; y < TETROMINO_SIZE; y++) {
+		for (int x = 0; x < TETROMINO_SIZE; x++) {
+			gotoxy(x_absolute + x, y_absolute + y);
+			curr_pixel_index = rotate(x, y, this->rotation);
+			if (tetromino_shapes[this->shape_index][curr_pixel_index] != ' ') {
+				std::cout << tetromino_shapes[this->shape_index][curr_pixel_index];
+			}
+		}
+
+	}
+}
+
+void Tetromino::printColor() {
+
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	int x_absolute = this->x_pos + this->board_offset_x;
+	int y_absolute = this->y_pos + this->board_offset_y;
+	int curr_pixel_index;
+	for (int y = 0; y < TETROMINO_SIZE; y++) {
+		for (int x = 0; x < TETROMINO_SIZE; x++) {
+			gotoxy(x_absolute + x, y_absolute + y);
+			curr_pixel_index = rotate(x, y, this->rotation);
+			if (tetromino_shapes[this->shape_index][curr_pixel_index] != ' ') {
+				printCharColor(tetromino_shapes[this->shape_index][curr_pixel_index], hConsole);
+			}
+		}
+
+	}
+	SetConsoleTextAttribute(hConsole, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+}
+
+
+// changes terminal colors based on symbols on the board
+void Tetromino::printCharColor(char c, HANDLE& hConsole) {
+	switch (c) {
+	case 'A':
+		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		break;
+	case 'B':
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		break;
+	case 'C':
+		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_INTENSITY);
+		break;
+	case 'D':
+		SetConsoleTextAttribute(hConsole, BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		break;
+	case 'E':
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY);
+		break;
+	case 'F':
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN);
+		break;
+	case 'G':
+		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_INTENSITY);
+		break;
+	case Settings::DEFAULT_WALL_SIGN:
+		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+		break;
+	case Settings::DEFAULT_EMPTY:
+		SetConsoleTextAttribute(hConsole, 0);
+		break;
+	default:
+		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+	}
+	std::cout << ' ';
+
 }
