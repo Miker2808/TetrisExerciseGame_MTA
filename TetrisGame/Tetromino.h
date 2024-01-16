@@ -38,6 +38,9 @@ public:
 	void getTransform(int& currXpos, int& currYpos, int& currRot);
 	void getShapeIndex(int& shape_index);
 	void resetTetromino();
+
+
+private:
 	void printBNW();
 	void printColor();
 	void printCharColor(char c, HANDLE& hConsole);

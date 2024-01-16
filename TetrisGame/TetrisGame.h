@@ -29,7 +29,9 @@ public:
 	TetrisGame(int start_x, int start_y);
 	~TetrisGame();
 	void play(unsigned char curr_key);
-	
+
+private:
+
 	bool checkCollision(int move_x, int move_y, int move_rot);
 	void movementHandler(unsigned char curr_key);
 	void updateBoardStatus();

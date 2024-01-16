@@ -19,11 +19,13 @@ private:
 public:
 	
 	GameState mainMenu(GameState state);
-	void printMainMenu();
-	void printControls();
-	GameState mainMenuLogic(unsigned char curr_key);
 	GameState optionsMenu();
 	void printGameOverMenu(int player_indx, int score);
+private:
+	GameState mainMenuLogic(unsigned char curr_key);
+	void printMainMenu();
+	void printControls();
 	void printOptionsMenu();
+
 
 };
