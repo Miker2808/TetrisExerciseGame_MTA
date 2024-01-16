@@ -6,6 +6,7 @@ Settings global_settings;
 
 int main()
 {
+    ShowConsoleCursor(false);
     srand(time(NULL));
     GameState game_state = GameState::NO_GAME_STATE;
     MenuManager menu;

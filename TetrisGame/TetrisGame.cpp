@@ -161,8 +161,8 @@ void TetrisGame::movePiceDown() {
     else {
         updateBoardStatus();
         this->currentMino->resetTetromino();
+        this->board->printBoard();
     }
-    this->board->printBoard();
     this->tick_counter = 0;
 
 }

@@ -16,12 +16,13 @@ void playGame(TetrisGame* players_arr[], GameState& game_state, MenuManager* men
 
         // take action based on user key CHANGE TO GENERALIZE
         players_arr[0]->play(curr_key);
-        Sleep(10); // fixes stuttering of second game screen
         players_arr[1]->play(curr_key);
 
         // 27 is "ESC" key
         if (curr_key == 27) {
             game_state = GameState::PAUSED_GAME;
+            players_arr[0]->start = true;
+            players_arr[1]->start = true;
         }
 
         if (players_arr[0]->game_over || players_arr[1]->game_over) {

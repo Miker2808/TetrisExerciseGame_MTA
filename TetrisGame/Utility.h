@@ -19,3 +19,4 @@ void gotoxy(int x, int y);
 int pyMod(int a, int b);
 void debugPrint(const char* string, int param, int x, int y);
 
+void ShowConsoleCursor(bool showFlag);
