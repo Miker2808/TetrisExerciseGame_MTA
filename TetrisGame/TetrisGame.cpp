@@ -22,7 +22,16 @@ TetrisGame::~TetrisGame() {
 // runs a single cycle of playing the game
 void TetrisGame::play(unsigned char curr_key) {
 
+
+    if (start) {
+        this->board->printBoard();
+        start = false;
+    }
+
+
     this->tick_counter += 1;
+
+    this->currentMino->erase();
 
     this->movementHandler(curr_key);
 
@@ -31,7 +40,6 @@ void TetrisGame::play(unsigned char curr_key) {
     if (!checkCollision(0, 0, 0))
         this->game_over = true;
 
-    this->board->printBoard();
     this->currentMino->print();
     this->printGameStats();
         
@@ -154,6 +162,7 @@ void TetrisGame::movePiceDown() {
         updateBoardStatus();
         this->currentMino->resetTetromino();
     }
+    this->board->printBoard();
     this->tick_counter = 0;
 
 }

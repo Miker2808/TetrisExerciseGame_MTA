@@ -18,6 +18,7 @@ public:
 	Tetromino* currentMino;
 	Player* player;
 	bool game_over = false;
+	bool start = true;
 	
 	
 private:
