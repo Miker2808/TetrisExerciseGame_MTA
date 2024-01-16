@@ -26,7 +26,7 @@ void TetrisGame::play(unsigned char curr_key) {
 
     this->movementHandler(curr_key);
 
-    movePiceDown();
+    forcePiceDown();
 
     if (!checkCollision(0, 0, 0))
         this->game_over = true;
@@ -82,8 +82,7 @@ void TetrisGame::movementHandler( unsigned char curr_key)
             this->currentMino->transform(0, 0, -1);
     }
     else if (curr_key == this->player->my_ctrl.DROP_KEY_1 || curr_key == this->player->my_ctrl.DROP_KEY_2) {
-        if (checkCollision(0, 1, 0))
-            this->currentMino->transform(0, 1, 0);
+        movePiceDown();
     }
     
 }
@@ -133,16 +132,9 @@ void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot
 
 //function that moves the tetromino down every game tick
 //can be used to change game speed
-void TetrisGame::movePiceDown() {
+void TetrisGame::forcePiceDown() {
     if (this->tick_counter > this->ticks_per_drop) {
-
-        if(checkCollision( 0, 1, 0))
-        this->currentMino->transform(0, 1, 0);
-        else {
-            updateBoardStatus();
-            this->currentMino->resetTetromino();
-        }
-        this->tick_counter = 0;
+        movePiceDown();
     }
 }
 // prints stats of the game under the board of the game
@@ -151,4 +143,17 @@ void TetrisGame::printGameStats() {
     int print_y = this->board->board_start_y + this->board->board_height + 1;
     gotoxy(print_x, print_y);
     std::cout << "Player " << this->player->id << "  Score:" << this->player->score;
+}
+
+//forces the 
+void TetrisGame::movePiceDown() {
+
+    if (checkCollision(0, 1, 0))
+        this->currentMino->transform(0, 1, 0);
+    else {
+        updateBoardStatus();
+        this->currentMino->resetTetromino();
+    }
+    this->tick_counter = 0;
+
 }

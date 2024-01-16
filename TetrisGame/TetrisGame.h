@@ -37,5 +37,6 @@ public:
 	void writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index);
 	void movePiceDown();
 	void printGameStats();
+	void forcePiceDown();
 
 };

@@ -25,10 +25,8 @@ int main()
         playGame(players, game_state, &menu);
 
     }
-
     delete players[0];
     delete players[1];
-
 }
 
 void playGame(TetrisGame* players_arr[], GameState& game_state, MenuManager* menu)
