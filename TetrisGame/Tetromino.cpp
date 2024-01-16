@@ -77,7 +77,7 @@ void Tetromino::resetTetromino() {
 }
 
 
-void Tetromino::printBNW() {
+void Tetromino::printBNW(bool erase) {
 
 	int x_absolute = this->x_pos + this->board_offset_x;
 	int y_absolute = this->y_pos + this->board_offset_y;
@@ -87,14 +87,17 @@ void Tetromino::printBNW() {
 			gotoxy(x_absolute + x, y_absolute + y);
 			curr_pixel_index = rotate(x, y, this->rotation);
 			if (tetromino_shapes[this->shape_index][curr_pixel_index] != ' ') {
-				std::cout << tetromino_shapes[this->shape_index][curr_pixel_index];
+				if(erase)
+					std::cout << '.';
+				else
+					std::cout << tetromino_shapes[this->shape_index][curr_pixel_index];
 			}
 		}
 
 	}
 }
 
-void Tetromino::printColor() {
+void Tetromino::printColor(bool erase) {
 
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	int x_absolute = this->x_pos + this->board_offset_x;
@@ -105,7 +108,10 @@ void Tetromino::printColor() {
 			gotoxy(x_absolute + x, y_absolute + y);
 			curr_pixel_index = rotate(x, y, this->rotation);
 			if (tetromino_shapes[this->shape_index][curr_pixel_index] != ' ') {
-				printCharColor(tetromino_shapes[this->shape_index][curr_pixel_index], hConsole);
+				if(erase)
+					std::cout << ' ';
+				else
+					printCharColor(tetromino_shapes[this->shape_index][curr_pixel_index], hConsole);
 			}
 		}
 
@@ -148,5 +154,18 @@ void Tetromino::printCharColor(char c, HANDLE& hConsole) {
 		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 	}
 	std::cout << ' ';
+
+}
+
+
+void Tetromino::erase()
+{
+	bool erase = true;
+	if (global_settings.game_colors) {
+		printColor(erase);
+	}
+	else {
+		printBNW(erase);
+	}
 
 }
