@@ -38,6 +38,7 @@ void playGame(TetrisGame* players_arr[], GameState& game_state, MenuManager* men
     }
 }
 
+// dynamically initializes tetris games, pointers are returned by writing to the input array
 void initNewGame(TetrisGame* players[]) {
     if (players[0] != nullptr) {
         delete players[0];

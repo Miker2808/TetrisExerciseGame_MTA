@@ -1,6 +1,6 @@
 #include "Utility.h"
 
-
+// moves terminal cursor to x,y position
 void gotoxy(int x, int y)
 {
 	HANDLE hConsoleOutput;
@@ -22,7 +22,8 @@ void debugPrint(const char* string, int param, int x, int y) {
 	std::cout << "DEBUG: " << string << " " << param << std::endl;
 }
 
-void ShowConsoleCursor(bool showFlag)
+// hides the flashing terminal cursor from the terminal
+void showConsoleCursor(bool showFlag)
 {
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
 

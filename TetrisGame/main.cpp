@@ -6,11 +6,12 @@ Settings global_settings;
 
 int main()
 {
-    ShowConsoleCursor(false);
+    showConsoleCursor(false);
     srand(time(NULL));
     GameState game_state = GameState::NO_GAME_STATE;
     MenuManager menu;
     //was originally intended for redundancy, changed to static for now
+
     TetrisGame* players[Settings::NUMBER_OF_PLAYERS] = {nullptr, nullptr};
 
     unsigned char curr_key = 0;

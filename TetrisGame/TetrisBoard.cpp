@@ -8,6 +8,7 @@ TetrisBoard::TetrisBoard(int pos_x, int pos_y, int width, int height)
 }
 
 // allocates dynamic memory for the board and initializes with spaces
+// uses a 2D char array
 void TetrisBoard::allocateBoard(int rows, int cols)
 {
 	this->board = new char* [rows];
@@ -43,7 +44,6 @@ void TetrisBoard::freeBoard(int rows) {
 // destructor
 TetrisBoard::~TetrisBoard() {
 	freeBoard(board_height);
-	debugPrint("Tetris board destructed", 0,1, 2);
 }
 
 // changes terminal colors based on symbols on the board
@@ -79,7 +79,7 @@ void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) {
 	default: 
 		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 	}
-	std::cout << ' ';
+	std::cout << ' '; // TODO: choose between space or dot based on tester opinion
 
 }
 
@@ -108,18 +108,20 @@ bool TetrisBoard::isALine(int y_coor) {
 	return true;
 }
 
+// Destroys a line at the given y coordinate of the board
 void TetrisBoard::destroyLine(int y_coor) {
 	for (int x = 1; x < board_width - 1; x++) {
 		board[y_coor][x] = '=';
 	}
 	this->printBoard();
-	Sleep(Settings::TICKS_TIME * 2);
+	Sleep(Settings::TICKS_TIME * 2 * global_settings.game_speed); // Makes the remove speed variable
 	for (int x = 1; x < board_width - 1; x++) {
 		board[y_coor][x] = def_empty;
 	}
 	this->printBoard();
 }
 
+// Given a y value of the board, shift all above blocks down by one starting at y
 void TetrisBoard::shiftBoardDown(int destroyed_line_y ) {
 	for (int y = destroyed_line_y -1 ; y >= 0; y--) {
 		for (int x = 1; x < board_width - 1; x++) {
@@ -133,7 +135,7 @@ void TetrisBoard::shiftBoardDown(int destroyed_line_y ) {
 
 }
 
-
+// prints the board in black and white colors
 void TetrisBoard::printBoardBNW() 
 {
 	for (int curr_height = 0; curr_height < board_height; curr_height++) {
@@ -145,6 +147,7 @@ void TetrisBoard::printBoardBNW()
 	}
 }
 
+// prints the board in RGB colors
 void TetrisBoard::printBoardColor()
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
