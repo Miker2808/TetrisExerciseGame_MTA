@@ -53,19 +53,19 @@ void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) {
 		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY); 
 		break;
 	case 'B': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY); 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED); 
 		break;
 	case 'C': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_INTENSITY); 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_INTENSITY);
 		break;
 	case 'D': 
 		SetConsoleTextAttribute(hConsole, BACKGROUND_GREEN | BACKGROUND_INTENSITY); 
 		break;
 	case 'E': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY); 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY);
 		break;
 	case 'F': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN); 
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN);
 		break;
 	case 'G': 
 		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_INTENSITY); 

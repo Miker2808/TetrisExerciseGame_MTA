@@ -121,10 +121,10 @@ void Tetromino::printCharColor(char c, HANDLE& hConsole) {
 		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
 		break;
 	case 'B':
-		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED);
 		break;
 	case 'C':
-		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_INTENSITY);
+		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_INTENSITY);
 		break;
 	case 'D':
 		SetConsoleTextAttribute(hConsole, BACKGROUND_GREEN | BACKGROUND_INTENSITY);
