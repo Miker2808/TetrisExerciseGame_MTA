@@ -3,7 +3,7 @@
 
 
 void MultiplayerTetris::launcher() {
-    ShowConsoleCursor(false);
+    showConsoleCursor(false);
     srand(time(NULL));
 
     unsigned char curr_key = 0;

@@ -152,6 +152,6 @@ void MenuManager::printGameOverMenu(int player_indx, int score)
 	std::cout << "Press any key to continue\n";
 	this->game_started = false;
 	Sleep(2000);
-	_getch(); // press any key
+	(void)_getch(); // press any key
 	system("cls");
 }
