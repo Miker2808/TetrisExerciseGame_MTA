@@ -6,10 +6,7 @@ extern Settings global_settings;
 class TetrisBoard {
 
 public:
-	/*
-	static const long DEFAULT_BOARD_WIDTH = Settings::DEFAULT_BOARD_WIDTH;
-	static const long DEFAULT_BOARD_HEIGHT = Settings::DEFAULT_BOARD_HEIGHT;
-	*/
+
 	char** board = nullptr;
 	const int board_start_x; // X offset from console edge of board location
 	const int board_start_y;  // Y offset from console edge of board location
