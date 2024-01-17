@@ -2,7 +2,8 @@
 
 // inner loop for the main menu options
 // will receive a state as a prameter from the main loop
-// and will return a state back to the main loop.
+// and will return a state back
+//Handles the Tetris main menu logic, allowing user navigation and returning the game.
 GameState MenuManager::mainMenu(GameState state) {
 	unsigned char curr_key = 0;
 	GameState current_state = state;
@@ -17,14 +18,15 @@ GameState MenuManager::mainMenu(GameState state) {
 
 		current_state = mainMenuLogic(curr_key);
 
-		// keep at bottom
 		curr_key = 0;
 	}
 	system("cls");
 	return current_state;
 }
 
-// prints the contents of the main menu
+
+//Displays the main menu with options such as starting a new game, continuing the game (if already started),
+//accessing options, and exiting the game.
 void MenuManager::printMainMenu() {
 	system("cls");
 	std::cout << "\n\n   Tetris\n";
@@ -39,7 +41,7 @@ void MenuManager::printMainMenu() {
 	std::cout << "[9] Exit Game\n";
 }
 
-// prints controls extracted from pointers of player_1 and player_2
+// Prints controls extracted from pointers of player_1 and player_2.
 void MenuManager::printControls()
 {
 	int x = 25;
@@ -69,7 +71,7 @@ void MenuManager::printControls()
 }
 
 
-// updates game state based on user input from the menu
+//Updates game state based on user input from the main menu.
 GameState MenuManager::mainMenuLogic(unsigned char curr_key)
 {
 	switch (curr_key) {
@@ -90,7 +92,7 @@ GameState MenuManager::mainMenuLogic(unsigned char curr_key)
 	}
 }
 
-// prints the menu for the additional options
+//Displays the options menu with settings like enabling / disabling colors and the option to go back or exit.
 void MenuManager::printOptionsMenu() {
 	system("cls");
 	std::cout << "\n\n   Tetris\n";
@@ -111,7 +113,7 @@ void MenuManager::printOptionsMenu() {
 
 }
 
-// controls the logic and inner loop for the additional options
+//Controls the logicand inner loop for the additional options menu.
 GameState MenuManager::optionsMenu() {
 	unsigned char curr_key = 0;
 
@@ -141,7 +143,7 @@ GameState MenuManager::optionsMenu() {
 }
 
 
-
+//Displays the game over menu with information about the winning playerand their score.
 void MenuManager::printGameOverMenu(int player_indx, int score)
 {
 	system("cls");

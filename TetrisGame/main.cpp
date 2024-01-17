@@ -4,6 +4,7 @@ Settings global_settings;
 
 int main()
 {
-	MultiplayerTetris game;
+	MultiplayerTetris game; 
 	game.launcher();
+	return 0;
 }

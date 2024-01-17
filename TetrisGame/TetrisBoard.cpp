@@ -1,14 +1,30 @@
 #include "TetrisBoard.h"
 
-// constructor that initializes a dynamic 2D array and position of the board
+// Constructor: Initializes a dynamic 2D array and sets the position and dimensions of the Tetris board
 TetrisBoard::TetrisBoard(int pos_x, int pos_y, int width, int height)
 	: board_start_x(pos_x), board_start_y(pos_y), board_width(width), board_height(height)
 {
 	allocateBoard(height, width);
 }
 
-// allocates dynamic memory for the board and initializes with spaces
-// uses a 2D char array
+// Copy constructor for TetrisBoard
+TetrisBoard::TetrisBoard(const TetrisBoard& other)
+	: board_start_x(other.board_start_x), board_start_y(other.board_start_y),
+	board_width(other.board_width), board_height(other.board_height)
+{
+	// Allocate memory for the new Tetris board
+	allocateBoard(board_height, board_width);
+
+	// Copy the content of the original board to the new one
+	for (int i = 0; i < board_height; i++) {
+		for (int j = 0; j < board_width; j++) {
+			this->board[i][j] = other.board[i][j];
+		}
+	}
+}
+
+
+// Allocates dynamic memory for the board and initializes it with "empty spaces"
 void TetrisBoard::allocateBoard(int rows, int cols)
 {
 	this->board = new char* [rows];
@@ -30,7 +46,7 @@ void TetrisBoard::allocateBoard(int rows, int cols)
 	}
 }
 
-// frees the dynamic board memory
+// Frees the dynamic memory allocated for the Tetris board
 void TetrisBoard::freeBoard(int rows) {
 	for (int i = 0; i < rows; i++) {
 		delete[] (this->board)[i];
@@ -41,12 +57,12 @@ void TetrisBoard::freeBoard(int rows) {
 	
 }
 
-// destructor
+// Frees the dynamic memory allocated for the Tetris board
 TetrisBoard::~TetrisBoard() {
 	freeBoard(board_height);
 }
 
-// changes terminal colors based on symbols on the board
+// Changes terminal colors based on symbols on the board
 void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) {
 	switch (c) {
 	case 'A': 
@@ -79,11 +95,11 @@ void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) {
 	default: 
 		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 	}
-	std::cout << ' '; // TODO: choose between space or dot based on tester opinion
+	std::cout << ' '; 
 
 }
 
-// prints the board at x, y position
+// Prints the Tetris board at its current position
 void TetrisBoard::printBoard() {
 	
 	if (global_settings.game_colors) {
@@ -94,12 +110,12 @@ void TetrisBoard::printBoard() {
 	}
 }
 
-//writes a given 'cell content' into a cell
+// Writes a given 'cell content' into a cell at specified coordinates
 void TetrisBoard::writeCellToBoard(int x_coor , int y_coor , char cell_contents) {
 	this->board[y_coor][x_coor] = cell_contents;
 }
 
-//checks a row of the board array, returns true if the row is filled
+// Checks a row of the board array, returns true if the row is filled
 bool TetrisBoard::isALine(int y_coor) {
 	for (int x = 1; x < board_width-1; x++) {
 		if (board[y_coor][x] == def_empty)
@@ -108,7 +124,7 @@ bool TetrisBoard::isALine(int y_coor) {
 	return true;
 }
 
-// Destroys a line at the given y coordinate of the board
+// Destroys a filled line on the Tetris board at the given y coordinate
 void TetrisBoard::destroyLine(int y_coor) {
 	for (int x = 1; x < board_width - 1; x++) {
 		board[y_coor][x] = '=';
@@ -121,7 +137,7 @@ void TetrisBoard::destroyLine(int y_coor) {
 	this->printBoard();
 }
 
-// Given a y value of the board, shift all above blocks down by one starting at y
+// Shifts the entire Tetris board down after clearing a line
 void TetrisBoard::shiftBoardDown(int destroyed_line_y ) {
 	for (int y = destroyed_line_y -1 ; y >= 0; y--) {
 		for (int x = 1; x < board_width - 1; x++) {
@@ -135,7 +151,7 @@ void TetrisBoard::shiftBoardDown(int destroyed_line_y ) {
 
 }
 
-// prints the board in black and white colors
+// Prints the Tetris board in black and white
 void TetrisBoard::printBoardBNW() 
 {
 	for (int curr_height = 0; curr_height < board_height; curr_height++) {
@@ -147,7 +163,7 @@ void TetrisBoard::printBoardBNW()
 	}
 }
 
-// prints the board in RGB colors
+// Prints the Tetris board in RGB colors
 void TetrisBoard::printBoardColor()
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
