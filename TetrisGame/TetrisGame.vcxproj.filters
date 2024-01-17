@@ -39,7 +39,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameFunctions.cpp">
+    <ClCompile Include="MultiplayerTetris.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,7 +65,7 @@
     <ClInclude Include="Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameFunctions.h">
+    <ClInclude Include="MultiplayerTetris.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
