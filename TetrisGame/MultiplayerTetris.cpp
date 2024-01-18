@@ -19,10 +19,6 @@ void MultiplayerTetris::launcher() {
         gameplayLoop();
 
     }
-
-    // Clean up memory allocated for TetrisGame instances when exiting the game
-    delete players[0];
-    delete players[1];
 }
 
 // Sets up a new game for both players.

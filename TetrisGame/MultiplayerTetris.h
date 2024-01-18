@@ -22,5 +22,20 @@ public:
 
 	void gameOverLogic();
 
+	MultiplayerTetris() {}
+
+	MultiplayerTetris(const MultiplayerTetris& other ) {
+		delete(this);
+	}
+
+	~MultiplayerTetris() {
+		if (players[0] != nullptr) {
+			delete players[0];
+		}
+		if (players[1] != nullptr) {
+			delete players[1];
+		}
+	}
+
 };
 

@@ -90,7 +90,7 @@ void MenuManager::mainMenuLogic(unsigned char curr_key)
 			this->optionsMenu();
 			return;
 		case '9':
-			current_state = GameState::IN_PROGRESS_GAME;
+			current_state = GameState::EXIT_GAME;
 			return ;
 		default:
 			return;
