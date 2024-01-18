@@ -77,8 +77,8 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
             pixel = this->currentMino->rotate(x_off , y_off, next_rot);
-            if (tetromino_shapes[shape_index][pixel] != ' ' && this->board->board[next_y + y_off][next_x + x_off] != '.') {
-                return false;   
+            if (tetromino_shapes[shape_index][pixel] != ' ' && this->board->getBoardCell(next_x + x_off, next_y + y_off) != '.') {
+                return false;
             }
         }
     }

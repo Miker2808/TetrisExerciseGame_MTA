@@ -7,7 +7,7 @@ class TetrisBoard {
 
 public:
 
-	char** board = nullptr;
+
 	const int board_start_x; // X offset from console edge of board location
 	const int board_start_y;  // Y offset from console edge of board location
 	const int board_width;
@@ -17,6 +17,7 @@ public:
 private:
 	const char wall = Settings::DEFAULT_WALL_SIGN;
 	const char def_empty = Settings::DEFAULT_EMPTY; // space
+	char** board = nullptr;
 
 // methods
 public:
@@ -34,6 +35,7 @@ public:
 	bool isALine(int y_coor);
 	void destroyLine(int y_coor);
 	void shiftBoardDown(int y_shift);
+	char getBoardCell(int x, int y);
 
 private:
 	
