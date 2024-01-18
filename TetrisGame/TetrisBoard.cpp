@@ -178,7 +178,7 @@ void TetrisBoard::printBoardColor()
 	SetConsoleTextAttribute(hConsole , FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
-
+//Returns a value for a specific cell in the board array
 char TetrisBoard::getBoardCell(int x , int y){
 	return board[y][x];
 }
