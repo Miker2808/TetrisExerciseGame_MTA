@@ -15,6 +15,7 @@ public:
 	static const unsigned int TICKS_TIME = Settings::TICKS_TIME;
 	int base_score_inc = Settings::BASE_SCORE_INCREMENT;
 
+	static unsigned int game_counter;
 	TetrisBoard* board;
 	Tetromino* currentMino;
 	Player* player;

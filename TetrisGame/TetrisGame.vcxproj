@@ -150,6 +150,7 @@
     <ClCompile Include="Tetromino.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controls.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="MultiplayerTetris.h" />
     <ClInclude Include="Player.h" />

@@ -49,25 +49,25 @@ void MenuManager::printControls()
 	gotoxy(x, y++);
 	std::cout << "Player 1 controls:";
 	gotoxy(x, y++);
-	std::cout << "Left: " << ctrl_presets[0].MOVE_LEFT_KEY_1 << " or " << ctrl_presets[0].MOVE_LEFT_KEY_2;
-	std::cout << " || Right: " << ctrl_presets[0].MOVE_RIGHT_KEY_1 << " or " << ctrl_presets[0].MOVE_RIGHT_KEY_2;
+	std::cout << "Left: " << global_settings.ctrl_presets[0].MOVE_LEFT_KEY_1 << " or " << global_settings.ctrl_presets[0].MOVE_LEFT_KEY_2;
+	std::cout << " || Right: " << global_settings.ctrl_presets[0].MOVE_RIGHT_KEY_1 << " or " << global_settings.ctrl_presets[0].MOVE_RIGHT_KEY_2;
 	gotoxy(x, y++);
-	std::cout << "Rotate Clockwise: " << ctrl_presets[0].ROT_RIGHT_KEY_1 << " or " << ctrl_presets[0].ROT_RIGHT_KEY_2;
-	std::cout << " || Rotate Counterclock: " << ctrl_presets[0].ROT_LEFT_KEY_1 << " or " << ctrl_presets[0].ROT_LEFT_KEY_1;
+	std::cout << "Rotate Clockwise: " << global_settings.ctrl_presets[0].ROT_RIGHT_KEY_1 << " or " << global_settings.ctrl_presets[0].ROT_RIGHT_KEY_2;
+	std::cout << " || Rotate Counterclock: " << global_settings.ctrl_presets[0].ROT_LEFT_KEY_1 << " or " << global_settings.ctrl_presets[0].ROT_LEFT_KEY_1;
 	gotoxy(x, y++);
-	std::cout << "Drop: " << ctrl_presets[0].DROP_KEY_1 << " or " << ctrl_presets[0].DROP_KEY_2;
+	std::cout << "Drop: " << global_settings.ctrl_presets[0].DROP_KEY_1 << " or " << global_settings.ctrl_presets[0].DROP_KEY_2;
 	y += 2;
 	gotoxy(x, y++);
 	std::cout << "Player 2 controls:";
 	gotoxy(x, y++);
 	
-	std::cout << "Left: " << ctrl_presets[1].MOVE_LEFT_KEY_1 << " or " << ctrl_presets[1].MOVE_LEFT_KEY_2;
-	std::cout << " || Right: " << ctrl_presets[1].MOVE_RIGHT_KEY_1 << " or " << ctrl_presets[1].MOVE_RIGHT_KEY_2;
+	std::cout << "Left: " << global_settings.ctrl_presets[1].MOVE_LEFT_KEY_1 << " or " << global_settings.ctrl_presets[1].MOVE_LEFT_KEY_2;
+	std::cout << " || Right: " << global_settings.ctrl_presets[1].MOVE_RIGHT_KEY_1 << " or " << global_settings.ctrl_presets[1].MOVE_RIGHT_KEY_2;
 	gotoxy(x, y++);
-	std::cout << "Rotate Clockwise: " << ctrl_presets[1].ROT_RIGHT_KEY_1 << " or " << ctrl_presets[1].ROT_RIGHT_KEY_2;
-	std::cout << " || Rotate Counterclock: " << ctrl_presets[1].ROT_LEFT_KEY_1 << " or " << ctrl_presets[1].ROT_LEFT_KEY_1;
+	std::cout << "Rotate Clockwise: " << global_settings.ctrl_presets[1].ROT_RIGHT_KEY_1 << " or " << global_settings.ctrl_presets[1].ROT_RIGHT_KEY_2;
+	std::cout << " || Rotate Counterclock: " << global_settings.ctrl_presets[1].ROT_LEFT_KEY_1 << " or " << global_settings.ctrl_presets[1].ROT_LEFT_KEY_1;
 	gotoxy(x, y++);
-	std::cout << "Drop: " << ctrl_presets[1].DROP_KEY_1 << " or " << ctrl_presets[1].DROP_KEY_2;
+	std::cout << "Drop: " << global_settings.ctrl_presets[1].DROP_KEY_1 << " or " << global_settings.ctrl_presets[1].DROP_KEY_2;
 }
 
 

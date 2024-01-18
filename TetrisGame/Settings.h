@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Controls.h"
 
 //Holds static settings for startup configurations and dynamic settings for runtime modification in the Tetris game.
 class Settings
@@ -40,6 +40,7 @@ public:
 	// Vertical offset from the console edge for displaying Tetris boards
 	static const unsigned int SCREEN_OFFSET_Y = 2;
 
+	static const Controls ctrl_presets[2];
 
 	// dynamic settings for runtime modification
 
@@ -49,3 +50,4 @@ public:
 	// Flag indicating whether to use colored symbols for Tetris blocks
 	bool game_colors = false;
 };
+
