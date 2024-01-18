@@ -26,6 +26,7 @@ public:
 		int width = Settings::DEFAULT_BOARD_WIDTH,
 		int height = Settings::DEFAULT_BOARD_HEIGHT
 		);
+	explicit TetrisBoard(const TetrisBoard&);
 
 	~TetrisBoard();
 	void printBoard();
