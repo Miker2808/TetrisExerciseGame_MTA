@@ -67,6 +67,7 @@ void Tetromino::getShapeIndex(int& shape_index) {
 	shape_index = this->shape_index;
 }
 
+// Function to reset the tetromino to its initial state
 void Tetromino::resetTetromino() {
 	this->shape_index = (rand() % 7);
 	this->x_pos = this->start_pos_x;
@@ -74,7 +75,8 @@ void Tetromino::resetTetromino() {
 	this->rotation = 0;
 }
 
-
+// Function to print the tetromino in black and white colors on the console
+// Supports erasing the tetromino if 'erase' is true
 void Tetromino::printBNW(bool erase) {
 
 	int x_absolute = this->x_pos + this->board_offset_x;
@@ -95,6 +97,8 @@ void Tetromino::printBNW(bool erase) {
 	}
 }
 
+// Function to print the tetromino in RGB colors on the console
+// Supports erasing the tetromino if 'erase' is true
 void Tetromino::printColor(bool erase) {
 
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -118,7 +122,8 @@ void Tetromino::printColor(bool erase) {
 }
 
 
-// changes terminal colors based on symbols on the board
+// Function to print a colored character on the console based on the provided character code
+// Uses the provided console handle for setting text attributes
 void Tetromino::printCharColor(char c, HANDLE& hConsole) {
 	switch (c) {
 	case 'A':
@@ -155,7 +160,8 @@ void Tetromino::printCharColor(char c, HANDLE& hConsole) {
 
 }
 
-
+// Function to erase the tetromino from the console display
+// Chooses between color and black-and-white printing based on global game settings
 void Tetromino::erase()
 {
 	bool erase = true;
@@ -165,5 +171,4 @@ void Tetromino::erase()
 	else {
 		printBNW(erase);
 	}
-
 }

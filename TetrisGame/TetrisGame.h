@@ -6,7 +6,8 @@
 #include "MenuManager.h"
 
 
-
+// TetrisGame class represents the main logic and state of a Tetris game.
+// NOTE: Each user has its own game instance, allowing multiple players to play games with independent in game tick rates.
 class TetrisGame {
 
 public:

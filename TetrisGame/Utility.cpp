@@ -12,7 +12,8 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(hConsoleOutput, dwCursorPosition);
 }
 
-// a - dividend , b - modulus
+// a - dividend , b - modulus 
+//Calculates the positive modulus (remainder) of the division of two integers.
 int pyMod(int a , int b) {
 	return (b + (a % b)) % b;
 }

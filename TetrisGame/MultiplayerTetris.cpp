@@ -1,10 +1,10 @@
 #include "MultiplayerTetris.h"
 
 
-
+// Launches the multiplayer Tetris game.
 void MultiplayerTetris::launcher() {
     showConsoleCursor(false);
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
 
     unsigned char curr_key = 0;
     while (game_state != GameState::EXIT_GAME) {
@@ -19,13 +19,15 @@ void MultiplayerTetris::launcher() {
         gameplayLoop();
 
     }
+
+    // Clean up memory allocated for TetrisGame instances when exiting the game
     delete players[0];
     delete players[1];
 }
 
-
+// Sets up a new game for both players.
 void MultiplayerTetris::setUpNewGame() {
-
+    // Delete existing TetrisGame instances, if any
     if (players[0] != nullptr) {
         delete players[0];
     }
@@ -33,17 +35,20 @@ void MultiplayerTetris::setUpNewGame() {
         delete players[1];
     }
 
+    // Create new TetrisGame instances for both players
     players[0] = new TetrisGame(Settings::SCREEN_OFFSET_X, Settings::SCREEN_OFFSET_Y);
     players[1] = new TetrisGame(Settings::SCREEN_OFFSET_X + Settings::SCREEN_OFFSET_INTERVAL, Settings::SCREEN_OFFSET_Y);
 
 }
 
 
+// Main gameplay loop that handles player input and game state.
 void MultiplayerTetris::gameplayLoop() {
     while (game_state == GameState::IN_PROGRESS_GAME)
     {
         unsigned char curr_key = 0;
-        // get key from input -- keep at top of loop
+        
+        // Get key input from the user
         if (_kbhit()) {
             curr_key = _getch();
         }
@@ -53,23 +58,28 @@ void MultiplayerTetris::gameplayLoop() {
         players[0]->play(curr_key);
         players[1]->play(curr_key);
 
-        // 27 is "ESC" key
+        // Check if the "ESC" key is pressed to pause the game
         if (curr_key == 27) {
             game_state = GameState::PAUSED_GAME;
+            //reset the game start flag, so once play is resumed the board will be re printed
             players[0]->start = true;
             players[1]->start = true;
         }
 
+        // Check for game over condition
         if (players[0]->game_over || players[1]->game_over) {
             gameOverLogic();
         }
-        // keep at bottom
+
+        // Reset current key to zero at the end of the loop
         curr_key = 0;
     }
 }
 
+// Handles game-over logic and displays the game-over menu.
 void MultiplayerTetris::gameOverLogic() {
     if (players[0]->game_over && players[1]->game_over){
+        // Determine the winner based on scores and display the game-over menu
         if (players[1]->player->score > players[0]->player->score)
             menu.printGameOverMenu(players[1]->player->id, players[1]->player->score);
         else
@@ -78,6 +88,7 @@ void MultiplayerTetris::gameOverLogic() {
 
     }
     else {
+        // Display the game-over menu based on the player who lost
         if (players[0]->game_over)
             menu.printGameOverMenu(players[1]->player->id, players[1]->player->score);
         else

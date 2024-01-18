@@ -4,7 +4,7 @@
 
 extern Settings global_settings;
 
-
+// MultiplayerTetris class manages the overall flow and logic of a multiplayer Tetris game.
 class MultiplayerTetris
 {
 

@@ -14,18 +14,18 @@ const char tetromino_shapes[7][17] = {
 		{"  G  GG  G      "}  // inverted S shape
 };
 
-// the class of the shapes that move in the game
+// Class representing Tetrominos in the game
 class Tetromino {
 
 private:
-	int rotation;
-	int x_pos;
-	int y_pos;
-	int shape_index;
-	int board_offset_x;
-	int board_offset_y;
-	int start_pos_x;
-	int start_pos_y;
+	int rotation;          // Current rotation state
+	int x_pos;             // Current X position on the board
+	int y_pos;             // Current Y position on the board
+	int shape_index;       // Index representing the shape type
+	int board_offset_x;    // X offset on the board
+	int board_offset_y;    // Y offset on the board
+	int start_pos_x;       // Starting X position
+	int start_pos_y;       // Starting Y position
 	
 
 public:

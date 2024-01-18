@@ -1,28 +1,28 @@
 #include "TetrisGame.h"
 
 
-// constructor for the game object, basically sets up a start point for the game
+// Constructor for the TetrisGame object, sets up the initial location and state of the game
 TetrisGame::TetrisGame(int start_x, int start_y)
 {
+    // Create dynamic objects for the game (board, tetromino, and player)
     this->board = new TetrisBoard(start_x, start_y); // start board and set it to be x=10,y=10 relative to console
     this->currentMino = new Tetromino(5, 0, start_x, start_y); // relative to the board
     this->player = new Player();
 
 }
 
-// destructor for the game, free's dynamically allocated memory for the object
+// Destructor for the TetrisGame object, frees dynamically allocated memory
 TetrisGame::~TetrisGame() {
     delete this->board;
     delete this->currentMino;
     delete this->player;
     gotoxy(1, 25);
-    std::cout << "Destroyed tetris game object" << std::endl;
 }
 
-// runs a single cycle of playing the game
+// Runs a single cycle of playing the Tetris game
 void TetrisGame::play(unsigned char curr_key) {
 
-
+    // Initial check to print the board when the game starts
     if (start) {
         this->board->printBoard();
         start = false;
@@ -35,10 +35,10 @@ void TetrisGame::play(unsigned char curr_key) {
 
     this->movementHandler(curr_key);
 
+    // Move the tetromino down automatically at a regular interval
     forcePiceDown();
 
-    if (!checkCollision(0, 0, 0))
-        this->game_over = true;
+    // Check for collision with the bottom or other blocks
 
     this->currentMino->print();
     this->printGameStats();
@@ -46,22 +46,23 @@ void TetrisGame::play(unsigned char curr_key) {
     
 }
 
-//function recives a ref to a tetromino object and the the disired move offset
-//function calls the tetromino to recive its current position 
-//function than calls rotate method to index of the object at the desired position and checks it with the board
-//if the space is not empty and there is a cilision function will return false
+
+// Function to check for collision of the tetromino with the board or other blocks
 bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
+    // Calculate the next position and rotation of the tetromino based on the provided movement offsets
     int next_x, next_y, next_rot , shape_index;
     this->currentMino->getTransform(next_x, next_y, next_rot);
     this->currentMino->getShapeIndex(shape_index);
     next_x += move_x;
     next_y += move_y;
     next_rot = pyMod((next_rot + move_rot), 4); // map rotation by using modulu
-    int pi;
+
+    // Iterate over the tetromino's pixels and check for collisions with the board
+    int pixel;
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
-            pi = this->currentMino->rotate(x_off , y_off, next_rot);
-            if (tetromino_shapes[shape_index][pi] != ' ' && this->board->board[next_y + y_off][next_x + x_off] != '.') {
+            pixel = this->currentMino->rotate(x_off , y_off, next_rot);
+            if (tetromino_shapes[shape_index][pixel] != ' ' && this->board->board[next_y + y_off][next_x + x_off] != '.') {
                 return false;   
             }
         }
@@ -70,7 +71,7 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     return true;
 }
 
-// given input character, will move the tetromino piece accordingly or do nothing
+// Handle movement and rotation of the tetromino based on user input
 void TetrisGame::movementHandler( unsigned char curr_key)
 {
     if (curr_key == this->player->my_ctrl.MOVE_LEFT_KEY_1 || curr_key == this->player->my_ctrl.MOVE_LEFT_KEY_2) {
@@ -96,8 +97,7 @@ void TetrisGame::movementHandler( unsigned char curr_key)
 }
 
 
-//a fucntion that fixes a tetromino to the board. 
-//than destructs the tetromino object
+// Function to fix a tetromino to the board and reset the tetromino object to the top
 void TetrisGame::updateBoardStatus() {
     int obj_x_pos, obj_y_pos, obj_rot, obj_shape_index, lines_destroyed = 0;
     this->currentMino->getTransform(obj_x_pos, obj_y_pos, obj_rot);
@@ -107,7 +107,7 @@ void TetrisGame::updateBoardStatus() {
     findAndDestroyLines(obj_y_pos);
 }
 
-//checks for lines in the tetromino object position, and destroyes them
+// Function to find and destroy completed lines in the tetromino's position
 void TetrisGame::findAndDestroyLines(int obj_y_pos) {
     int destroyed_lines = 0;
     for (int y_off = 0; y_off < 4; y_off++) {
@@ -123,7 +123,7 @@ void TetrisGame::findAndDestroyLines(int obj_y_pos) {
         this->player->score += this->base_score_inc;
 }
 
-//wirites the tetromino object into the board array
+// Function to write the pixels of the current tetromino to the game board
 void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index) {
     int pixel;
     
@@ -137,14 +137,15 @@ void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot
 }
 
 
-//function that moves the tetromino down every game tick
-//can be used to change game speed
+// Function to force the tetromino down every game tick, affected by game speed
 void TetrisGame::forcePiceDown() {
     if (this->tick_counter > this->ticks_per_drop) {
         movePiceDown();
     }
 }
-// prints stats of the game under the board of the game
+
+
+// Function to print the game statistics below the game board
 void TetrisGame::printGameStats() {
     int print_x = this->board->board_start_x;
     int print_y = this->board->board_start_y + this->board->board_height + 1;
@@ -153,15 +154,23 @@ void TetrisGame::printGameStats() {
 }
 
 
+// Function to move the tetromino down and handle collision
 void TetrisGame::movePiceDown() {
 
     if (checkCollision(0, 1, 0))
         this->currentMino->transform(0, 1, 0);
     else {
+        // Update the game board status and reset the tetromino
         updateBoardStatus();
         this->currentMino->resetTetromino();
         this->board->printBoard();
-    }
-    this->tick_counter = 0;
 
+        // Check for collision after resetting the tetromino
+        // If there is a collision, the board is full, and the player has lost
+        if (!checkCollision(0, 0, 0))
+            this->game_over = true;
+    }
+
+    //reset the tick counter
+    this->tick_counter = 0;
 }

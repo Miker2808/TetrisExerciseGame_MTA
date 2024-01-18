@@ -6,7 +6,7 @@
 //Handles the Tetris main menu logic, allowing user navigation and returning the game.
 GameState MenuManager::mainMenu(GameState state) {
 	unsigned char curr_key = 0;
-	GameState current_state = state;
+	current_state = state;
 
 	while (current_state != GameState::NEW_GAME && current_state != GameState::EXIT_GAME && current_state != GameState::IN_PROGRESS_GAME)
 	{
@@ -16,7 +16,7 @@ GameState MenuManager::mainMenu(GameState state) {
 		curr_key = _getch();
 
 
-		current_state = mainMenuLogic(curr_key);
+		mainMenuLogic(curr_key);
 
 		curr_key = 0;
 	}
@@ -72,22 +72,28 @@ void MenuManager::printControls()
 
 
 //Updates game state based on user input from the main menu.
-GameState MenuManager::mainMenuLogic(unsigned char curr_key)
+void MenuManager::mainMenuLogic(unsigned char curr_key)
 {
 	switch (curr_key) {
 		case '1':
 			this->game_started = true;
-			return GameState::NEW_GAME;
+			current_state = GameState::NEW_GAME;
+			return ;
 			break;
 		case '2':
 			if (this->game_started) {
-				return GameState::IN_PROGRESS_GAME;
+				current_state = GameState::IN_PROGRESS_GAME;
+				return ;
 			}
 			break;
 		case '8':
-			return this->optionsMenu();
+			this->optionsMenu();
+			return;
 		case '9':
-			return GameState::EXIT_GAME;
+			current_state = GameState::IN_PROGRESS_GAME;
+			return ;
+		default:
+			return;
 
 	}
 }
@@ -114,7 +120,7 @@ void MenuManager::printOptionsMenu() {
 }
 
 //Controls the logicand inner loop for the additional options menu.
-GameState MenuManager::optionsMenu() {
+void MenuManager::optionsMenu() {
 	unsigned char curr_key = 0;
 
 	while (true)
@@ -132,9 +138,10 @@ GameState MenuManager::optionsMenu() {
 				global_settings.game_colors ? global_settings.game_colors = false : global_settings.game_colors = true;
 				break;
 			case '2':
-				return GameState::PAUSED_GAME;
+				return;
 			case '9':
-				return GameState::EXIT_GAME;
+				current_state = GameState::EXIT_GAME;
+				return;
 		}
 
 		// reset key - keep at bottom
