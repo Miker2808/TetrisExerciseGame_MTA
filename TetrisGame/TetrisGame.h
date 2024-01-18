@@ -29,6 +29,7 @@ private:
 
 public:
 	TetrisGame(int start_x, int start_y);
+	explicit TetrisGame(const TetrisGame& other);
 	~TetrisGame();
 	void play(unsigned char curr_key);
 

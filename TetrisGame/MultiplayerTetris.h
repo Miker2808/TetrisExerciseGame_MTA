@@ -13,6 +13,7 @@ class MultiplayerTetris
 	MenuManager menu;
 
 public:
+
 	void launcher();
 
 	void setUpNewGame();
