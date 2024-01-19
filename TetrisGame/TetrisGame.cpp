@@ -15,21 +15,6 @@ TetrisGame::TetrisGame(int start_x, int start_y, bool bombs)
 
 }
 
-//Copy constructor for the TetrisGame object, sets up a copy of the location and state of the game
-TetrisGame::TetrisGame(const TetrisGame& other)
-    : base_score_inc(other.base_score_inc), tick_counter(other.tick_counter),
-    ticks_per_drop(other.ticks_per_drop), game_over(other.game_over), start(other.start) {
-
-    // Copy the player
-    this->player = new Player(*other.player);
-
-    // Copy the board
-    this->board = new TetrisBoard(*other.board);
-
-    // Copy the current tetromino
-    this->currentMino = new Tetromino(*other.currentMino);
-}
-
 // Destructor for the TetrisGame object, frees dynamically allocated memory
 TetrisGame::~TetrisGame() {
     delete this->board;
