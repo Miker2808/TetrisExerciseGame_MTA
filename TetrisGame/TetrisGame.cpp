@@ -34,7 +34,7 @@ TetrisGame::~TetrisGame() {
     delete this->board;
     delete this->currentMino;
     delete this->player;
-    gotoxy(1, 25);
+    this->game_counter -= 1;
 }
 
 // Runs a single cycle of playing the Tetris game
