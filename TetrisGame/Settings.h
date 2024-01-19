@@ -48,6 +48,7 @@ public:
 	// keys to access menu features
 	static const unsigned char MENU_ONE = '1';
 	static const unsigned char MENU_TWO = '2';
+	static const unsigned char MENU_THREE = '3';
 	static const unsigned char MENU_OPTIONS = '8';
 	static const unsigned char MENU_EXIT = '9';
 	static const unsigned char MENU_PAUSE = 27;

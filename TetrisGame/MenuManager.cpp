@@ -114,7 +114,18 @@ void MenuManager::printOptionsMenu() {
 		std::cout << "Disabled\n";
 	}
 
-	std::cout << "[" << Settings::MENU_TWO << "] Back\n";
+	std::cout << "[" << Settings::MENU_TWO << "] Bombs: ";
+
+	if (global_settings.bombs) {
+		std::cout << "Enabled\n";
+	}
+	else {
+		std::cout << "Disabled\n";
+	}
+
+
+
+	std::cout << "[" << Settings::MENU_THREE << "] Back\n";
 	std::cout << "[" << Settings::MENU_EXIT << "] Exit Game\n";
 
 }
@@ -135,6 +146,9 @@ void MenuManager::optionsMenu() {
 				global_settings.game_colors = !(global_settings.game_colors);
 				break;
 		case Settings::MENU_TWO:
+				global_settings.bombs = !(global_settings.bombs);
+				break;
+		case Settings::MENU_THREE:
 				return;
 		case Settings::MENU_EXIT:
 				current_state = GameState::EXIT_GAME;
