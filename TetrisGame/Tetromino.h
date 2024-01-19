@@ -3,18 +3,6 @@
 
 extern Settings global_settings;
 
-/*
-const char tetromino_shapes[7][17] = {
-		{"  A   A   A   A "}, // vertical line shape
-		{"     BB  BB     "}, // square shape
-		{"    C   C   CC  "}, // L shape
-		{" D   DD   D     "}, // S shape
-		{"     E  EEE     "}, // T shape
-		{"       F   F  FF"}, // inverted L shape
-		{"  G  GG  G      "}  // inverted S shape
-};
-*/
-
 // Class representing Tetrominos in the game
 class Tetromino {
 
