@@ -26,9 +26,9 @@ public:
 
 	MultiplayerTetris() {}
 
-	MultiplayerTetris(const MultiplayerTetris& other ) {
-		delete(this);
-	}
+	MultiplayerTetris(const MultiplayerTetris& other) = delete;
+
+	MultiplayerTetris& operator=(const MultiplayerTetris& other) = delete;
 
 	~MultiplayerTetris() {
 		if (players[0] != nullptr) {
