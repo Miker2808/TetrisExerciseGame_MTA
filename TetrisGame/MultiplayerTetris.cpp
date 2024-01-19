@@ -32,8 +32,8 @@ void MultiplayerTetris::setUpNewGame() {
     }
 
     // Create new TetrisGame instances for both players
-    players[0] = new TetrisGame(Settings::SCREEN_OFFSET_X, Settings::SCREEN_OFFSET_Y);
-    players[1] = new TetrisGame(Settings::SCREEN_OFFSET_X + Settings::SCREEN_OFFSET_INTERVAL, Settings::SCREEN_OFFSET_Y);
+    players[0] = new TetrisGame(Settings::SCREEN_OFFSET_X, Settings::SCREEN_OFFSET_Y, global_settings.bombs);
+    players[1] = new TetrisGame(Settings::SCREEN_OFFSET_X + Settings::SCREEN_OFFSET_INTERVAL, Settings::SCREEN_OFFSET_Y, global_settings.bombs);
 
 }
 

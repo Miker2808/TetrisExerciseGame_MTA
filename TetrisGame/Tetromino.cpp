@@ -1,19 +1,20 @@
 #include "Tetromino.h"
 
-const char Tetromino::tetromino_shapes[7][17] = {
+const char Tetromino::tetromino_shapes[8][17] = {
 		{"  A   A   A   A "}, // vertical line shape
 		{"     BB  BB     "}, // square shape
 		{"    C   C   CC  "}, // L shape
 		{" D   DD   D     "}, // S shape
 		{"     E  EEE     "}, // T shape
 		{"       F   F  FF"}, // inverted L shape
-		{"  G  GG  G      "}  // inverted S shape
+		{"  G  GG  G      "}, // inverted S shape
+		{"         @      "}  //bomb
 };
 
 
 // Randomly generate a tetromino piece, places it at (start_x, start_y) relative to (board_x, board_y)
-Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_start_y) {
-	this->shape_index = rand() % 7;
+Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_start_y, bool bombs_flag) {
+	this->shape_index = 7;
 	this->start_pos_x = start_x;
 	this->start_pos_y = start_y;
 	this->x_pos = start_x;
@@ -21,12 +22,25 @@ Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_star
 	this->rotation = 0;
 	this->board_offset_x = board_start_x ;
 	this->board_offset_y = board_start_y ;
+	this->bombs_present = bombs_flag;
 
 }
 
 // destructor for the tetromino piece
 Tetromino::~Tetromino() {
 
+}
+
+
+int Tetromino::initShapeindex() {
+	if (!bombs_present)
+		return rand() % 7;
+	else {
+		if (rand() % 20)
+			return rand() % 7;
+		else
+			return 7;
+	}
 }
 
 // returns point of 1D with rotation from 2D coordinates

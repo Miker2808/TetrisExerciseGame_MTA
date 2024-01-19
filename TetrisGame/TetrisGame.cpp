@@ -3,11 +3,12 @@
 unsigned int TetrisGame::game_counter = 0;
 
 // Constructor for the TetrisGame object, sets up the initial location and state of the game
-TetrisGame::TetrisGame(int start_x, int start_y)
+TetrisGame::TetrisGame(int start_x, int start_y, bool bombs)
 {
     // Create dynamic objects for the game (board, tetromino, and player)
+    bombs_present = bombs;
     this->board = new TetrisBoard(start_x, start_y); // start board and set it to be x=10,y=10 relative to console
-    this->currentMino = new Tetromino(5, 0, start_x, start_y); // relative to the board
+    this->currentMino = new Tetromino(5, 0, start_x, start_y , bombs_present); // relative to the board
     this->game_counter += 1;
     this->player = new Player(Settings::ctrl_presets[game_counter-1] , game_counter);
 

@@ -14,11 +14,13 @@ public:
 	// public members
 	static const unsigned int TICKS_TIME = Settings::TICKS_TIME;
 	int base_score_inc = Settings::BASE_SCORE_INCREMENT;
-
 	static unsigned int game_counter;
+
 	TetrisBoard* board;
 	Tetromino* currentMino;
 	Player* player;
+
+	bool bombs_present;
 	bool game_over = false;
 	bool start = true;
 	
@@ -29,7 +31,7 @@ private:
 	unsigned int ticks_per_drop = Settings::TICKS_PER_DROP; // kept as a variable to potentionally control drop speed
 
 public:
-	TetrisGame(int start_x, int start_y);
+	TetrisGame(int start_x, int start_y, bool bombs);
 	explicit TetrisGame(const TetrisGame& other);
 	~TetrisGame();
 	void play(unsigned char curr_key);

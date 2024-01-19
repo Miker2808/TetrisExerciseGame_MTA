@@ -7,7 +7,7 @@ extern Settings global_settings;
 class Tetromino {
 
 public:
-	static const char tetromino_shapes[7][17];
+	static const char tetromino_shapes[8][17];
 
 private:
 	int rotation;          // Current rotation state
@@ -18,11 +18,12 @@ private:
 	int board_offset_y;    // Y offset on the board
 	int start_pos_x;       // Starting X position
 	int start_pos_y;       // Starting Y position
+	bool bombs_present;     // Indicates wether bombs are used
 	
 
 public:
 
-	Tetromino(int start_x, int start_y, int board_start_x, int board_start_y);
+	Tetromino(int start_x, int start_y, int board_start_x, int board_start_y, bool bombs_flag);
 	~Tetromino();
 	void print();
 	int rotate(int x, int y, int rotation);
@@ -34,6 +35,7 @@ public:
 
 
 private:
+	int initShapeindex();
 	void printBNW(bool erase = false);
 	void printColor(bool erase = false);
 	void printCharColor(char c, HANDLE& hConsole);

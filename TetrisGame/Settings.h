@@ -59,5 +59,8 @@ public:
 
 	// Flag indicating whether to use colored symbols for Tetris blocks
 	bool game_colors = false;
+
+	// Flag indicating whether to use bombs in the tetris game
+	bool bombs = true;
 };
 
