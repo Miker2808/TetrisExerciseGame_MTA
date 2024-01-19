@@ -3,7 +3,7 @@
 
 extern Settings global_settings;
 
-
+/*
 const char tetromino_shapes[7][17] = {
 		{"  A   A   A   A "}, // vertical line shape
 		{"     BB  BB     "}, // square shape
@@ -13,9 +13,13 @@ const char tetromino_shapes[7][17] = {
 		{"       F   F  FF"}, // inverted L shape
 		{"  G  GG  G      "}  // inverted S shape
 };
+*/
 
 // Class representing Tetrominos in the game
 class Tetromino {
+
+public:
+	static const char tetromino_shapes[7][17];
 
 private:
 	int rotation;          // Current rotation state

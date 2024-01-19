@@ -64,38 +64,43 @@ TetrisBoard::~TetrisBoard() {
 
 // Changes terminal colors based on symbols on the board
 void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) {
+	unsigned char color = 0;
+	unsigned char guide_char = Settings::DEFAULT_SPACE; // to assist with navigation (blank is disorienting)
 	switch (c) {
 	case 'A': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY); 
+		color = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY;
 		break;
 	case 'B': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_RED); 
+		color = BACKGROUND_RED;
 		break;
 	case 'C': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_INTENSITY);
+		color = BACKGROUND_RED | BACKGROUND_INTENSITY;
 		break;
 	case 'D': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_GREEN | BACKGROUND_INTENSITY); 
+		color = BACKGROUND_GREEN | BACKGROUND_INTENSITY;
 		break;
 	case 'E': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY);
+		color = BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY;
 		break;
 	case 'F': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN);
+		color = BACKGROUND_RED | BACKGROUND_GREEN;
 		break;
 	case 'G': 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_INTENSITY); 
+		color = BACKGROUND_BLUE | BACKGROUND_INTENSITY;
 		break;
 	case Settings::DEFAULT_WALL_SIGN: 
-		SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED); 
+		color = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED;
 		break;
 	case Settings::DEFAULT_EMPTY: 
-		SetConsoleTextAttribute(hConsole, 0); 
+		guide_char = Settings::DEFAULT_EMPTY;
+		color = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 		break;
 	default: 
-		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+		color = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 	}
-	std::cout << ' '; 
+	
+	SetConsoleTextAttribute(hConsole, color);
+	std::cout << guide_char; 
 
 }
 

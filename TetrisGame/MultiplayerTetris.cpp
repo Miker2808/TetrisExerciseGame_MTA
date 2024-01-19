@@ -50,7 +50,7 @@ void MultiplayerTetris::gameplayLoop() {
         }
         Sleep(TetrisGame::TICKS_TIME); //game clock
 
-        // take action based on user key CHANGE TO GENERALIZE
+        // take action based on user key
         players[0]->play(curr_key);
         players[1]->play(curr_key);
 
@@ -72,7 +72,7 @@ void MultiplayerTetris::gameplayLoop() {
     }
 }
 
-// Handles game-over logic and displays the game-over menu.
+// Handles game-over logic and displays the game over menu.
 void MultiplayerTetris::gameOverLogic() {
     if (players[0]->game_over && players[1]->game_over){
         // Determine the winner based on scores and display the game-over menu

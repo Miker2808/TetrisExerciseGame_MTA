@@ -31,6 +31,9 @@ public:
 	// Default symbol for empty cells on the Tetris game board
 	static const unsigned char DEFAULT_EMPTY = '.';
 
+	// Default symbol for space bar (literally empty space)
+	static const unsigned char DEFAULT_SPACE = ' ';
+
 	// Horizontal offset from the console edge for displaying Tetris boards
 	static const unsigned int SCREEN_OFFSET_X = 10;
 
@@ -41,6 +44,13 @@ public:
 	static const unsigned int SCREEN_OFFSET_Y = 2;
 
 	static const Controls ctrl_presets[2];
+
+	// keys to access menu features
+	static const unsigned char MENU_ONE = '1';
+	static const unsigned char MENU_TWO = '2';
+	static const unsigned char MENU_OPTIONS = '8';
+	static const unsigned char MENU_EXIT = '9';
+	static const unsigned char MENU_PAUSE = 27;
 
 	// dynamic settings for runtime modification
 

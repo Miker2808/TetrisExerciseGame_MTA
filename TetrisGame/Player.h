@@ -16,7 +16,6 @@ struct Player
 
 	}
 
-	// Destructor: Decrements the player counter when a player is destroyed
 	~Player() {
 
 	}

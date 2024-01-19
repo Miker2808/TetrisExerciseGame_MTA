@@ -9,8 +9,6 @@ extern Settings global_settings;
 enum class GameState { NEW_GAME = 500, PAUSED_GAME, RESUME_GAME, EXIT_GAME, GAME_OPTIONS, NO_GAME_STATE, IN_PROGRESS_GAME};
 
 class MenuManager {
-public:
-	
 
 private:
 	
@@ -19,10 +17,10 @@ private:
 
 
 public:
-	
 	GameState mainMenu(GameState state);
 	void optionsMenu();
 	void printGameOverMenu(int player_indx, int score);
+
 private:
 	void mainMenuLogic(unsigned char curr_key);
 	void printMainMenu();

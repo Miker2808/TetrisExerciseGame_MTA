@@ -23,6 +23,7 @@ void debugPrint(const char* string, int param, int x, int y) {
 	std::cout << "DEBUG: " << string << " " << param << std::endl;
 }
 
+
 // hides the flashing terminal cursor from the terminal
 void showConsoleCursor(bool showFlag)
 {

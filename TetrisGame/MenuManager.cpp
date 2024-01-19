@@ -33,12 +33,12 @@ void MenuManager::printMainMenu() {
 	std::cout << "  Main menu\n";
 	std::cout << "~~~~~~~~~~~~~~\n\n";
 	std::cout << "Choose key:\n";
-	std::cout << "[1] New Game\n";
+	std::cout << "[" << Settings::MENU_ONE << "] New Game\n";
 	if (this->game_started) {
-		std::cout << "[2] Continue Game\n";
+		std::cout << "[" << Settings::MENU_TWO << "] Continue Game\n";
 	}
-	std::cout << "[8] Options\n";
-	std::cout << "[9] Exit Game\n";
+	std::cout << "[" << Settings::MENU_OPTIONS << "] Options\n";
+	std::cout << "[" << Settings::MENU_EXIT << "] Exit Game\n";
 }
 
 // Prints controls extracted from pointers of player_1 and player_2.
@@ -75,21 +75,21 @@ void MenuManager::printControls()
 void MenuManager::mainMenuLogic(unsigned char curr_key)
 {
 	switch (curr_key) {
-		case '1':
+	case Settings::MENU_ONE:
 			this->game_started = true;
 			current_state = GameState::NEW_GAME;
 			return ;
 			break;
-		case '2':
+	case Settings::MENU_TWO:
 			if (this->game_started) {
 				current_state = GameState::IN_PROGRESS_GAME;
 				return ;
 			}
 			break;
-		case '8':
+	case Settings::MENU_OPTIONS:
 			this->optionsMenu();
 			return;
-		case '9':
+	case Settings::MENU_EXIT:
 			current_state = GameState::EXIT_GAME;
 			return ;
 		default:
@@ -105,7 +105,7 @@ void MenuManager::printOptionsMenu() {
 	std::cout << "   Options\n";
 	std::cout << "~~~~~~~~~~~~~~\n\n";
 	std::cout << "Choose key:\n";
-	std::cout << "[1] Color: ";
+	std::cout << "[" << Settings::MENU_ONE << "] Color: ";
 
 	if (global_settings.game_colors) {
 		std::cout << "Enabled\n";
@@ -114,8 +114,8 @@ void MenuManager::printOptionsMenu() {
 		std::cout << "Disabled\n";
 	}
 
-	std::cout << "[2] Back\n";
-	std::cout << "[9] Exit Game\n";
+	std::cout << "[" << Settings::MENU_TWO << "] Back\n";
+	std::cout << "[" << Settings::MENU_EXIT << "] Exit Game\n";
 
 }
 
@@ -128,18 +128,15 @@ void MenuManager::optionsMenu() {
 		this->printOptionsMenu();
 		this->printControls();
 
-
-
 		curr_key = _getch();
 
-
 		switch (curr_key) {
-			case '1':
-				global_settings.game_colors ? global_settings.game_colors = false : global_settings.game_colors = true;
+		case Settings::MENU_ONE:
+				global_settings.game_colors = !(global_settings.game_colors);
 				break;
-			case '2':
+		case Settings::MENU_TWO:
 				return;
-			case '9':
+		case Settings::MENU_EXIT:
 				current_state = GameState::EXIT_GAME;
 				return;
 		}

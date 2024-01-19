@@ -80,7 +80,7 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
             pixel = this->currentMino->rotate(x_off , y_off, next_rot);
-            if (tetromino_shapes[shape_index][pixel] != ' ' && this->board->getBoardCell(next_x + x_off, next_y + y_off) != '.') {
+            if (Tetromino::tetromino_shapes[shape_index][pixel] != ' ' && this->board->getBoardCell(next_x + x_off, next_y + y_off) != '.') {
                 return false;
             }
         }
@@ -148,8 +148,8 @@ void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
             pixel = this->currentMino->rotate(x_off, y_off, obj_rot);
-            if (tetromino_shapes[obj_shape_index][pixel] != ' ')
-                this->board->writeCellToBoard(obj_x_pos + x_off, obj_y_pos + y_off, tetromino_shapes[obj_shape_index][pixel]);
+            if (Tetromino::tetromino_shapes[obj_shape_index][pixel] != ' ')
+                this->board->writeCellToBoard(obj_x_pos + x_off, obj_y_pos + y_off, Tetromino::tetromino_shapes[obj_shape_index][pixel]);
         }
     }
 }
