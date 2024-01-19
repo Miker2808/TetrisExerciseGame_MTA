@@ -37,6 +37,8 @@ public:
 	void shiftBoardDown(int y_shift);
 	char getBoardCell(int x, int y);
 
+	void blowUpBomb(int x, int y);
+
 private:
 	
 	void printTetrisColor(char c, HANDLE& hConsole);

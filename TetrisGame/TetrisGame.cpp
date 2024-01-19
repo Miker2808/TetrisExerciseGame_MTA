@@ -106,9 +106,14 @@ void TetrisGame::updateBoardStatus() {
     int obj_x_pos, obj_y_pos, obj_rot, obj_shape_index, lines_destroyed = 0;
     this->currentMino->getTransform(obj_x_pos, obj_y_pos, obj_rot);
     this->currentMino->getShapeIndex(obj_shape_index);
-    
-    writeTetrominoToBoard(obj_x_pos, obj_y_pos, obj_rot, obj_shape_index);
-    findAndDestroyLines(obj_y_pos);
+    if (obj_shape_index == 7) {
+        blowBombUp(obj_x_pos, obj_y_pos, obj_rot);
+    }
+    else {
+        writeTetrominoToBoard(obj_x_pos, obj_y_pos, obj_rot, obj_shape_index);
+        findAndDestroyLines(obj_y_pos);
+    }
+
 }
 
 // Function to find and destroy completed lines in the tetromino's position
@@ -177,4 +182,18 @@ void TetrisGame::movePiceDown() {
 
     //reset the tick counter
     this->tick_counter = 0;
+}
+
+//function that blows up the bomb Tetromino
+void TetrisGame::blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot) {
+    int pixel;
+    for (int y_off = 1; y_off < 3; y_off++) {
+        for (int x_off = 1; x_off < 3; x_off++) {
+            pixel = this->currentMino->rotate(x_off, y_off, obj_rot);
+            if (Tetromino::tetromino_shapes[7][pixel] != ' ')
+                this->board->blowUpBomb(obj_x_pos + x_off, obj_y_pos + y_off);
+        }
+    }
+
+    
 }

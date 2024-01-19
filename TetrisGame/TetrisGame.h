@@ -44,6 +44,7 @@ private:
 	void findAndDestroyLines(int obj_y_pos);
 	void writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index);
 	void movePiceDown();
+	void blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot);
 	void printGameStats();
 	void forcePiceDown();
 

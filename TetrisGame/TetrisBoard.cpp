@@ -187,3 +187,18 @@ void TetrisBoard::printBoardColor()
 char TetrisBoard::getBoardCell(int x , int y){
 	return board[y][x];
 }
+
+//check if works
+void TetrisBoard::blowUpBomb(int x, int y) {
+
+	for (int y_off = -4; y_off <= 4; y_off++) {
+		if( (y+y_off) >= 0 && (y + y_off) < board_height-1 )
+		{
+			for (int x_off = -4; x_off <= 4; x_off++)
+			{
+				if ((x + x_off) > 0 && (x + x_off) < board_width - 1)
+					writeCellToBoard(x + x_off , y + y_off , def_empty);
+			}
+		}
+	}
+}
