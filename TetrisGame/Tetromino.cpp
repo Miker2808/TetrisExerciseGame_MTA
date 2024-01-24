@@ -175,6 +175,9 @@ void Tetromino::printCharColor(char c, HANDLE& hConsole) {
 	case 'G':
 		color = BACKGROUND_BLUE | BACKGROUND_INTENSITY;
 		break;
+	case '@':
+		color = BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY;
+		break;
 	case Settings::DEFAULT_WALL_SIGN:
 		color = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED;
 		break;
