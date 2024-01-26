@@ -23,17 +23,18 @@ void MultiplayerTetris::launcher() {
 
 // Sets up a new game for both players.
 void MultiplayerTetris::setUpNewGame() {
+
     // Delete existing TetrisGame instances, if any
-    if (players[0] != nullptr) {
-        delete players[0];
+    if (games_arr != nullptr) {
+        freeGames();
+        delete games_arr;
     }
-    if (players[1] != nullptr) {
-        delete players[1];
-    }
+    curr_num_of_games = global_settings.num_of_human_players + global_settings.num_of_bots;
+
+    games_arr = new TetrisGame * [curr_num_of_games];
 
     // Create new TetrisGame instances for both players
-    players[0] = new TetrisGame(Settings::SCREEN_OFFSET_X, Settings::SCREEN_OFFSET_Y, global_settings.bombs);
-    players[1] = new TetrisGame(Settings::SCREEN_OFFSET_X + Settings::SCREEN_OFFSET_INTERVAL, Settings::SCREEN_OFFSET_Y, global_settings.bombs);
+   allocateGames();
 
 }
 
@@ -43,6 +44,8 @@ void MultiplayerTetris::gameplayLoop() {
     while (game_state == GameState::IN_PROGRESS_GAME)
     {
         unsigned char curr_key = 0;
+        unsigned int games_in_play = 0;
+        
         
         // Get key input from the user
         if (_kbhit()) {
@@ -52,14 +55,17 @@ void MultiplayerTetris::gameplayLoop() {
 
         
         // take action based on user key
+        for (unsigned int i = 0; i < curr_num_of_games; i++) {
+            if (!games_arr[i]->game_over) {
+                games_arr[i]->play(curr_key);
+                games_in_play++;
+            }
+        }
         
-        players[0]->play(curr_key);
-        players[1]->play(curr_key);
-        
-        std::vector<int> heights = HeuristicsExplorer().boardHeights(players[0]->board);
-        std::vector<int> holes = HeuristicsExplorer().boardHoles(players[0]->board);
+        std::vector<int> heights = HeuristicsExplorer().boardHeights(games_arr[0]->board);
+        std::vector<int> holes = HeuristicsExplorer().boardHoles(games_arr[0]->board);
         gotoxy(35, 23);
-        std::cout << "width: " << players[0]->currentMino->getShapeWidth();
+        std::cout << "width: " << games_arr[0]->currentMino->getShapeWidth();
         
         gotoxy(1, 23);
         std::cout << "heights:";
@@ -80,13 +86,15 @@ void MultiplayerTetris::gameplayLoop() {
         if (curr_key == 27) {
             game_state = GameState::PAUSED_GAME;
             //reset the game start flag, so once play is resumed the board will be re printed
-            players[0]->start = true;
-            players[1]->start = true;
+            for (unsigned int i = 0; i < curr_num_of_games; i++) {
+                if (!games_arr[i]->game_over)
+                    games_arr[i]->start = true;
+            }
         }
 
         // Check for game over condition
-        if (players[0]->game_over || players[1]->game_over) {
-            gameOverLogic();
+        if (games_in_play <= 1) {
+            gameOverLogic(games_in_play);
         }
 
         // Reset current key to zero at the end of the loop
@@ -95,23 +103,62 @@ void MultiplayerTetris::gameplayLoop() {
 }
 
 // Handles game-over logic and displays the game over menu.
-void MultiplayerTetris::gameOverLogic() {
-    if (players[0]->game_over && players[1]->game_over){
-        // Determine the winner based on scores and display the game-over menu
-        if (players[1]->player->score > players[0]->player->score)
-            menu.printGameOverMenu(players[1]->player->id, players[1]->player->score);
-        else
-            menu.printGameOverMenu(players[0]->player->id, players[0]->player->score);
-        game_state = GameState::NO_GAME_STATE;
-
+void MultiplayerTetris::gameOverLogic(unsigned int games_in_play) {
+    TetrisGame* winning_game = nullptr;
+    //if one player survived
+    if (games_in_play == 1) {
+        for (unsigned int i = 0; i < curr_num_of_games; i++) {
+            if (!games_arr[i]->game_over)
+                winning_game = games_arr[i];
+        }
     }
+    //if no one survived
     else {
-        // Display the game-over menu based on the player who lost
-        if (players[0]->game_over)
-            menu.printGameOverMenu(players[1]->player->id, players[1]->player->score);
-        else
-            menu.printGameOverMenu(players[0]->player->id, players[0]->player->score);
-        game_state = GameState::NO_GAME_STATE;
+        winning_game = games_arr[0];
+        for (unsigned int i = 0; i < curr_num_of_games; i++) {
+            //check ticks survived
+            if (games_arr[i]->ticks_survived > winning_game->ticks_survived)
+                winning_game = games_arr[i];
+            else {
+                //if ticks survived are equal check score
+                if(games_arr[i]->ticks_survived == winning_game->ticks_survived)
+                    if(games_arr[i]->player->score > winning_game->player->score)
+                        winning_game = games_arr[i];
+            }
+        }
+    }
+    game_state = GameState::NO_GAME_STATE;
+    menu.printGameOverMenu(winning_game->player->id, winning_game->player->score);
+}
+
+
+void MultiplayerTetris::freeGames() {
+    for (unsigned int i = 0; i < curr_num_of_games; i++)
+        delete games_arr[i];
+}
+
+
+void MultiplayerTetris::allocateGames() {
+    unsigned int i , board_offset_x = 0 , board_offset_y = 0;
+
+    //allocate human player games first
+    for (i = 0; i < global_settings.num_of_human_players; i++) {
+        updateBoardOffsetPos(i , board_offset_x, board_offset_y);
+        games_arr[i] = new TetrisGame(board_offset_x , board_offset_y, global_settings.bombs, true);
     }
 
+    //allocate the rest of the games as CPU games
+    for (i; i < curr_num_of_games; i++) {
+        updateBoardOffsetPos(i, board_offset_x, board_offset_y);
+        games_arr[i] = new TetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false);
+    }
+}
+
+//Update the offset based on the number of games created and number of games per row
+void MultiplayerTetris::updateBoardOffsetPos(unsigned int gameindex, unsigned int& x_pos, unsigned int& y_pos) {
+    unsigned int mult_x, mult_y;
+    mult_x = gameindex % Settings::SCREEN_GAMES_PER_ROW;
+    mult_y = (unsigned int)(gameindex / Settings::SCREEN_GAMES_PER_ROW);
+    x_pos = Settings::SCREEN_OFFSET_X + (Settings::SCREEN_OFFSET_INTERVAL_X * mult_x);
+    y_pos = Settings::SCREEN_OFFSET_Y + (Settings::SCREEN_OFFSET_INTERVAL_Y * mult_y);
 }

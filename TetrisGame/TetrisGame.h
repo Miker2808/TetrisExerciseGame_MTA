@@ -15,6 +15,7 @@ public:
 	static const unsigned int TICKS_TIME = Settings::TICKS_TIME;
 	int base_score_inc = Settings::BASE_SCORE_INCREMENT;
 	static unsigned int game_counter;
+	unsigned int ticks_survived = 0;
 
 	TetrisBoard* board;
 	Tetromino* currentMino;
@@ -23,6 +24,7 @@ public:
 	bool bombs_present;
 	bool game_over = false;
 	bool start = true;
+	bool human_player = false;
 	
 	
 private:
@@ -31,7 +33,7 @@ private:
 	unsigned int ticks_per_drop = Settings::TICKS_PER_DROP; // kept as a variable to potentionally control drop speed
 
 public:
-	TetrisGame(int start_x, int start_y, bool bombs);
+	TetrisGame(int start_x, int start_y, bool bombs, bool human_player);
 	TetrisGame(const TetrisGame& other) = delete;
 	~TetrisGame();
 	void play(unsigned char curr_key);

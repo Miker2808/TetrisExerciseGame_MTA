@@ -8,9 +8,10 @@ extern Settings global_settings;
 class MultiplayerTetris
 {
 private:
-	TetrisGame* players[Settings::NUMBER_OF_PLAYERS] = { nullptr, nullptr };
+	TetrisGame** games_arr = nullptr;
 	GameState game_state = GameState::NO_GAME_STATE;
 	MenuManager menu;
+	unsigned int curr_num_of_games = 0;
 
 	
 
@@ -18,7 +19,13 @@ private:
 
 	void gameplayLoop();
 
-	void gameOverLogic();
+	void gameOverLogic(unsigned int games_in_play);
+	
+	void freeGames();
+
+	void allocateGames();
+
+	void updateBoardOffsetPos(unsigned int gameindex , unsigned int& x_pos , unsigned int& y_pos);
 
 public:
 
@@ -31,11 +38,9 @@ public:
 	MultiplayerTetris& operator=(const MultiplayerTetris& other) = delete;
 
 	~MultiplayerTetris() {
-		if (players[0] != nullptr) {
-			delete players[0];
-		}
-		if (players[1] != nullptr) {
-			delete players[1];
+		if (games_arr != nullptr) {
+			freeGames();
+			delete games_arr;
 		}
 	}
 

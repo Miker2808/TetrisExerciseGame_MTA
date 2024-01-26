@@ -38,7 +38,13 @@ public:
 	static const unsigned int SCREEN_OFFSET_X = 10;
 
 	// Interval between consecutive horizontal offsets for multiplayer Tetris
-	static const unsigned int SCREEN_OFFSET_INTERVAL = 40;
+	static const unsigned int SCREEN_OFFSET_INTERVAL_X = 40;
+
+	//Interval between consecutive vertical offsets for multiplayer Tetris
+	static const unsigned int SCREEN_OFFSET_INTERVAL_Y = 30;
+
+	//Games displayed in each row
+	static const unsigned int SCREEN_GAMES_PER_ROW = 3;
 
 	// Vertical offset from the console edge for displaying Tetris boards
 	static const unsigned int SCREEN_OFFSET_Y = 2;
@@ -63,5 +69,11 @@ public:
 
 	// Flag indicating whether to use bombs in the tetris game
 	bool bombs = true;
+
+	//indicates total human games
+	unsigned int num_of_human_players = 2;
+	
+	//indicates total cpu played games
+	unsigned int num_of_bots = 1;
 };
 

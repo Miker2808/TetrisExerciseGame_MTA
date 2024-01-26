@@ -4,7 +4,7 @@
 //Represents a player in the Tetris game with a unique ID, score, and control settings.
 struct Player
 {
-
+	bool cpu;
 	unsigned int score = 0;
 	unsigned int id = 0;
 	Controls my_ctrl;
@@ -13,7 +13,15 @@ struct Player
 	Player(const Controls& controls , unsigned int id) {
 		this->id = id;
 		this->my_ctrl = controls;
+		this->cpu = false;
 
+	}
+
+	Player(unsigned int id) {
+		this->id = id;
+		//for debugging reasons , to emphasise that this game is CPU controlled 
+		this->my_ctrl = { '~','~','~','~','~','~','~','~','~','~' };
+		this->cpu = true;
 	}
 
 	~Player() {

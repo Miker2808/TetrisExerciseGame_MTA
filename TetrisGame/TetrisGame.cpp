@@ -3,14 +3,21 @@
 unsigned int TetrisGame::game_counter = 0;
 
 // Constructor for the TetrisGame object, sets up the initial location and state of the game
-TetrisGame::TetrisGame(int start_x, int start_y, bool bombs)
+TetrisGame::TetrisGame(int start_x, int start_y, bool bombs , bool human_player)
 {
     // Create dynamic objects for the game (board, tetromino, and player)
+    this->human_player = human_player;
     bombs_present = bombs;
     this->board = new TetrisBoard(start_x, start_y); // start board and set it to be x=10,y=10 relative to console
     this->currentMino = new Tetromino(5, 0, start_x, start_y , bombs_present); // relative to the board
     this->game_counter += 1;
-    this->player = new Player(Settings::ctrl_presets[game_counter-1] , game_counter);
+    if (this->human_player) {
+        this->player = new Player(Settings::ctrl_presets[game_counter - 1], game_counter);
+    }
+    else {
+        this->player = new Player(game_counter);
+    }
+
 }
 
 // Destructor for the TetrisGame object, frees dynamically allocated memory
@@ -23,29 +30,31 @@ TetrisGame::~TetrisGame() {
 
 // Runs a single cycle of playing the Tetris game
 void TetrisGame::play(unsigned char curr_key) {
-
-    // Initial check to print the board when the game starts
     if (start) {
         this->board->printBoard();
         start = false;
     }
+    if (!game_over) {
+        this->tick_counter += 1;
+        this->ticks_survived += 1;
 
+        this->currentMino->erase();
 
-    this->tick_counter += 1;
+        this->movementHandler(curr_key);
 
-    this->currentMino->erase();
+        // Move the tetromino down automatically at a regular interval
+        forcePiceDown();
 
-    this->movementHandler(curr_key);
+        // Check for collision with the bottom or other blocks
 
-    // Move the tetromino down automatically at a regular interval
-    forcePiceDown();
-
-    // Check for collision with the bottom or other blocks
-
-    this->currentMino->print();
-    this->printGameStats();
+        this->currentMino->print();
+        this->printGameStats();
         
-    
+
+    }
+    else {
+        //print game over on the board
+    }
 }
 
 
@@ -157,7 +166,12 @@ void TetrisGame::printGameStats() {
     int print_x = this->board->board_start_x;
     int print_y = this->board->board_start_y + this->board->board_height + 1;
     gotoxy(print_x, print_y);
-    std::cout << "Player " << this->player->id << "  Score:" << this->player->score;
+    if (this->human_player)
+        std::cout << "Player ";
+    else {
+        std::cout << "CPU ";
+    }
+    std::cout << this->player->id << "  Score:" << this->player->score;
 }
 
 
