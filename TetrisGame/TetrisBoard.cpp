@@ -185,14 +185,18 @@ void TetrisBoard::printBoardColor()
 
 //Returns a value for a specific cell in the board array
 char TetrisBoard::getBoardCell(int x , int y){
-	return board[y][x];
+	if (this->board != nullptr) {
+		return board[y][x];
+	}
+	return 0;
 }
 
 //Blows up the bomb tetromino
 void TetrisBoard::blowUpBomb(int x, int y) {
+	int cells_to_blow_up = 0;
 	for (int y_off = -4; y_off <= 4; y_off++) {
 		if ((y + y_off) >= 0 && (y + y_off) < board_height - 1) {
-			int cells_to_blow_up = 9 - 2 * abs(y_off);
+			cells_to_blow_up = 9 - 2 * abs(y_off);
 			for (int x_off = -cells_to_blow_up / 2; x_off <= cells_to_blow_up / 2; x_off++) {
 				if ((x + x_off) >= 0 && (x + x_off) < board_width - 1) {
 					writeCellToBoard(x + x_off, y + y_off, def_empty);
