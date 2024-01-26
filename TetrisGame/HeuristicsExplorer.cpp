@@ -49,7 +49,7 @@ std::vector<int> HeuristicsExplorer::boardHoles(TetrisBoard* board) {
 	return holes;
 }
 
-
+/*
 int HeuristicsExplorer::chooseMove(const TetrisGame& game) {
 	int bestMove = 0;
 	double bestScore = -INFINITY;
@@ -78,3 +78,4 @@ int HeuristicsExplorer::chooseMove(const TetrisGame& game) {
 
 	return bestMove;
 }
+*/
