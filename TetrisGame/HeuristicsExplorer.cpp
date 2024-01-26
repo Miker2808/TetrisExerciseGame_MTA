@@ -48,10 +48,33 @@ std::vector<int> HeuristicsExplorer::boardHoles(TetrisBoard* board) {
 
 	return holes;
 }
-/*
-int bestColumnScore(TetrisBoard& board, Tetromino& piece) {
-	
+
+
+int HeuristicsExplorer::chooseMove(const TetrisGame& game) {
+	int bestMove = 0;
+	double bestScore = -INFINITY;
+	Tetromino testPiece = piece;
+
+	// Iterate through all possible moves (rotations and positions)
+	for (int rotation = 0; rotation < 4; rotation++) {
+		testPiece.transform(0, 0, 1); // rotate piece by 1
+		for (int x = 1; x < Settings::DEFAULT_BOARD_WIDTH - testPiece.getShapeWidth(); x++) {
+			int y = board.dropHeight(piece, x, rotation); // Find placement height
+
+			// Simulate placing the piece
+			Board simulatedBoard = board;
+			simulatedBoard.placePiece(piece, x, y, rotation);
+
+			// Calculate heuristic score for the simulated board
+			double score = calculateHeuristicScore(simulatedBoard);
+
+			// Update best move if the score is better
+			if (score > bestScore) {
+				bestScore = score;
+				bestMove = x | (rotation << 4); // Combine x and rotation into a single value
+			}
+		}
+	}
+
+	return bestMove;
 }
-
-*/
-

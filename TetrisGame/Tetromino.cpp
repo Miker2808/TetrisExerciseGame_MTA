@@ -205,3 +205,25 @@ void Tetromino::erase()
 		printBNW(erase);
 	}
 }
+
+// returns the width of the shape
+// does so by comparing smallest X to contain shape symbol
+// with the largest X index to contain shape symbol
+unsigned int Tetromino::getShapeWidth() {
+	int width = 0;
+	char curr_char;
+	// because tetromino texture is constant 4x4 to the grave
+	for (int x = 0; x < 4; x++) {
+		for (int y = 0; y < 4; y++) {
+			curr_char = this->tetromino_shapes[this->shape_index][rotate(x, y, rotation)];
+			if (curr_char != Settings::DEFAULT_SPACE) {
+				width += 1;
+				break;
+			}
+		}
+	}
+
+	return width;
+
+}
+

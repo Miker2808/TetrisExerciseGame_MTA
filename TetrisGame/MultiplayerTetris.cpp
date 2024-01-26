@@ -58,6 +58,8 @@ void MultiplayerTetris::gameplayLoop() {
         
         std::vector<int> heights = HeuristicsExplorer().boardHeights(players[0]->board);
         std::vector<int> holes = HeuristicsExplorer().boardHoles(players[0]->board);
+        gotoxy(35, 23);
+        std::cout << "width: " << players[0]->currentMino->getShapeWidth();
         
         gotoxy(1, 23);
         std::cout << "heights:";

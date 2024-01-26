@@ -32,7 +32,7 @@ private:
 
 public:
 	TetrisGame(int start_x, int start_y, bool bombs);
-	TetrisGame(const TetrisGame& other) = delete;
+	TetrisGame(const TetrisGame& other);
 	~TetrisGame();
 	void play(unsigned char curr_key);
 

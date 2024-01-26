@@ -11,8 +11,6 @@ TetrisGame::TetrisGame(int start_x, int start_y, bool bombs)
     this->currentMino = new Tetromino(5, 0, start_x, start_y , bombs_present); // relative to the board
     this->game_counter += 1;
     this->player = new Player(Settings::ctrl_presets[game_counter-1] , game_counter);
-
-
 }
 
 // Destructor for the TetrisGame object, frees dynamically allocated memory

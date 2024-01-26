@@ -24,6 +24,7 @@ private:
 public:
 
 	Tetromino(int start_x, int start_y, int board_start_x, int board_start_y, bool bombs_flag);
+	// Default copy constructor is in the heart, here.
 	~Tetromino();
 	void print();
 	int rotate(int x, int y, int rotation);
@@ -32,6 +33,8 @@ public:
 	void getShapeIndex(int& shape_index);
 	void resetTetromino();
 	void erase();
+
+	unsigned int getShapeWidth();
 
 
 private:
