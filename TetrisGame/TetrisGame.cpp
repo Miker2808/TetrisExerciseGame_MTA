@@ -209,3 +209,20 @@ void TetrisGame::blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot) {
 
     
 }
+
+// Copy constructor for TetrisGame
+TetrisGame::TetrisGame(const TetrisGame& other)
+    : base_score_inc(other.base_score_inc),
+    game_over(other.game_over),
+    start(other.start),
+    human_player(other.human_player),
+    tick_counter(other.tick_counter),
+    ticks_per_drop(other.ticks_per_drop),
+    ticks_survived(other.ticks_survived) {
+
+    // Create dynamic objects for the copied game (board, tetromino, and player)
+    this->bombs_present = other.bombs_present;
+    this->board = new TetrisBoard(*other.board); // Assuming TetrisBoard has a copy constructor
+    this->currentMino = new Tetromino(*other.currentMino); // Assuming Tetromino has a copy constructor
+    this->player = new Player(*other.player); // Assuming Player has a copy constructor
+}

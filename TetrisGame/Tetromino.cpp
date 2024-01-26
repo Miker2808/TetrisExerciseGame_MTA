@@ -26,6 +26,19 @@ Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_star
 
 }
 
+//copy constructor for tetromino
+Tetromino::Tetromino(const Tetromino& other)
+	: rotation(other.rotation),
+	x_pos(other.x_pos),
+	y_pos(other.y_pos),
+	shape_index(other.shape_index),
+	board_offset_x(other.board_offset_x),
+	board_offset_y(other.board_offset_y),
+	start_pos_x(other.start_pos_x),
+	start_pos_y(other.start_pos_y),
+	bombs_present(other.bombs_present)
+{}
+
 // destructor for the tetromino piece
 Tetromino::~Tetromino() {
 

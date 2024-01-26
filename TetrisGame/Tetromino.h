@@ -24,6 +24,7 @@ private:
 public:
 
 	Tetromino(int start_x, int start_y, int board_start_x, int board_start_y, bool bombs_flag);
+	Tetromino(const Tetromino& other);
 	// Default copy constructor is in the heart, here.
 	~Tetromino();
 	void print();

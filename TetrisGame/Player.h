@@ -17,6 +17,13 @@ struct Player
 
 	}
 
+	Player(const Player& other) {
+		this->cpu = other.cpu;
+		this->score = other.score;
+		this->id = other.id;
+		this->my_ctrl = other.my_ctrl;
+	}
+
 	Player(unsigned int id) {
 		this->id = id;
 		//for debugging reasons , to emphasise that this game is CPU controlled 
