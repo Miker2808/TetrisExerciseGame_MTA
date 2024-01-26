@@ -185,7 +185,10 @@ void TetrisBoard::printBoardColor()
 
 //Returns a value for a specific cell in the board array
 char TetrisBoard::getBoardCell(int x , int y){
-	return board[y][x];
+	if (this->board != nullptr) {
+		return board[y][x];
+	}
+	return 0;
 }
 
 //Clears a diamond shape with a "radius" of 4 on the board
