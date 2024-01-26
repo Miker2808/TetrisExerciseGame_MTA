@@ -36,7 +36,6 @@ public:
 	void destroyLine(int y_coor);
 	void shiftBoardDown(int y_shift);
 	char getBoardCell(int x, int y);
-
 	void blowUpBomb(int x, int y);
 
 private:

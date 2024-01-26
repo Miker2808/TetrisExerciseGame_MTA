@@ -1,5 +1,5 @@
 #include "MultiplayerTetris.h"
-
+#include "HeuristicsExplorer.h"
 
 // Launches the multiplayer Tetris game.
 void MultiplayerTetris::launcher() {
@@ -50,9 +50,31 @@ void MultiplayerTetris::gameplayLoop() {
         }
         Sleep(TetrisGame::TICKS_TIME); //game clock
 
+        
         // take action based on user key
+        
         players[0]->play(curr_key);
         players[1]->play(curr_key);
+        
+        std::vector<int> heights = HeuristicsExplorer().boardHeights(players[0]->board);
+        std::vector<int> holes = HeuristicsExplorer().boardHoles(players[0]->board);
+        gotoxy(35, 23);
+        std::cout << "width: " << players[0]->currentMino->getShapeWidth();
+        
+        gotoxy(1, 23);
+        std::cout << "heights:";
+        for (int i = 0; i < heights.size(); i++) {
+            std::cout << heights[i] << " ";
+        }
+
+        
+        gotoxy(3, 24);
+        std::cout << "holes:";
+        for (int i = 0; i < holes.size(); i++) {
+            std::cout << holes[i] << " ";
+        }
+
+        
 
         // Check if the "ESC" key is pressed to pause the game
         if (curr_key == 27) {
