@@ -69,10 +69,13 @@ void MultiplayerTetris::gameplayLoop() {
         
         int x1, y1, rot1;
         games_arr[0]->currentMino->getTransform(x1, y1, rot1);
+        
+        // debug
         gotoxy(1, 24);
         std::cout << "x:" << x1 << " y:" << y1 << " rot:" << rot1 << "        ";
         gotoxy(1, 23);
         std::cout << "Best Move: x:" << bestMove[0] << " rot:" << bestMove[1] << "       ";
+        // debug
 
         // Check if the "ESC" key is pressed to pause the game
         if (curr_key == 27) {

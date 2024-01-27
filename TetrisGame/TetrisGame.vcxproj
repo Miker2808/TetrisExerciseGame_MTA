@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AITetrisGame.cpp" />
     <ClCompile Include="HeuristicsExplorer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuManager.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Tetromino.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AITetrisGame.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="HeuristicsExplorer.h" />
     <ClInclude Include="MenuManager.h" />

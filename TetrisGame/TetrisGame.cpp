@@ -20,6 +20,23 @@ TetrisGame::TetrisGame(int start_x, int start_y, bool bombs , bool human_player)
 
 }
 
+// Copy constructor for TetrisGame
+TetrisGame::TetrisGame(const TetrisGame& other)
+    : base_score_inc(other.base_score_inc),
+    game_over(other.game_over),
+    start(other.start),
+    human_player(other.human_player),
+    tick_counter(other.tick_counter),
+    ticks_per_drop(other.ticks_per_drop),
+    ticks_survived(other.ticks_survived) {
+
+    // Create dynamic objects for the copied game (board, tetromino, and player)
+    this->bombs_present = other.bombs_present;
+    this->board = new TetrisBoard(*other.board); // Assuming TetrisBoard has a copy constructor
+    this->currentMino = new Tetromino(*other.currentMino); // Assuming Tetromino has a copy constructor
+    this->player = new Player(*other.player); // Assuming Player has a copy constructor
+}
+
 // Destructor for the TetrisGame object, frees dynamically allocated memory
 TetrisGame::~TetrisGame() {
     delete this->board;
@@ -98,7 +115,7 @@ void TetrisGame::movementHandler( unsigned char curr_key)
             this->currentMino->transform(0, 0, 1);
     }
     else if (curr_key == this->player->my_ctrl.ROT_LEFT_KEY_1 || curr_key == this->player->my_ctrl.ROT_LEFT_KEY_2) {
-        if (checkCollision( 0, 0, -1))
+        if (checkCollision(0, 0, -1))
             this->currentMino->transform(0, 0, -1);
     }
     else if (curr_key == this->player->my_ctrl.DROP_KEY_1 || curr_key == this->player->my_ctrl.DROP_KEY_2) {
@@ -209,19 +226,3 @@ void TetrisGame::blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot) {
     }
 }
 
-// Copy constructor for TetrisGame
-TetrisGame::TetrisGame(const TetrisGame& other)
-    : base_score_inc(other.base_score_inc),
-    game_over(other.game_over),
-    start(other.start),
-    human_player(other.human_player),
-    tick_counter(other.tick_counter),
-    ticks_per_drop(other.ticks_per_drop),
-    ticks_survived(other.ticks_survived) {
-
-    // Create dynamic objects for the copied game (board, tetromino, and player)
-    this->bombs_present = other.bombs_present;
-    this->board = new TetrisBoard(*other.board); // Assuming TetrisBoard has a copy constructor
-    this->currentMino = new Tetromino(*other.currentMino); // Assuming Tetromino has a copy constructor
-    this->player = new Player(*other.player); // Assuming Player has a copy constructor
-}

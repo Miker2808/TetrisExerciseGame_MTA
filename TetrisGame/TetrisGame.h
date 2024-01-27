@@ -27,8 +27,8 @@ public:
 	bool human_player = false;
 	
 	
-private:
-	// private members
+protected:
+	// protected members
 	unsigned int tick_counter = 0; // counts iterations each for given game session;
 	unsigned int ticks_per_drop = Settings::TICKS_PER_DROP; // kept as a variable to potentionally control drop speed
 
@@ -42,7 +42,7 @@ public:
 	void updateBoardStatus();
 	bool checkCollision(int move_x, int move_y, int move_rot);
 
-private:
+protected:
 
 	void forcePiceDown();
 	void movementHandler(unsigned char curr_key);
