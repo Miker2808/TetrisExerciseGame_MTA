@@ -1,6 +1,7 @@
 #pragma once
 #include "Utility.h"
 #include "TetrisGame.h"
+#include "AITetrisGame.h"
 
 extern Settings global_settings;
 
@@ -8,7 +9,9 @@ extern Settings global_settings;
 class MultiplayerTetris
 {
 private:
-	TetrisGame** games_arr = nullptr;
+	std::vector<TetrisGame*> games_arr = {};
+	std::vector<AITetrisGame *> ai_games_arr = {};
+
 	GameState game_state = GameState::NO_GAME_STATE;
 	MenuManager menu;
 	unsigned int curr_num_of_games = 0;
@@ -21,7 +24,10 @@ private:
 
 	void gameOverLogic(unsigned int games_in_play);
 	
+
 	void freeGames();
+
+	void freeAIGames();
 
 	void allocateGames();
 
@@ -38,9 +44,8 @@ public:
 	MultiplayerTetris& operator=(const MultiplayerTetris& other) = delete;
 
 	~MultiplayerTetris() {
-		if (games_arr != nullptr) {
+		if (games_arr.empty()) {
 			freeGames();
-			delete games_arr;
 		}
 	}
 

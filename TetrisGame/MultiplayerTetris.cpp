@@ -25,16 +25,18 @@ void MultiplayerTetris::launcher() {
 void MultiplayerTetris::setUpNewGame() {
 
     // Delete existing TetrisGame instances, if any
-    if (games_arr != nullptr) {
+    if (not games_arr.empty()) {
         freeGames();
-        delete games_arr;
+        games_arr.clear();
     }
+    if (not ai_games_arr.empty()){
+        freeAIGames();
+        ai_games_arr.clear();
+    }
+
     curr_num_of_games = global_settings.num_of_human_players + global_settings.num_of_bots;
-
-    games_arr = new TetrisGame * [curr_num_of_games];
-
-    // Create new TetrisGame instances for both players
-   allocateGames();
+    
+    allocateGames();
 
 }
 
@@ -127,11 +129,19 @@ void MultiplayerTetris::gameOverLogic(unsigned int games_in_play) {
 }
 
 
+
 void MultiplayerTetris::freeGames() {
-    for (unsigned int i = 0; i < curr_num_of_games; i++)
+    for (size_t i = 0; i < curr_num_of_games; i++)
         delete games_arr[i];
 }
 
+
+
+void MultiplayerTetris::freeAIGames() {
+    for (size_t i = 0; i < ai_games_arr.size(); i++) {
+        delete ai_games_arr[i];
+    }
+}
 
 void MultiplayerTetris::allocateGames() {
     unsigned int i , board_offset_x = 0 , board_offset_y = 0;
@@ -143,9 +153,9 @@ void MultiplayerTetris::allocateGames() {
     }
 
     //allocate the rest of the games as CPU games
-    for (i; i < curr_num_of_games; i++) {
-        updateBoardOffsetPos(i, board_offset_x, board_offset_y);
-        games_arr[i] = new TetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false);
+    for (size_t j = 0; j < global_settings.num_of_bots; j++) {
+        updateBoardOffsetPos(j + i, board_offset_x, board_offset_y);
+        ai_games_arr[j] = new AITetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false);
     }
 }
 
