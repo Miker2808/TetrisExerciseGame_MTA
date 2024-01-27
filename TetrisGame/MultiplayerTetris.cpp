@@ -41,6 +41,9 @@ void MultiplayerTetris::setUpNewGame() {
 
 // Main gameplay loop that handles player input and game state.
 void MultiplayerTetris::gameplayLoop() {
+
+    bool debug_flag = false;
+
     while (game_state == GameState::IN_PROGRESS_GAME)
     {
         unsigned char curr_key = 0;
@@ -61,26 +64,15 @@ void MultiplayerTetris::gameplayLoop() {
                 games_in_play++;
             }
         }
+
+        std::vector<int> bestMove = HeuristicsExplorer::chooseMove(*(games_arr[0]));
         
-        std::vector<int> heights = HeuristicsExplorer().boardHeights(games_arr[0]->board);
-        std::vector<int> holes = HeuristicsExplorer().boardHoles(games_arr[0]->board);
-        gotoxy(35, 23);
-        std::cout << "width: " << games_arr[0]->currentMino->getShapeWidth();
-        
+        int x1, y1, rot1;
+        games_arr[0]->currentMino->getTransform(x1, y1, rot1);
+        gotoxy(1, 24);
+        std::cout << "x:" << x1 << " y:" << y1 << " rot:" << rot1 << "        ";
         gotoxy(1, 23);
-        std::cout << "heights:";
-        for (int i = 0; i < heights.size(); i++) {
-            std::cout << heights[i] << " ";
-        }
-
-        
-        gotoxy(3, 24);
-        std::cout << "holes:";
-        for (int i = 0; i < holes.size(); i++) {
-            std::cout << holes[i] << " ";
-        }
-
-        
+        std::cout << "Best Move: x:" << bestMove[0] << " rot:" << bestMove[1] << "       ";
 
         // Check if the "ESC" key is pressed to pause the game
         if (curr_key == 27) {

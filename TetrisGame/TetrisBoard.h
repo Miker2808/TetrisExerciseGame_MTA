@@ -11,12 +11,10 @@ public:
 	const int board_start_x; // X offset from console edge of board location
 	const int board_start_y;  // Y offset from console edge of board location
 	const int board_width;
-	const int board_height;
-	
+	const int board_height;	
 	
 private:
-	const char wall = Settings::DEFAULT_WALL_SIGN;
-	const char def_empty = Settings::DEFAULT_EMPTY; // space
+
 	char** board = nullptr;
 
 // methods
@@ -27,7 +25,7 @@ public:
 		int width = Settings::DEFAULT_BOARD_WIDTH,
 		int height = Settings::DEFAULT_BOARD_HEIGHT
 		);
-	explicit TetrisBoard(const TetrisBoard&);
+	TetrisBoard(const TetrisBoard&);
 
 	~TetrisBoard();
 	void printBoard();

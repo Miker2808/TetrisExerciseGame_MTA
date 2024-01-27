@@ -33,16 +33,16 @@ void TetrisBoard::allocateBoard(int rows, int cols)
 	for (int i = 0; i < rows; i++) {
 		(this->board)[i] = new char[cols];
 
-		this->board[i][0] = wall;
-		this->board[i][cols - 1] = wall;
+		this->board[i][0] = Settings::DEFAULT_WALL_SIGN;
+		this->board[i][cols - 1] = Settings::DEFAULT_WALL_SIGN;
 
 		for (int j = 1; j < cols - 1; j++) {
-			this->board[i][j] = def_empty;
+			this->board[i][j] = Settings::DEFAULT_EMPTY;
 		}
 		
 	}
 	for (int j = 0; j < cols; j++) {
-		this->board[rows - 1][j] = wall;
+		this->board[rows - 1][j] = Settings::DEFAULT_WALL_SIGN;
 	}
 }
 
@@ -123,7 +123,7 @@ void TetrisBoard::writeCellToBoard(int x_coor , int y_coor , char cell_contents)
 // Checks a row of the board array, returns true if the row is filled
 bool TetrisBoard::isALine(int y_coor) {
 	for (int x = 1; x < board_width-1; x++) {
-		if (board[y_coor][x] == def_empty)
+		if (board[y_coor][x] == Settings::DEFAULT_EMPTY)
 			return false;
 	}
 	return true;
@@ -131,15 +131,19 @@ bool TetrisBoard::isALine(int y_coor) {
 
 // Destroys a filled line on the Tetris board at the given y coordinate
 void TetrisBoard::destroyLine(int y_coor) {
+	/* // temp delete as it inteferes with the AI calculations
 	for (int x = 1; x < board_width - 1; x++) {
 		board[y_coor][x] = '=';
 	}
 	this->printBoard();
 	Sleep(Settings::TICKS_TIME * 2 * global_settings.game_speed); // Makes the remove speed variable
+	*/
 	for (int x = 1; x < board_width - 1; x++) {
-		board[y_coor][x] = def_empty;
+		board[y_coor][x] = Settings::DEFAULT_EMPTY;
 	}
-	this->printBoard();
+	
+	// temp delete
+	//this->printBoard();
 }
 
 // Shifts the entire Tetris board down after clearing a line
@@ -151,7 +155,7 @@ void TetrisBoard::shiftBoardDown(int destroyed_line_y ) {
 	}
 
 	for (int x = 1; x < board_width - 1; x++) {
-		board[0][x] = def_empty;
+		board[0][x] = Settings::DEFAULT_EMPTY;
 	}
 
 }
@@ -199,7 +203,7 @@ void TetrisBoard::blowUpBomb(int x, int y) {
 			cells_to_blow_up = 9 - 2 * abs(y_off);
 			for (int x_off = -cells_to_blow_up / 2; x_off <= cells_to_blow_up / 2; x_off++) {
 				if ((x + x_off) >= 0 && (x + x_off) < board_width - 1) {
-					writeCellToBoard(x + x_off, y + y_off, def_empty);
+					writeCellToBoard(x + x_off, y + y_off, Settings::DEFAULT_EMPTY);
 				}
 			}
 		}

@@ -71,7 +71,7 @@ public:
 	bool bombs = true;
 
 	//indicates total human games
-	unsigned int num_of_human_players = 2;
+	unsigned int num_of_human_players = 1;
 	
 	//indicates total cpu played games
 	unsigned int num_of_bots = 1;

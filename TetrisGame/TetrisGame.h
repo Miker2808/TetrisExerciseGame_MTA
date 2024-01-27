@@ -37,17 +37,20 @@ public:
 	TetrisGame(const TetrisGame& other);
 	~TetrisGame();
 	void play(unsigned char curr_key);
+	
+	// for the heuristics
+	void updateBoardStatus();
+	bool checkCollision(int move_x, int move_y, int move_rot);
 
 private:
 
-	bool checkCollision(int move_x, int move_y, int move_rot);
+	void forcePiceDown();
 	void movementHandler(unsigned char curr_key);
-	void updateBoardStatus();
 	void findAndDestroyLines(int obj_y_pos);
 	void writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index);
-	void movePiceDown();
 	void blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot);
 	void printGameStats();
-	void forcePiceDown();
+	void movePiceDown();
+	
 
 };

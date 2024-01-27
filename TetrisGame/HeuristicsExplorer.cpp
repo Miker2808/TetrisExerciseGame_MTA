@@ -9,6 +9,7 @@ int HeuristicsExplorer::getColumnHeight(TetrisBoard* board, const int x) {
 			
 		}
 	}
+	return 0;
 }
 
 // returns array of max block height for each column
@@ -16,7 +17,6 @@ std::vector<int> HeuristicsExplorer::boardHeights(TetrisBoard* board){
 	int height = board->board_height;
 	int width = board->board_width;
 	std::vector<int> output = std::vector<int>(width - 2, 0);
-	char cell;
 	
 	for (int x = 1; x < width - 1; x++) {
 		output[x - 1] = getColumnHeight(board, x);
@@ -49,33 +49,69 @@ std::vector<int> HeuristicsExplorer::boardHoles(TetrisBoard* board) {
 	return holes;
 }
 
-/*
-int HeuristicsExplorer::chooseMove(const TetrisGame& game) {
-	int bestMove = 0;
-	double bestScore = -INFINITY;
-	Tetromino testPiece = piece;
+
+int calculateHeuristicScore(TetrisBoard* board) {
+	std::vector<int> heightScores = HeuristicsExplorer::boardHeights(board);
+	std::vector<int> holesScores = HeuristicsExplorer::boardHoles(board);
+	int max_height = heightScores[0];
+	int total_score = 0;
+	for (int i = 1; i < heightScores.size(); i++) {
+		total_score -= heightScores[i];
+
+		if (max_height < heightScores[i]) {
+			max_height = heightScores[i];
+		}
+		
+	}
+
+	total_score -= 10 * max_height;
+	for (int i = 0; i < holesScores.size(); i++) {
+		total_score -= 2 * holesScores[i];
+	}
+
+	return total_score;
+
+}
+
+// returns vector<int> {x,rotation} for best rotation and x for the game
+std::vector<int> HeuristicsExplorer::chooseMove(const TetrisGame & game) {
+	std::vector<int> bestMove = { 0, 0 };
+	int currScore;
+	int bestScore = INT_MIN;
+	Tetromino copyMino =  *(game.currentMino);
 
 	// Iterate through all possible moves (rotations and positions)
 	for (int rotation = 0; rotation < 4; rotation++) {
-		testPiece.transform(0, 0, 1); // rotate piece by 1
-		for (int x = 1; x < Settings::DEFAULT_BOARD_WIDTH - testPiece.getShapeWidth(); x++) {
-			int y = board.dropHeight(piece, x, rotation); // Find placement height
+		
+		copyMino.assignTransform(0, 0, rotation);
+		int shape_width = copyMino.getShapeWidth();
+		int collision_offset = copyMino.getShapeCollisionOffset();
 
-			// Simulate placing the piece
-			Board simulatedBoard = board;
-			simulatedBoard.placePiece(piece, x, y, rotation);
+		// iterate for each rotation, start from x=1 up to the edge the tetromino can achieve excluding walls
+		for (int x = 1; x < Settings::DEFAULT_BOARD_WIDTH - shape_width - 1; x++) {
+			
+			TetrisGame simulatedGame = game;
+
+			simulatedGame.currentMino->assignTransform(x - collision_offset,  0, rotation);
+
+			// push piece down until it collides
+			while (simulatedGame.checkCollision(0, 1, 0)) {
+				simulatedGame.currentMino->transform(0, 1, 0);
+			}
+				
+			simulatedGame.updateBoardStatus();
 
 			// Calculate heuristic score for the simulated board
-			double score = calculateHeuristicScore(simulatedBoard);
-
+			currScore = calculateHeuristicScore(simulatedGame.board);
 			// Update best move if the score is better
-			if (score > bestScore) {
-				bestScore = score;
-				bestMove = x | (rotation << 4); // Combine x and rotation into a single value
+			if (currScore > bestScore) {
+				bestScore = currScore;
+				bestMove[0] = x;
+				bestMove[1] = rotation;
 			}
 		}
 	}
-
+	//debugPrint("Bestscore: ", bestScore, 40, 23);
+	
 	return bestMove;
 }
-*/

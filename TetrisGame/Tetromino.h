@@ -30,12 +30,15 @@ public:
 	void print();
 	int rotate(int x, int y, int rotation);
 	void transform(int move_x, int move_y, int rotate = 0);
+	void assignTransform(int new_x, int new_y, int new_rotation);
 	void getTransform(int& currXpos, int& currYpos, int& currRot);
 	void getShapeIndex(int& shape_index);
 	void resetTetromino();
 	void erase();
 
 	unsigned int getShapeWidth();
+
+	unsigned int getShapeCollisionOffset();
 
 
 private:

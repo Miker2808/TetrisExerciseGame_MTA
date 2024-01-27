@@ -196,6 +196,7 @@ void TetrisGame::movePiceDown() {
     this->tick_counter = 0;
 }
 
+
 //function that blows up the bomb Tetromino
 void TetrisGame::blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot) {
     int pixel;
@@ -206,8 +207,6 @@ void TetrisGame::blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot) {
                 this->board->blowUpBomb(obj_x_pos + x_off, obj_y_pos + y_off);
         }
     }
-
-    
 }
 
 // Copy constructor for TetrisGame

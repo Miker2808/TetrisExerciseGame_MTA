@@ -79,19 +79,21 @@ void Tetromino::print()
 	
 }
 
-// updates the coordinates of the tetromino piece.
+// updates the coordinates of the tetromino piece relative to its current position
 void Tetromino::transform(int move_x, int move_y, int rotate) {
-	this->x_pos += move_x;
-	this->y_pos += move_y;
-	this->rotation += rotate;
+	int new_rotation = pyMod(this->rotation + rotate, 4);
 
-	if (this->rotation > 3) {
-		this->rotation = 0;
-	}
-	else if (this->rotation < 0) {
-		this->rotation += 4;
-	}
+	assignTransform((this->x_pos + move_x), (this->y_pos + move_y), new_rotation);
+
 }
+
+// hard wires the new tetromino transform to set values (may overflow if used incorrectly)
+void Tetromino::assignTransform(int new_x, int new_y, int new_rotation) {
+	this->x_pos = new_x;
+	this->y_pos = new_y;
+	this->rotation = new_rotation;
+}
+
 
 //function recives 3 reference int and returns the current position of the tetromino
 void Tetromino::getTransform(int& curr_x_pos , int& curr_y_pos , int& curr_rot) {
@@ -240,3 +242,15 @@ unsigned int Tetromino::getShapeWidth() {
 
 }
 
+// calculates at what offset from tetromino 0,0 the object actually collides
+unsigned int Tetromino::getShapeCollisionOffset() {
+	for (int x = 0; x < 4; x++) {
+		for (int y = 0; y < 4; y++) {
+			if (this->tetromino_shapes[this->shape_index][rotate(x, y, this->rotation)] != Settings::DEFAULT_SPACE) {
+				return x;
+			}
+		}
+	}
+
+	return 0;
+}
