@@ -39,9 +39,6 @@
     <ClCompile Include="Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HeuristicsExplorer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AITetrisGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,9 +69,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Controls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HeuristicsExplorer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AITetrisGame.h">

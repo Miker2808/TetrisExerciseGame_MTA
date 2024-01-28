@@ -52,6 +52,7 @@ void AITetrisGame::play() {
     if (!game_over) {
         this->tick_counter += 1;
         this->ticks_survived += 1;
+		this->current_tetromino_ticks += 1;
 
         this->currentMino->erase();
 
@@ -159,7 +160,7 @@ void AITetrisGame::estimateBestMove() {
 		int collision_offset = this->currentMino->getShapeCollisionOffset();
 
 		// iterate for each rotation, start from x=1 up to the edge the tetromino can achieve excluding walls
-		for (int x = 1; x < Settings::DEFAULT_BOARD_WIDTH - shape_width - 2; x++) {
+		for (int x = 0; x < Settings::DEFAULT_BOARD_WIDTH - shape_width - 2; x++) {
 			AITetrisGame simulatedGame(*this);
 
 			simulatedGame.currentMino->assignTransform(x, 0, rotation);

@@ -1,5 +1,4 @@
 #include "MultiplayerTetris.h"
-#include "HeuristicsExplorer.h"
 
 // Launches the multiplayer Tetris game.
 void MultiplayerTetris::launcher() {

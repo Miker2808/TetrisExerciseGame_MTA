@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AITetrisGame.cpp" />
-    <ClCompile Include="HeuristicsExplorer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="MultiplayerTetris.cpp" />
@@ -153,7 +152,6 @@
   <ItemGroup>
     <ClInclude Include="AITetrisGame.h" />
     <ClInclude Include="Controls.h" />
-    <ClInclude Include="HeuristicsExplorer.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="MultiplayerTetris.h" />
     <ClInclude Include="Player.h" />
