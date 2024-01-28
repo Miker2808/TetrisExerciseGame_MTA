@@ -129,7 +129,7 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 	int max_height = heightScores[0];
 	int total_score = 0;
 	for (int i = 1; i < heightScores.size(); i++) {
-		total_score -= 2 * heightScores[i];
+		total_score -= 3 * heightScores[i];
 
 		if (max_height < heightScores[i]) {
 			max_height = heightScores[i];
@@ -137,7 +137,7 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 
 	}
 	
-	total_score -= 5 * max_height;
+	total_score -= 10 * max_height;
 	for (int i = 0; i < holesScores.size(); i++) {
 		total_score -= 4 * holesScores[i];
 	}
