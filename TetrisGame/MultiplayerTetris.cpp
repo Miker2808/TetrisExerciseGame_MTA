@@ -15,7 +15,6 @@ void MultiplayerTetris::launcher() {
             setUpNewGame();
             game_state = GameState::IN_PROGRESS_GAME;
         }
-
         gameplayLoop();
 
     }
@@ -35,7 +34,6 @@ void MultiplayerTetris::setUpNewGame() {
     }
 
     curr_num_of_games = global_settings.num_of_human_players + global_settings.num_of_bots;
-    
     allocateGames();
 
 }
@@ -60,24 +58,23 @@ void MultiplayerTetris::gameplayLoop() {
 
         
         // take action based on user key
-        for (unsigned int i = 0; i < curr_num_of_games; i++) {
+        for (unsigned int i = 0; i < games_arr.size(); i++) {
             if (!games_arr[i]->game_over) {
                 games_arr[i]->play(curr_key);
                 games_in_play++;
             }
         }
 
-        std::vector<int> bestMove = HeuristicsExplorer::chooseMove(*(games_arr[0]));
-        
-        int x1, y1, rot1;
-        games_arr[0]->currentMino->getTransform(x1, y1, rot1);
-        
-        // debug
-        gotoxy(1, 24);
-        std::cout << "x:" << x1 << " y:" << y1 << " rot:" << rot1 << "        ";
-        gotoxy(1, 23);
-        std::cout << "Best Move: x:" << bestMove[0] << " rot:" << bestMove[1] << "       ";
-        // debug
+        for (unsigned int i = 0; i < ai_games_arr.size(); i++) {
+            if (!ai_games_arr[i]->game_over) {
+                if (ai_games_arr[i]->current_tetromino_ticks == 0) {
+                    ai_games_arr[i]->estimateBestMove();
+                }
+                ai_games_arr[i]->play();
+                games_in_play++;
+            }
+        }
+
 
         // Check if the "ESC" key is pressed to pause the game
         if (curr_key == 27) {
@@ -131,7 +128,7 @@ void MultiplayerTetris::gameOverLogic(unsigned int games_in_play) {
 
 
 void MultiplayerTetris::freeGames() {
-    for (size_t i = 0; i < curr_num_of_games; i++)
+    for (size_t i = 0; i < games_arr.size(); i++)
         delete games_arr[i];
 }
 
@@ -149,13 +146,13 @@ void MultiplayerTetris::allocateGames() {
     //allocate human player games first
     for (i = 0; i < global_settings.num_of_human_players; i++) {
         updateBoardOffsetPos(i , board_offset_x, board_offset_y);
-        games_arr[i] = new TetrisGame(board_offset_x , board_offset_y, global_settings.bombs, true);
+        games_arr.push_back( new TetrisGame(board_offset_x , board_offset_y, global_settings.bombs, true));
     }
-
+    
     //allocate the rest of the games as CPU games
     for (size_t j = 0; j < global_settings.num_of_bots; j++) {
         updateBoardOffsetPos(j + i, board_offset_x, board_offset_y);
-        ai_games_arr[j] = new AITetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false);
+        ai_games_arr.push_back(new AITetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false));
     }
 }
 

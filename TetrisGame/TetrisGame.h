@@ -25,6 +25,8 @@ public:
 	bool game_over = false;
 	bool start = true;
 	bool human_player = false;
+
+	size_t current_tetromino_ticks = 0; // lifetime of current tetromino piece
 	
 	
 protected:

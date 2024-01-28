@@ -16,9 +16,36 @@ AITetrisGame::AITetrisGame(const AITetrisGame& other) :
 
 }
 
+
+void AITetrisGame::movementHandler() {
+
+	int current_x, current_y, current_rot;
+
+	this->currentMino->getTransform(current_x, current_y, current_rot);
+	// rotate to desired position
+	if (current_rot != this->best_rotation && this->checkCollision(0, 0, 1)) {
+		this->currentMino->transform(0, 0, 1);
+		
+	}
+	// only then move it
+	else if (current_x > this->best_x) {
+		this->currentMino->transform(-1, 0, 0);
+	}
+	else if (current_x < this->best_x) {
+		this->currentMino->transform(1, 0, 0);
+	}
+	else {
+		// drop it
+		movePiceDown();
+	}
+
+}
+
+
 // Runs a single cycle of playing the Tetris game
 void AITetrisGame::play() {
-    if (start) {
+	
+	if (start) {
         this->board->printBoard();
         start = false;
     }
@@ -28,7 +55,7 @@ void AITetrisGame::play() {
 
         this->currentMino->erase();
 
-        //this->movementHandler();
+        this->movementHandler();
 
         // Move the tetromino down automatically at a regular interval
         forcePiceDown();
@@ -107,8 +134,8 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 		}
 
 	}
-
-	total_score -= 10 * max_height;
+	
+	total_score -= 5 * max_height;
 	for (int i = 0; i < holesScores.size(); i++) {
 		total_score -= 2 * holesScores[i];
 	}
@@ -119,6 +146,8 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 
 // returns by reference best rotation and best x position
 void AITetrisGame::estimateBestMove() {
+	this->request_estimation = false;
+
 	int best_x = 0;
 	int best_rotation = 0;
 	int currScore;
@@ -130,7 +159,7 @@ void AITetrisGame::estimateBestMove() {
 		int collision_offset = this->currentMino->getShapeCollisionOffset();
 
 		// iterate for each rotation, start from x=1 up to the edge the tetromino can achieve excluding walls
-		for (int x = 1 - collision_offset; x < Settings::DEFAULT_BOARD_WIDTH - shape_width - 1; x++) {
+		for (int x = 1; x < Settings::DEFAULT_BOARD_WIDTH - shape_width - 2; x++) {
 			AITetrisGame simulatedGame(*this);
 
 			simulatedGame.currentMino->assignTransform(x, 0, rotation);

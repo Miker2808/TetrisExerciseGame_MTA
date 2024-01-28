@@ -54,6 +54,7 @@ void TetrisGame::play(unsigned char curr_key) {
     if (!game_over) {
         this->tick_counter += 1;
         this->ticks_survived += 1;
+        this->current_tetromino_ticks += 1;
 
         this->currentMino->erase();
 
@@ -199,6 +200,7 @@ void TetrisGame::movePiceDown() {
         this->currentMino->transform(0, 1, 0);
     else {
         // Update the game board status and reset the tetromino
+        this->current_tetromino_ticks = 0;
         updateBoardStatus();
         this->currentMino->resetTetromino();
         this->board->printBoard();
