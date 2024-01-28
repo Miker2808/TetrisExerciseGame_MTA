@@ -63,7 +63,7 @@ TetrisBoard::~TetrisBoard() {
 }
 
 // Changes terminal colors based on symbols on the board
-void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) {
+void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) const{
 	unsigned char color = 0;
 	unsigned char guide_char = Settings::DEFAULT_SPACE; // to assist with navigation (blank is disorienting)
 	switch (c) {
@@ -105,7 +105,7 @@ void TetrisBoard::printTetrisColor(char c, HANDLE& hConsole) {
 }
 
 // Prints the Tetris board at its current position
-void TetrisBoard::printBoard() {
+void TetrisBoard::printBoard() const{
 	
 	if (global_settings.game_colors) {
 		printBoardColor();
@@ -121,7 +121,7 @@ void TetrisBoard::writeCellToBoard(int x_coor , int y_coor , char cell_contents)
 }
 
 // Checks a row of the board array, returns true if the row is filled
-bool TetrisBoard::isALine(int y_coor) {
+bool TetrisBoard::isALine(int y_coor) const {
 	for (int x = 1; x < board_width-1; x++) {
 		if (board[y_coor][x] == Settings::DEFAULT_EMPTY)
 			return false;
@@ -161,7 +161,7 @@ void TetrisBoard::shiftBoardDown(int destroyed_line_y ) {
 }
 
 // Prints the Tetris board in black and white
-void TetrisBoard::printBoardBNW() 
+void TetrisBoard::printBoardBNW() const
 {
 	for (int curr_height = 0; curr_height < board_height; curr_height++) {
 		gotoxy(this->board_start_x, this->board_start_y + curr_height);
@@ -173,7 +173,7 @@ void TetrisBoard::printBoardBNW()
 }
 
 // Prints the Tetris board in RGB colors
-void TetrisBoard::printBoardColor()
+void TetrisBoard::printBoardColor() const
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -188,7 +188,7 @@ void TetrisBoard::printBoardColor()
 }
 
 //Returns a value for a specific cell in the board array
-char TetrisBoard::getBoardCell(int x , int y){
+char TetrisBoard::getBoardCell(int x , int y) const{
 	if (this->board != nullptr) {
 		return board[y][x];
 	}

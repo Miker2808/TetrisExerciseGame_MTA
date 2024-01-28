@@ -79,9 +79,13 @@ void MultiplayerTetris::gameplayLoop() {
         if (curr_key == 27) {
             game_state = GameState::PAUSED_GAME;
             //reset the game start flag, so once play is resumed the board will be re printed
-            for (unsigned int i = 0; i < curr_num_of_games; i++) {
+            for (size_t i = 0; i < games_arr.size(); i++) {
                 if (!games_arr[i]->game_over)
                     games_arr[i]->start = true;
+            }
+            for (size_t i = 0; i < ai_games_arr.size(); i++) {
+                if (!ai_games_arr[i]->game_over)
+                    ai_games_arr[i]->start = true;
             }
         }
 
@@ -100,11 +104,18 @@ void MultiplayerTetris::gameOverLogic(unsigned int games_in_play) {
     TetrisGame* winning_game = nullptr;
     //if one player survived
     if (games_in_play == 1) {
-        for (unsigned int i = 0; i < curr_num_of_games; i++) {
+        for (size_t i = 0; i < games_arr.size(); i++) {
             if (!games_arr[i]->game_over)
                 winning_game = games_arr[i];
         }
+
+        for (size_t i = 0; i < ai_games_arr.size(); i++) {
+            if (!ai_games_arr[i]->game_over)
+                winning_game = ai_games_arr[i];
+        }
     }
+
+    /*
     //if no one survived
     else {
         winning_game = games_arr[0];
@@ -120,6 +131,7 @@ void MultiplayerTetris::gameOverLogic(unsigned int games_in_play) {
             }
         }
     }
+    */
     game_state = GameState::NO_GAME_STATE;
     menu.printGameOverMenu(winning_game->player->id, winning_game->player->score);
 }
@@ -140,7 +152,8 @@ void MultiplayerTetris::freeAIGames() {
 }
 
 void MultiplayerTetris::allocateGames() {
-    unsigned int i , board_offset_x = 0 , board_offset_y = 0;
+    unsigned int  board_offset_x = 0 , board_offset_y = 0;
+    size_t i;
 
     //allocate human player games first
     for (i = 0; i < global_settings.num_of_human_players; i++) {

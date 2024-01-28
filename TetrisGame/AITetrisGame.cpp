@@ -16,7 +16,8 @@ AITetrisGame::AITetrisGame(const AITetrisGame& other) :
 
 }
 
-
+// Handles the movemenent for the CPU game
+// rotates to desired rotation
 void AITetrisGame::movementHandler() {
 
 	int current_x, current_y, current_rot;
@@ -128,7 +129,7 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 	int max_height = heightScores[0];
 	int total_score = 0;
 	for (int i = 1; i < heightScores.size(); i++) {
-		total_score -= heightScores[i];
+		total_score -= 2 * heightScores[i];
 
 		if (max_height < heightScores[i]) {
 			max_height = heightScores[i];
@@ -138,7 +139,7 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 	
 	total_score -= 5 * max_height;
 	for (int i = 0; i < holesScores.size(); i++) {
-		total_score -= 2 * holesScores[i];
+		total_score -= 4 * holesScores[i];
 	}
 
 	return total_score;
@@ -147,22 +148,23 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 
 // returns by reference best rotation and best x position
 void AITetrisGame::estimateBestMove() {
-	this->request_estimation = false;
-
 	int best_x = 0;
 	int best_rotation = 0;
 	int currScore;
 	int bestScore = INT_MIN;
+	Tetromino tetrominoCopy = *(this->currentMino); // copy to track after width and offset for each rotation
 	
 	// Iterate through all possible moves (rotations and positions)
 	for (int rotation = 0; rotation < 4; rotation++) {
-		int shape_width = this->currentMino->getShapeWidth();
-		int collision_offset = this->currentMino->getShapeCollisionOffset();
+		
+		tetrominoCopy.assignTransform(0, 0, rotation);
+		int shape_width = tetrominoCopy.getShapeWidth();
+		int collision_offset = tetrominoCopy.getShapeCollisionOffset();
 
 		// iterate for each rotation, start from x=1 up to the edge the tetromino can achieve excluding walls
-		for (int x = 0; x < Settings::DEFAULT_BOARD_WIDTH - shape_width - 2; x++) {
+		for (int x = 1 - collision_offset; x < Settings::DEFAULT_BOARD_WIDTH - (collision_offset + shape_width); x++) {
+			
 			AITetrisGame simulatedGame(*this);
-
 			simulatedGame.currentMino->assignTransform(x, 0, rotation);
 
 			// push piece down until it collides

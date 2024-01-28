@@ -27,23 +27,23 @@ public:
 	Tetromino(const Tetromino& other);
 	// Default copy constructor is in the heart, here.
 	~Tetromino();
-	void print();
-	int rotate(int x, int y, int rotation);
+	void print() const;
+	int rotate(int x, int y, int rotation) const;
 	void transform(int move_x, int move_y, int rotate = 0);
 	void assignTransform(int new_x, int new_y, int new_rotation);
-	void getTransform(int& currXpos, int& currYpos, int& currRot);
+	void getTransform(int& currXpos, int& currYpos, int& currRot) const;
 	void getShapeIndex(int& shape_index);
 	void resetTetromino();
-	void erase();
+	void erase() const;
 
-	unsigned int getShapeWidth();
+	unsigned int getShapeWidth() const;
 
-	unsigned int getShapeCollisionOffset();
+	unsigned int getShapeCollisionOffset() const;
 
 
 private:
-	int initShapeindex();
-	void printBNW(bool erase = false);
-	void printColor(bool erase = false);
-	void printCharColor(char c, HANDLE& hConsole);
+	int initShapeindex() const;
+	void printBNW(bool erase = false) const;
+	void printColor(bool erase = false) const;
+	void printCharColor(char c, HANDLE& hConsole) const;
 };

@@ -45,7 +45,7 @@ Tetromino::~Tetromino() {
 }
 
 
-int Tetromino::initShapeindex() {
+int Tetromino::initShapeindex() const{
 	if (!bombs_present)
 		return rand() % 7;
 	else {
@@ -57,7 +57,7 @@ int Tetromino::initShapeindex() {
 }
 
 // returns point of 1D with rotation from 2D coordinates
-int Tetromino::rotate(int x, int y, int rotation) {
+int Tetromino::rotate(int x, int y, int rotation) const{
 	switch (rotation) {
 		case 1: return 12 + y - (x * 4); // 90 deg rotation
 		case 2: return 15 - x - (y * 4); // 180 deg rotation
@@ -68,7 +68,7 @@ int Tetromino::rotate(int x, int y, int rotation) {
 }
 
 // prints the shape at x,y based on rotation using the "rotate" method
-void Tetromino::print()
+void Tetromino::print() const
 {
 	if (global_settings.game_colors) {
 		printColor();
@@ -96,7 +96,7 @@ void Tetromino::assignTransform(int new_x, int new_y, int new_rotation) {
 
 
 //function recives 3 reference int and returns the current position of the tetromino
-void Tetromino::getTransform(int& curr_x_pos , int& curr_y_pos , int& curr_rot) {
+void Tetromino::getTransform(int& curr_x_pos , int& curr_y_pos , int& curr_rot) const{
 	curr_x_pos = this->x_pos;
 	curr_y_pos = this->y_pos;
 	curr_rot = this->rotation;
@@ -117,7 +117,7 @@ void Tetromino::resetTetromino() {
 
 // Function to print the tetromino in black and white colors on the console
 // Supports erasing the tetromino if 'erase' is true
-void Tetromino::printBNW(bool erase) {
+void Tetromino::printBNW(bool erase) const {
 
 	int x_absolute = this->x_pos + this->board_offset_x;
 	int y_absolute = this->y_pos + this->board_offset_y;
@@ -139,7 +139,7 @@ void Tetromino::printBNW(bool erase) {
 
 // Function to print the tetromino in RGB colors on the console
 // Supports erasing the tetromino if 'erase' is true
-void Tetromino::printColor(bool erase) {
+void Tetromino::printColor(bool erase) const{
 
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	int x_absolute = this->x_pos + this->board_offset_x;
@@ -165,7 +165,7 @@ void Tetromino::printColor(bool erase) {
 
 // Function to print a colored character on the console based on the provided character code
 // Uses the provided console handle for setting text attributes
-void Tetromino::printCharColor(char c, HANDLE& hConsole) {
+void Tetromino::printCharColor(char c, HANDLE& hConsole) const{
 	unsigned char color = 0;
 	unsigned char guide_char = Settings::DEFAULT_SPACE;
 	switch (c) {
@@ -210,7 +210,7 @@ void Tetromino::printCharColor(char c, HANDLE& hConsole) {
 
 // Function to erase the tetromino from the console display
 // Chooses between color and black-and-white printing based on global game settings
-void Tetromino::erase()
+void Tetromino::erase() const
 {
 	bool erase = true;
 	if (global_settings.game_colors) {
@@ -224,10 +224,10 @@ void Tetromino::erase()
 // returns the width of the shape
 // does so by comparing smallest X to contain shape symbol
 // with the largest X index to contain shape symbol
-unsigned int Tetromino::getShapeWidth() {
+unsigned int Tetromino::getShapeWidth() const{
 	int width = 0;
 	char curr_char;
-	// because tetromino texture is constant 4x4 to the grave
+	// because tetromino texture is always 4x4
 	for (int x = 0; x < 4; x++) {
 		for (int y = 0; y < 4; y++) {
 			curr_char = this->tetromino_shapes[this->shape_index][rotate(x, y, rotation)];
@@ -243,7 +243,7 @@ unsigned int Tetromino::getShapeWidth() {
 }
 
 // calculates at what offset from tetromino 0,0 the object actually collides
-unsigned int Tetromino::getShapeCollisionOffset() {
+unsigned int Tetromino::getShapeCollisionOffset() const{
 	for (int x = 0; x < 4; x++) {
 		for (int y = 0; y < 4; y++) {
 			if (this->tetromino_shapes[this->shape_index][rotate(x, y, this->rotation)] != Settings::DEFAULT_SPACE) {
@@ -252,5 +252,5 @@ unsigned int Tetromino::getShapeCollisionOffset() {
 		}
 	}
 
-	return 0;
+	return 4;
 }

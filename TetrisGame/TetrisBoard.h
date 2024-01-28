@@ -28,19 +28,19 @@ public:
 	TetrisBoard(const TetrisBoard&);
 
 	~TetrisBoard();
-	void printBoard();
+	void printBoard() const;
 	void writeCellToBoard(int x_coor, int y_coor, char cell_contents);
-	bool isALine(int y_coor);
+	bool isALine(int y_coor) const;
 	void destroyLine(int y_coor);
 	void shiftBoardDown(int y_shift);
-	char getBoardCell(int x, int y);
+	char getBoardCell(int x, int y) const;
 	void blowUpBomb(int x, int y);
 
 private:
 	
-	void printTetrisColor(char c, HANDLE& hConsole);
-	void printBoardColor();
-	void printBoardBNW();
+	void printTetrisColor(char c, HANDLE& hConsole) const;
+	void printBoardColor() const;
+	void printBoardBNW() const;
 	void allocateBoard(int rows, int cols);
 	void freeBoard(int rows);
 
