@@ -49,12 +49,16 @@ public:
 	// Vertical offset from the console edge for displaying Tetris boards
 	static const unsigned int SCREEN_OFFSET_Y = 2;
 
+	static const unsigned int BOMB_RADIUS = 4;
+
 	static const Controls ctrl_presets[2];
 
 	// keys to access menu features
 	static const unsigned char MENU_ONE = '1';
 	static const unsigned char MENU_TWO = '2';
 	static const unsigned char MENU_THREE = '3';
+	static const unsigned char MENU_FOUR = '4';
+	static const unsigned char MENU_FIVE = '5';
 	static const unsigned char MENU_OPTIONS = '8';
 	static const unsigned char MENU_EXIT = '9';
 	static const unsigned char MENU_PAUSE = 27;

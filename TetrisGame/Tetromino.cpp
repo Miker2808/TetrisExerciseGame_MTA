@@ -57,7 +57,7 @@ int Tetromino::initShapeindex() const{
 }
 
 // returns point of 1D with rotation from 2D coordinates
-int Tetromino::rotate(int x, int y, int rotation) const{
+int Tetromino::getCell(int x, int y, int rotation) const{
 	switch (rotation) {
 		case 1: return 12 + y - (x * 4); // 90 deg rotation
 		case 2: return 15 - x - (y * 4); // 180 deg rotation
@@ -125,7 +125,7 @@ void Tetromino::printBNW(bool erase) const {
 	for (int y = 0; y < TETROMINO_SIZE; y++) {
 		for (int x = 0; x < TETROMINO_SIZE; x++) {
 			gotoxy(x_absolute + x, y_absolute + y);
-			curr_pixel_index = rotate(x, y, this->rotation);
+			curr_pixel_index = getCell(x, y, this->rotation);
 			if (tetromino_shapes[this->shape_index][curr_pixel_index] != ' ') {
 				if(erase)
 					std::cout << Settings::DEFAULT_EMPTY;
@@ -149,7 +149,7 @@ void Tetromino::printColor(bool erase) const{
 	for (int y = 0; y < TETROMINO_SIZE; y++) {
 		for (int x = 0; x < TETROMINO_SIZE; x++) {
 			gotoxy(x_absolute + x, y_absolute + y);
-			curr_pixel_index = rotate(x, y, this->rotation);
+			curr_pixel_index = getCell(x, y, this->rotation);
 			if (tetromino_shapes[this->shape_index][curr_pixel_index] != ' ') {
 				if(erase)
 					std::cout << Settings::DEFAULT_EMPTY;
@@ -230,7 +230,7 @@ unsigned int Tetromino::getShapeWidth() const{
 	// because tetromino texture is always 4x4
 	for (int x = 0; x < 4; x++) {
 		for (int y = 0; y < 4; y++) {
-			curr_char = this->tetromino_shapes[this->shape_index][rotate(x, y, rotation)];
+			curr_char = this->tetromino_shapes[this->shape_index][getCell(x, y, rotation)];
 			if (curr_char != Settings::DEFAULT_SPACE) {
 				width += 1;
 				break;
@@ -246,7 +246,7 @@ unsigned int Tetromino::getShapeWidth() const{
 unsigned int Tetromino::getShapeCollisionOffset() const{
 	for (int x = 0; x < 4; x++) {
 		for (int y = 0; y < 4; y++) {
-			if (this->tetromino_shapes[this->shape_index][rotate(x, y, this->rotation)] != Settings::DEFAULT_SPACE) {
+			if (this->tetromino_shapes[this->shape_index][getCell(x, y, this->rotation)] != Settings::DEFAULT_SPACE) {
 				return x;
 			}
 		}

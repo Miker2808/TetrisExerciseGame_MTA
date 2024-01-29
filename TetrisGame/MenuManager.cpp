@@ -12,9 +12,7 @@ GameState MenuManager::mainMenu(GameState state) {
 	{
 		this->printMainMenu();
 
-
 		curr_key = _getch();
-
 
 		mainMenuLogic(curr_key);
 
@@ -27,22 +25,25 @@ GameState MenuManager::mainMenu(GameState state) {
 
 //Displays the main menu with options such as starting a new game, continuing the game (if already started),
 //accessing options, and exiting the game.
-void MenuManager::printMainMenu() {
+void MenuManager::printMainMenu() const
+{
 	system("cls");
 	std::cout << "\n\n   Tetris\n";
 	std::cout << "  Main menu\n";
 	std::cout << "~~~~~~~~~~~~~~\n\n";
 	std::cout << "Choose key:\n";
-	std::cout << "[" << Settings::MENU_ONE << "] New Game\n";
+	std::cout << "[" << Settings::MENU_ONE << "] New Game - Player Vs Player\n";
+	std::cout << "[" << Settings::MENU_TWO << "] New Game - Player Vs Computer\n";
+	std::cout << "[" << Settings::MENU_THREE << "] New Game - Computer Vs Computer\n";
 	if (this->game_started) {
-		std::cout << "[" << Settings::MENU_TWO << "] Continue Game\n";
+		std::cout << "[" << Settings::MENU_FOUR << "] Continue Game\n";
 	}
 	std::cout << "[" << Settings::MENU_OPTIONS << "] Options\n";
 	std::cout << "[" << Settings::MENU_EXIT << "] Exit Game\n";
 }
 
 // Prints controls extracted from pointers of player_1 and player_2.
-void MenuManager::printControls()
+void MenuManager::printControls() const
 {
 	int x = 25;
 	int y = 1;
@@ -75,31 +76,43 @@ void MenuManager::printControls()
 void MenuManager::mainMenuLogic(unsigned char curr_key)
 {
 	switch (curr_key) {
-	case Settings::MENU_ONE:
+		case Settings::MENU_ONE:
 			this->game_started = true;
 			current_state = GameState::NEW_GAME;
-			return ;
-			break;
-	case Settings::MENU_TWO:
-			if (this->game_started) {
-				current_state = GameState::IN_PROGRESS_GAME;
-				return ;
-			}
-			break;
-	case Settings::MENU_OPTIONS:
-			this->optionsMenu();
+			global_settings.num_of_bots = 0;
+			global_settings.num_of_human_players = 2;
 			return;
-	case Settings::MENU_EXIT:
-			current_state = GameState::EXIT_GAME;
-			return ;
-		default:
+		case Settings::MENU_TWO:
+			this->game_started = true;
+			current_state = GameState::NEW_GAME;
+			global_settings.num_of_bots = 1;
+			global_settings.num_of_human_players = 1;
 			return;
 
+		case Settings::MENU_THREE:
+			this->game_started = true;
+			current_state = GameState::NEW_GAME;
+			global_settings.num_of_bots = 2;
+			global_settings.num_of_human_players = 0;
+			return;
+
+		case Settings::MENU_FOUR:
+			if (this->game_started) {
+				current_state = GameState::IN_PROGRESS_GAME;
+				return;
+			}
+			break;
+		case Settings::MENU_OPTIONS:
+			this->optionsMenu();
+			return;
+		case Settings::MENU_EXIT:
+			current_state = GameState::EXIT_GAME;
+			return;
 	}
 }
 
 //Displays the options menu with settings like enabling / disabling colors and the option to go back or exit.
-void MenuManager::printOptionsMenu() {
+void MenuManager::printOptionsMenu() const{
 	system("cls");
 	std::cout << "\n\n   Tetris\n";
 	std::cout << "   Options\n";

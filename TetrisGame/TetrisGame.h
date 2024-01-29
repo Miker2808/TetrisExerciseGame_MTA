@@ -9,30 +9,24 @@
 // TetrisGame class represents the main logic and state of a Tetris game.
 // NOTE: Each user has its own game instance, allowing multiple players to play games with independent in game tick rates.
 class TetrisGame {
-
 public:
-	// public members
-	static const unsigned int TICKS_TIME = Settings::TICKS_TIME;
-	int base_score_inc = Settings::BASE_SCORE_INCREMENT;
 	static unsigned int game_counter;
-	unsigned int ticks_survived = 0;
 
 	TetrisBoard* board;
 	Tetromino* currentMino;
 	Player* player;
 
-	bool bombs_present;
-	bool game_over = false;
-	bool start = true;
-	bool human_player = false;
-
-	size_t current_tetromino_ticks = 0; // lifetime of current tetromino piece
-	
-	
 protected:
 	// protected members
 	unsigned int tick_counter = 0; // counts iterations each for given game session;
 	unsigned int ticks_per_drop = Settings::TICKS_PER_DROP; // kept as a variable to potentionally control drop speed
+	int base_score_inc = Settings::BASE_SCORE_INCREMENT;
+	bool bombs_present;
+	bool game_over = false;
+	bool start_flag = true;
+	bool is_player = false;
+	size_t current_tetromino_ticks = 0; // lifetime of current tetromino piece
+	unsigned int ticks_survived = 0;
 
 public:
 	TetrisGame(int start_x, int start_y, bool bombs, bool human_player);
@@ -41,12 +35,16 @@ public:
 	void play(unsigned char curr_key);
 	
 	// for the heuristics
-	void updateBoardStatus();
-	bool checkCollision(int move_x, int move_y, int move_rot);
+	bool isGameOver();
+	void setGameOver(bool flag);
+	bool isGameStart();
+	void setGameStart(bool flag);
 
 protected:
 
-	void forcePiceDown();
+	bool checkCollision(int move_x, int move_y, int move_rot);
+	void updateBoardStatus();
+	void movePieceDownAfterTick();
 	void movementHandler(unsigned char curr_key);
 	void findAndDestroyLines(int obj_y_pos);
 	void writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index);

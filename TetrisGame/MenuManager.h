@@ -23,9 +23,9 @@ public:
 
 private:
 	void mainMenuLogic(unsigned char curr_key);
-	void printMainMenu();
-	void printControls();
-	void printOptionsMenu();
+	void printMainMenu() const;
+	void printControls() const;
+	void printOptionsMenu() const;
 
 
 };

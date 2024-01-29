@@ -17,7 +17,8 @@ AITetrisGame::AITetrisGame(const AITetrisGame& other) :
 }
 
 // Handles the movemenent for the CPU game
-// rotates to desired rotation
+// rotates to desired rotation and then moves to best X
+// moves only if not collision is interfered, otherwise it falls.
 void AITetrisGame::movementHandler() {
 
 	int current_x, current_y, current_rot;
@@ -28,15 +29,15 @@ void AITetrisGame::movementHandler() {
 		this->currentMino->transform(0, 0, 1);
 		
 	}
-	// only then move it
-	else if (current_x > this->best_x) {
+	// move only after completing the rotations
+	else if (current_x > this->best_x and this->checkCollision(-1, 0, 0)) {
 		this->currentMino->transform(-1, 0, 0);
 	}
-	else if (current_x < this->best_x) {
+	else if (current_x < this->best_x and this->checkCollision(1, 0, 0)) {
 		this->currentMino->transform(1, 0, 0);
 	}
 	else {
-		// drop it
+		// drop the piece down
 		movePiceDown();
 	}
 
@@ -45,11 +46,16 @@ void AITetrisGame::movementHandler() {
 
 // Runs a single cycle of playing the Tetris game
 void AITetrisGame::play() {
-	
-	if (start) {
+
+	if (this->current_tetromino_ticks == 0) {
+		this->estimateBestMove();
+	}
+
+	if (start_flag) {
         this->board->printBoard();
-        start = false;
+        start_flag = false;
     }
+
     if (!game_over) {
         this->tick_counter += 1;
         this->ticks_survived += 1;
@@ -60,25 +66,21 @@ void AITetrisGame::play() {
         this->movementHandler();
 
         // Move the tetromino down automatically at a regular interval
-        forcePiceDown();
+        movePieceDownAfterTick();
 
         // Check for collision with the bottom or other blocks
 
         this->currentMino->print();
         this->printGameStats();
-
-
-    }
-    else {
-        //print game over on the board
     }
 }
 
-int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) {
+// returns the height of given column 'x' from board at given pointer
+int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) const{
 
-	for (int y = 0; y < board->board_height; y++) {
+	for (int y = 0; y < board->getBoardHeight(); y++) {
 		if (board->getBoardCell(x, y) != Settings::DEFAULT_EMPTY) {
-			return board->board_height - y - 1;
+			return board->getBoardHeight() - y - 1;
 
 		}
 	}
@@ -86,21 +88,47 @@ int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) {
 }
 
 // returns array of max block height for each column
-std::vector<int> AITetrisGame::boardHeights(TetrisBoard* board) {
-	int height = board->board_height;
-	int width = board->board_width;
+std::vector<int> AITetrisGame::boardHeights(TetrisBoard* board) const{
+	size_t height = board->getBoardHeight();
+	size_t width = board->getBoardWidth();
 	std::vector<int> output = std::vector<int>(width - 2, 0);
 
-	for (int x = 1; x < width - 1; x++) {
+	for (unsigned int x = 1; x < width - 1; x++) {
 		output[x - 1] = getColumnHeight(board, x);
 	}
 
 	return output;
 }
 
-int AITetrisGame::getColumnHoles(TetrisBoard* board, const int x) {
+// best_x getter
+int AITetrisGame::getBestX()
+{
+	return this->best_x;
+}
+
+// best_rotation getter
+int AITetrisGame::getBestRot()
+{
+	return this->best_rotation;
+}
+
+// best_x setter
+void AITetrisGame::setBestX(int x)
+{
+	this->best_x = x;
+}
+
+// best_rotation setter
+void AITetrisGame::setBestRot(int rot)
+{
+	this->best_rotation = rot;
+}
+
+
+// returns number of holes at given column "x" from pointer of "board"
+int AITetrisGame::getColumnHoles(TetrisBoard* board, const int x) const{
 	int columnHeight = getColumnHeight(board, x);
-	int board_height = board->board_height;
+	int board_height = board->getBoardHeight();
 	int holes = 0;
 	for (int y = 0; y <= columnHeight; y++) {
 		if (board->getBoardCell(x, (board_height - y - 1)) == Settings::DEFAULT_EMPTY) {
@@ -111,25 +139,31 @@ int AITetrisGame::getColumnHoles(TetrisBoard* board, const int x) {
 }
 
 // creates a vector that counts the number of holes on each column
-std::vector<int> AITetrisGame::boardHoles(TetrisBoard* board) {
-	int width = board->board_width;
+std::vector<int> AITetrisGame::boardHoles(TetrisBoard* board) const{
+	size_t width = board->getBoardWidth();
 	std::vector<int> holes = std::vector<int>(width - 2, 0);
 
-	for (int x = 1; x < width - 1; x++) {
+	for (unsigned int x = 1; x < width - 1; x++) {
 		holes[x - 1] = getColumnHoles(board, x);
 	}
 
 	return holes;
 }
 
+// calculates heirustics score by giving a penality for every imperfection with varied weights
+// Note: perfect calculation is achieved only by actively teaching for best penality coefficients
+int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
+	// should sum to 20
+	const unsigned int height_penalty = 5;
+	const unsigned int max_height_penality = 10;
+	const unsigned int holes_penality = 6;
 
-int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 	std::vector<int> heightScores = boardHeights(board);
 	std::vector<int> holesScores = boardHoles(board);
 	int max_height = heightScores[0];
 	int total_score = 0;
 	for (int i = 1; i < heightScores.size(); i++) {
-		total_score -= 3 * heightScores[i];
+		total_score -= height_penalty * heightScores[i];
 
 		if (max_height < heightScores[i]) {
 			max_height = heightScores[i];
@@ -137,9 +171,9 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 
 	}
 	
-	total_score -= 10 * max_height;
+	total_score -= max_height_penality * max_height;
 	for (int i = 0; i < holesScores.size(); i++) {
-		total_score -= 4 * holesScores[i];
+		total_score -= holes_penality * holesScores[i];
 	}
 
 	return total_score;
@@ -147,7 +181,7 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) {
 }
 
 // returns by reference best rotation and best x position
-void AITetrisGame::estimateBestMove() {
+void AITetrisGame::estimateBestMove(){
 	int best_x = 0;
 	int best_rotation = 0;
 	int currScore;

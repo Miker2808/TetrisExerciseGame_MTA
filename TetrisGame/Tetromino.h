@@ -28,16 +28,14 @@ public:
 	// Default copy constructor is in the heart, here.
 	~Tetromino();
 	void print() const;
-	int rotate(int x, int y, int rotation) const;
+	int getCell(int x, int y, int rotation) const;
 	void transform(int move_x, int move_y, int rotate = 0);
 	void assignTransform(int new_x, int new_y, int new_rotation);
 	void getTransform(int& currXpos, int& currYpos, int& currRot) const;
 	void getShapeIndex(int& shape_index);
 	void resetTetromino();
 	void erase() const;
-
 	unsigned int getShapeWidth() const;
-
 	unsigned int getShapeCollisionOffset() const;
 
 

@@ -5,17 +5,12 @@ extern Settings global_settings;
 
 class TetrisBoard {
 
-public:
-
-
+// hidden members, use getters and setters instead
 	const int board_start_x; // X offset from console edge of board location
 	const int board_start_y;  // Y offset from console edge of board location
 	const int board_width;
-	const int board_height;	
-	
-private:
-
-	char** board = nullptr;
+	const int board_height;
+	std::vector<std::vector<unsigned char>> board;
 
 // methods
 public:
@@ -26,23 +21,28 @@ public:
 		int height = Settings::DEFAULT_BOARD_HEIGHT
 		);
 	TetrisBoard(const TetrisBoard&);
-
 	~TetrisBoard();
+
 	void printBoard() const;
 	void writeCellToBoard(int x_coor, int y_coor, char cell_contents);
+	int getBoardStartX() const;
+	int getBoardStartY() const;
+	int getBoardWidth() const;
+	int getBoardHeight() const;
+	char getBoardCell(int x, int y) const;
 	bool isALine(int y_coor) const;
 	void destroyLine(int y_coor);
 	void shiftBoardDown(int y_shift);
-	char getBoardCell(int x, int y) const;
 	void blowUpBomb(int x, int y);
 
 private:
-	
 	void printTetrisColor(char c, HANDLE& hConsole) const;
 	void printBoardColor() const;
 	void printBoardBNW() const;
-	void allocateBoard(int rows, int cols);
-	void freeBoard(int rows);
+	void allocateBoard(size_t rows, size_t cols);
+	
+	
+	
 
 
 };

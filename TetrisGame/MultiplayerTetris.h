@@ -14,9 +14,6 @@ private:
 
 	GameState game_state = GameState::NO_GAME_STATE;
 	MenuManager menu;
-	unsigned int curr_num_of_games = 0;
-
-	
 
 	void setUpNewGame();
 
@@ -24,7 +21,6 @@ private:
 
 	void gameOverLogic(unsigned int games_in_play);
 	
-
 	void freeGames();
 
 	void freeAIGames();

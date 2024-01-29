@@ -23,43 +23,24 @@ TetrisBoard::TetrisBoard(const TetrisBoard& other)
 	}
 }
 
-
 // Allocates dynamic memory for the board and initializes it with "empty spaces"
-void TetrisBoard::allocateBoard(int rows, int cols)
+void TetrisBoard::allocateBoard(size_t rows, size_t cols)
 {
-	this->board = new char* [rows];
+	this->board = std::vector<std::vector<unsigned char>>(rows, std::vector<unsigned char>(cols, Settings::DEFAULT_EMPTY));
 
-
-	for (int i = 0; i < rows; i++) {
-		(this->board)[i] = new char[cols];
+	for (size_t i = 0; i < rows; i++) {
 
 		this->board[i][0] = Settings::DEFAULT_WALL_SIGN;
 		this->board[i][cols - 1] = Settings::DEFAULT_WALL_SIGN;
-
-		for (int j = 1; j < cols - 1; j++) {
-			this->board[i][j] = Settings::DEFAULT_EMPTY;
-		}
-		
 	}
-	for (int j = 0; j < cols; j++) {
+	for (size_t j = 0; j < cols; j++) {
 		this->board[rows - 1][j] = Settings::DEFAULT_WALL_SIGN;
 	}
 }
 
 // Frees the dynamic memory allocated for the Tetris board
-void TetrisBoard::freeBoard(int rows) {
-	for (int i = 0; i < rows; i++) {
-		delete[] (this->board)[i];
-	}
-	delete[] this->board;
-
-	this->board = nullptr;
-	
-}
-
-// Frees the dynamic memory allocated for the Tetris board
 TetrisBoard::~TetrisBoard() {
-	freeBoard(board_height);
+	
 }
 
 // Changes terminal colors based on symbols on the board
@@ -118,6 +99,26 @@ void TetrisBoard::printBoard() const{
 // Writes a given 'cell content' into a cell at specified coordinates
 void TetrisBoard::writeCellToBoard(int x_coor , int y_coor , char cell_contents) {
 	this->board[y_coor][x_coor] = cell_contents;
+}
+
+int TetrisBoard::getBoardStartX() const
+{
+	return this->board_start_x;
+}
+
+int TetrisBoard::getBoardStartY() const 
+{
+	return this->board_start_y;
+}
+
+int TetrisBoard::getBoardWidth() const
+{
+	return this->board_width;
+}
+
+int TetrisBoard::getBoardHeight() const
+{
+	return this->board_height;
 }
 
 // Checks a row of the board array, returns true if the row is filled
@@ -189,7 +190,7 @@ void TetrisBoard::printBoardColor() const
 
 //Returns a value for a specific cell in the board array
 char TetrisBoard::getBoardCell(int x , int y) const{
-	if (this->board != nullptr) {
+	if (not this->board.empty()) {
 		return board[y][x];
 	}
 	return 0;

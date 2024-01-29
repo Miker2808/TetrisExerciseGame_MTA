@@ -21,7 +21,7 @@ void MultiplayerTetris::launcher() {
 
 // Sets up a new game for both players.
 void MultiplayerTetris::setUpNewGame() {
-
+    
     // Delete existing TetrisGame instances, if any
     if (not games_arr.empty()) {
         freeGames();
@@ -32,7 +32,7 @@ void MultiplayerTetris::setUpNewGame() {
         ai_games_arr.clear();
     }
 
-    curr_num_of_games = global_settings.num_of_human_players + global_settings.num_of_bots;
+    TetrisGame::game_counter = 0;
     allocateGames();
 
 }
@@ -41,51 +41,44 @@ void MultiplayerTetris::setUpNewGame() {
 // Main gameplay loop that handles player input and game state.
 void MultiplayerTetris::gameplayLoop() {
 
-    bool debug_flag = false;
-
     while (game_state == GameState::IN_PROGRESS_GAME)
     {
         unsigned char curr_key = 0;
         unsigned int games_in_play = 0;
         
-        
         // Get key input from the user
         if (_kbhit()) {
             curr_key = _getch();
         }
-        Sleep(TetrisGame::TICKS_TIME); //game clock
 
+        Sleep(Settings::TICKS_TIME); //game clock
         
         // take action based on user key
-        for (unsigned int i = 0; i < games_arr.size(); i++) {
-            if (!games_arr[i]->game_over) {
+        for (size_t i = 0; i < games_arr.size(); i++) {
+            if (!games_arr[i]->isGameOver()) {
                 games_arr[i]->play(curr_key);
                 games_in_play++;
             }
         }
 
-        for (unsigned int i = 0; i < ai_games_arr.size(); i++) {
-            if (!ai_games_arr[i]->game_over) {
-                if (ai_games_arr[i]->current_tetromino_ticks == 0) {
-                    ai_games_arr[i]->estimateBestMove();
-                }
+        for (size_t i = 0; i < ai_games_arr.size(); i++) {
+            if (!ai_games_arr[i]->isGameOver()) {
                 ai_games_arr[i]->play();
                 games_in_play++;
             }
         }
-
 
         // Check if the "ESC" key is pressed to pause the game
         if (curr_key == 27) {
             game_state = GameState::PAUSED_GAME;
             //reset the game start flag, so once play is resumed the board will be re printed
             for (size_t i = 0; i < games_arr.size(); i++) {
-                if (!games_arr[i]->game_over)
-                    games_arr[i]->start = true;
+                if (!games_arr[i]->isGameOver())
+                    games_arr[i]->setGameStart(true);
             }
             for (size_t i = 0; i < ai_games_arr.size(); i++) {
-                if (!ai_games_arr[i]->game_over)
-                    ai_games_arr[i]->start = true;
+                if (!ai_games_arr[i]->isGameOver())
+                    ai_games_arr[i]->setGameStart(true);
             }
         }
 
@@ -101,17 +94,19 @@ void MultiplayerTetris::gameplayLoop() {
 
 // Handles game-over logic and displays the game over menu.
 void MultiplayerTetris::gameOverLogic(unsigned int games_in_play) {
-    TetrisGame* winning_game = nullptr;
+    TetrisGame* winning_game = nullptr; // works due to polymorphism of AITetrisGame
     //if one player survived
     if (games_in_play == 1) {
         for (size_t i = 0; i < games_arr.size(); i++) {
-            if (!games_arr[i]->game_over)
+            if (!games_arr[i]->isGameOver()) {
                 winning_game = games_arr[i];
+            }
         }
 
         for (size_t i = 0; i < ai_games_arr.size(); i++) {
-            if (!ai_games_arr[i]->game_over)
+            if (!ai_games_arr[i]->isGameOver()) {
                 winning_game = ai_games_arr[i];
+            }
         }
     }
 
@@ -132,10 +127,12 @@ void MultiplayerTetris::gameOverLogic(unsigned int games_in_play) {
         }
     }
     */
-    game_state = GameState::NO_GAME_STATE;
-    menu.printGameOverMenu(winning_game->player->id, winning_game->player->score);
-}
 
+    game_state = GameState::NO_GAME_STATE;
+    if (winning_game != nullptr) {
+        menu.printGameOverMenu(winning_game->player->id, winning_game->player->score);
+    }
+}
 
 
 void MultiplayerTetris::freeGames() {
@@ -143,17 +140,16 @@ void MultiplayerTetris::freeGames() {
         delete games_arr[i];
 }
 
-
-
 void MultiplayerTetris::freeAIGames() {
     for (size_t i = 0; i < ai_games_arr.size(); i++) {
         delete ai_games_arr[i];
     }
 }
 
+// allocates memory for all the AITetrisGames and TetrisGames objects
 void MultiplayerTetris::allocateGames() {
     unsigned int  board_offset_x = 0 , board_offset_y = 0;
-    size_t i;
+    unsigned int i;
 
     //allocate human player games first
     for (i = 0; i < global_settings.num_of_human_players; i++) {
@@ -162,7 +158,7 @@ void MultiplayerTetris::allocateGames() {
     }
     
     //allocate the rest of the games as CPU games
-    for (size_t j = 0; j < global_settings.num_of_bots; j++) {
+    for (unsigned int j = 0; j < global_settings.num_of_bots; j++) {
         updateBoardOffsetPos(j + i, board_offset_x, board_offset_y);
         ai_games_arr.push_back(new AITetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false));
     }

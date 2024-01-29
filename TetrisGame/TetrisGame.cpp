@@ -6,12 +6,12 @@ unsigned int TetrisGame::game_counter = 0;
 TetrisGame::TetrisGame(int start_x, int start_y, bool bombs , bool human_player)
 {
     // Create dynamic objects for the game (board, tetromino, and player)
-    this->human_player = human_player;
+    this->is_player = human_player;
     bombs_present = bombs;
     this->board = new TetrisBoard(start_x, start_y); // start board and set it to be x=10,y=10 relative to console
     this->currentMino = new Tetromino(5, 0, start_x, start_y , bombs_present); // relative to the board
     this->game_counter += 1;
-    if (this->human_player) {
+    if (this->is_player) {
         this->player = new Player(Settings::ctrl_presets[game_counter - 1], game_counter);
     }
     else {
@@ -24,8 +24,8 @@ TetrisGame::TetrisGame(int start_x, int start_y, bool bombs , bool human_player)
 TetrisGame::TetrisGame(const TetrisGame& other)
     : base_score_inc(other.base_score_inc),
     game_over(other.game_over),
-    start(other.start),
-    human_player(other.human_player),
+    start_flag(other.start_flag),
+    is_player(other.is_player),
     tick_counter(other.tick_counter),
     ticks_per_drop(other.ticks_per_drop),
     ticks_survived(other.ticks_survived) {
@@ -47,9 +47,9 @@ TetrisGame::~TetrisGame() {
 
 // Runs a single cycle of playing the Tetris game
 void TetrisGame::play(unsigned char curr_key) {
-    if (start) {
+    if (start_flag) {
         this->board->printBoard();
-        start = false;
+        start_flag = false;
     }
     if (!game_over) {
         this->tick_counter += 1;
@@ -61,7 +61,7 @@ void TetrisGame::play(unsigned char curr_key) {
         this->movementHandler(curr_key);
 
         // Move the tetromino down automatically at a regular interval
-        forcePiceDown();
+        movePieceDownAfterTick();
 
         // Check for collision with the bottom or other blocks
 
@@ -90,7 +90,7 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     int pixel;
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
-            pixel = this->currentMino->rotate(x_off , y_off, next_rot);
+            pixel = this->currentMino->getCell(x_off , y_off, next_rot);
             if (Tetromino::tetromino_shapes[shape_index][pixel] != ' ' && this->board->getBoardCell(next_x + x_off, next_y + y_off) != '.') {
                 return false;
             }
@@ -99,6 +99,27 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
 
     return true;
 }
+
+bool TetrisGame::isGameOver()
+{
+    return this->game_over;
+}
+
+void TetrisGame::setGameOver(bool flag)
+{
+    this->game_over = flag;
+}
+
+bool TetrisGame::isGameStart()
+{
+    return this->start_flag;
+}
+
+void TetrisGame::setGameStart(bool flag)
+{
+    this->start_flag = flag;
+}
+
 
 // Handle movement and rotation of the tetromino based on user input
 void TetrisGame::movementHandler( unsigned char curr_key)
@@ -145,7 +166,7 @@ void TetrisGame::updateBoardStatus() {
 void TetrisGame::findAndDestroyLines(int obj_y_pos) {
     int destroyed_lines = 0;
     for (int y_off = 0; y_off < 4; y_off++) {
-        if ((obj_y_pos + y_off) < this->board->board_height - 1)
+        if ((obj_y_pos + y_off) < this->board->getBoardHeight() - 1)
             if (this->board->isALine(obj_y_pos + y_off)) {
                 destroyed_lines++;
                 this->board->destroyLine(obj_y_pos + y_off);
@@ -163,8 +184,8 @@ void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot
     
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
-            pixel = this->currentMino->rotate(x_off, y_off, obj_rot);
-            if (Tetromino::tetromino_shapes[obj_shape_index][pixel] != ' ')
+            pixel = this->currentMino->getCell(x_off, y_off, obj_rot);
+            if (Tetromino::tetromino_shapes[obj_shape_index][pixel] != Settings::DEFAULT_SPACE)
                 this->board->writeCellToBoard(obj_x_pos + x_off, obj_y_pos + y_off, Tetromino::tetromino_shapes[obj_shape_index][pixel]);
         }
     }
@@ -172,7 +193,7 @@ void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot
 
 
 // Function to force the tetromino down every game tick, affected by game speed
-void TetrisGame::forcePiceDown() {
+void TetrisGame::movePieceDownAfterTick() {
     if (this->tick_counter > this->ticks_per_drop) {
         movePiceDown();
     }
@@ -181,10 +202,10 @@ void TetrisGame::forcePiceDown() {
 
 // Function to print the game statistics below the game board
 void TetrisGame::printGameStats() {
-    int print_x = this->board->board_start_x;
-    int print_y = this->board->board_start_y + this->board->board_height + 1;
+    int print_x = this->board->getBoardStartX();
+    int print_y = this->board->getBoardStartY() + this->board->getBoardHeight() + 1;
     gotoxy(print_x, print_y);
-    if (this->human_player)
+    if (this->is_player)
         std::cout << "Player ";
     else {
         std::cout << "CPU ";
@@ -221,8 +242,8 @@ void TetrisGame::blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot) {
     int pixel;
     for (int y_off = 1; y_off < 3; y_off++) {
         for (int x_off = 1; x_off < 3; x_off++) {
-            pixel = this->currentMino->rotate(x_off, y_off, obj_rot);
-            if (Tetromino::tetromino_shapes[7][pixel] != ' ')
+            pixel = this->currentMino->getCell(x_off, y_off, obj_rot);
+            if (Tetromino::tetromino_shapes[7][pixel] != Settings::DEFAULT_SPACE)
                 this->board->blowUpBomb(obj_x_pos + x_off, obj_y_pos + y_off);
         }
     }
