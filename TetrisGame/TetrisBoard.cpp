@@ -203,7 +203,7 @@ void TetrisBoard::blowUpBomb(int x, int y) {
 		if ((y + y_off) >= 0 && (y + y_off) < board_height - 1) {
 			cells_to_blow_up = 9 - 2 * abs(y_off);
 			for (int x_off = -cells_to_blow_up / 2; x_off <= cells_to_blow_up / 2; x_off++) {
-				if ((x + x_off) >= 0 && (x + x_off) < board_width - 1) {
+				if ((x + x_off) > 0 && (x + x_off) < board_width - 1) {
 					writeCellToBoard(x + x_off, y + y_off, Settings::DEFAULT_EMPTY);
 				}
 			}
