@@ -8,10 +8,11 @@ TODOs:
 
 - Amir stated that free floating blocks may need to fall after an explosion, may require an elaboration.
 
-- consider using static arrays for boardHeights and boardHoles 
-(board width is already known so no need to use vectors unless you want to change it dynamically)
+- consider using static arrays for boardHeights and boardHoles
+(board width is already known see:(*) no need to use vectors unless you want to modify them during runtime)
+(* C++ 2024A - MTA - Exercises -- Exercise 1 )
 
--consider update gameOverLogic to fit project requirements
+-consider updating gameOverLogic to fit project requirements
 (The current version of gameOverLogic fails to differentiate between games that conclude simultaneously, a crucial issue given the existence of a scoring system. This oversight may lead to point deductions. Consider updating the logic to match the capabilities of previous versions or, alternatively, contemplate the removal of the scoring system altogether to address this challenge.)
 
 -uestimateBestMove revision may be needed
