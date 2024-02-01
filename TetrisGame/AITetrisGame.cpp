@@ -88,10 +88,10 @@ int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) const{
 }
 
 // returns array of max block height for each column
-std::array<int, Settings::DEFAULT_BOARD_WIDTH> AITetrisGame::boardHeights(TetrisBoard* board) const{
+std::array<int, AITetrisGame::playable_width> AITetrisGame::boardHeights(TetrisBoard* board) const{
 	size_t height = board->getBoardHeight();
 	size_t width = board->getBoardWidth();
-	std::array<int, Settings::DEFAULT_BOARD_WIDTH> output; //initialized in getColumnHeight
+	std::array<int, AITetrisGame::playable_width> output; //initialized in getColumnHeight
 
 	for (size_t x = 1; x < width - 1; x++) {
 		output[x - 1] = getColumnHeight(board, x);
@@ -139,9 +139,9 @@ int AITetrisGame::getColumnHoles(TetrisBoard* board, const int x) const{
 }
 
 // creates a vector that counts the number of holes on each column
-std::array<int, Settings::DEFAULT_BOARD_WIDTH> AITetrisGame::boardHoles(TetrisBoard* board) const{
+std::array<int, AITetrisGame::playable_width> AITetrisGame::boardHoles(TetrisBoard* board) const{
 	size_t width = board->getBoardWidth();
-	std::array<int, Settings::DEFAULT_BOARD_WIDTH> holes; //initialized in getColumnHoles
+	std::array<int, AITetrisGame::playable_width> holes; //initialized in getColumnHoles
 
 	for (unsigned int x = 1; x < width - 1; x++) {
 		holes[x - 1] = getColumnHoles(board, x);
@@ -157,19 +157,16 @@ int AITetrisGame::getColumnBumpiness(TetrisBoard* board, const int x) const {
 	int rightDifference = 0;
 	int xHeight = getColumnHeight(board, x);
 
-	if (x > 1) {
-		leftDifference = abs(xHeight - getColumnHeight(board, x - 1));
-	}
-	if (x < board->getBoardWidth()) {
-		rightDifference = abs(xHeight - getColumnHeight(board, x - 1));
+	if ((x > 1) and x < (AITetrisGame::playable_width)) {
+		leftDifference = abs(xHeight - getColumnHeight(board, x + 1));
 	}
 
 	return leftDifference + rightDifference;
 }
 
-std::array<int, Settings::DEFAULT_BOARD_WIDTH> AITetrisGame::boardBumpiness(TetrisBoard* board) const {
+std::array<int, AITetrisGame::playable_width> AITetrisGame::boardBumpiness(TetrisBoard* board) const {
 	size_t width = board->getBoardWidth();
-	std::array<int, Settings::DEFAULT_BOARD_WIDTH> output; //initialized in getColumnBumpiness
+	std::array<int, AITetrisGame::playable_width> output; //initialized in getColumnBumpiness
 
 	for (unsigned int x = 1; x < width - 1; x++) {
 		output[x - 1] = getColumnBumpiness(board, x);
@@ -194,9 +191,9 @@ int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
 	const unsigned int holes_penality = 100;
 	const unsigned int bumpiness_penality = 10;
 
-	std::array<int, Settings::DEFAULT_BOARD_WIDTH> heightScores = boardHeights(board);
-	std::array<int, Settings::DEFAULT_BOARD_WIDTH> holesScores = boardHoles(board);
-	std::array<int, Settings::DEFAULT_BOARD_WIDTH> bumpinessScores = boardBumpiness(board);
+	std::array<int, AITetrisGame::playable_width> heightScores = boardHeights(board);
+	std::array<int, AITetrisGame::playable_width> holesScores = boardHoles(board);
+	std::array<int, AITetrisGame::playable_width> bumpinessScores = boardBumpiness(board);
 
 	int max_height = heightScores[0];
 	int total_score = 0;

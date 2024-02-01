@@ -18,6 +18,7 @@ public:
 
 protected:
 	// protected members
+	
 	unsigned int tick_counter = 0; // counts iterations each for given game session;
 	unsigned int ticks_per_drop = Settings::TICKS_PER_DROP; // kept as a variable to potentionally control drop speed
 	int base_score_inc = Settings::BASE_SCORE_INCREMENT;
