@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <string>
 #include <conio.h>
+#include <array>
 
 #include "Settings.h"
 

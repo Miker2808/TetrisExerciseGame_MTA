@@ -8,17 +8,17 @@ class TetrisBoard {
 // hidden members, use getters and setters instead
 	const int board_start_x; // X offset from console edge of board location
 	const int board_start_y;  // Y offset from console edge of board location
-	const int board_width;
-	const int board_height;
-	std::vector<std::vector<unsigned char>> board;
+	const size_t board_width;
+	const size_t board_height;
+	std::array<std::array<unsigned char, Settings::DEFAULT_BOARD_WIDTH>, Settings::DEFAULT_BOARD_HEIGHT> board;
 
 // methods
 public:
 	explicit TetrisBoard(
 		int pos_x = 0,
 		int pos_y = 0,
-		int width = Settings::DEFAULT_BOARD_WIDTH,
-		int height = Settings::DEFAULT_BOARD_HEIGHT
+		size_t width = Settings::DEFAULT_BOARD_WIDTH,
+		size_t height = Settings::DEFAULT_BOARD_HEIGHT
 		);
 	TetrisBoard(const TetrisBoard&);
 	~TetrisBoard();
@@ -39,7 +39,7 @@ private:
 	void printTetrisColor(char c, HANDLE& hConsole) const;
 	void printBoardColor() const;
 	void printBoardBNW() const;
-	void allocateBoard(size_t rows, size_t cols);
+	void initializeBoard();
 	
 	
 	

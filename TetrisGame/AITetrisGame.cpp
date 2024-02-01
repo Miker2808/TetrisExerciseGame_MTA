@@ -38,7 +38,7 @@ void AITetrisGame::movementHandler() {
 	}
 	else {
 		// drop the piece down
-		movePiceDown();
+		movePieceDown();
 	}
 
 }
@@ -88,12 +88,12 @@ int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) const{
 }
 
 // returns array of max block height for each column
-std::vector<int> AITetrisGame::boardHeights(TetrisBoard* board) const{
+std::array<int, Settings::DEFAULT_BOARD_WIDTH> AITetrisGame::boardHeights(TetrisBoard* board) const{
 	size_t height = board->getBoardHeight();
 	size_t width = board->getBoardWidth();
-	std::vector<int> output = std::vector<int>(width - 2, 0);
+	std::array<int, Settings::DEFAULT_BOARD_WIDTH> output; //initialized in getColumnHeight
 
-	for (unsigned int x = 1; x < width - 1; x++) {
+	for (size_t x = 1; x < width - 1; x++) {
 		output[x - 1] = getColumnHeight(board, x);
 	}
 
@@ -139,42 +139,84 @@ int AITetrisGame::getColumnHoles(TetrisBoard* board, const int x) const{
 }
 
 // creates a vector that counts the number of holes on each column
-std::vector<int> AITetrisGame::boardHoles(TetrisBoard* board) const{
+std::array<int, Settings::DEFAULT_BOARD_WIDTH> AITetrisGame::boardHoles(TetrisBoard* board) const{
 	size_t width = board->getBoardWidth();
-	std::vector<int> holes = std::vector<int>(width - 2, 0);
+	std::array<int, Settings::DEFAULT_BOARD_WIDTH> holes; //initialized in getColumnHoles
 
 	for (unsigned int x = 1; x < width - 1; x++) {
 		holes[x - 1] = getColumnHoles(board, x);
 	}
-
+	
 	return holes;
+}
+
+// calculates bumpiness relative to left and right columns in terms of blocks from highest block
+// in the column
+int AITetrisGame::getColumnBumpiness(TetrisBoard* board, const int x) const {
+	int leftDifference = 0;
+	int rightDifference = 0;
+	int xHeight = getColumnHeight(board, x);
+
+	if (x > 1) {
+		leftDifference = abs(xHeight - getColumnHeight(board, x - 1));
+	}
+	if (x < board->getBoardWidth()) {
+		rightDifference = abs(xHeight - getColumnHeight(board, x - 1));
+	}
+
+	return leftDifference + rightDifference;
+}
+
+std::array<int, Settings::DEFAULT_BOARD_WIDTH> AITetrisGame::boardBumpiness(TetrisBoard* board) const {
+	size_t width = board->getBoardWidth();
+	std::array<int, Settings::DEFAULT_BOARD_WIDTH> output; //initialized in getColumnBumpiness
+
+	for (unsigned int x = 1; x < width - 1; x++) {
+		output[x - 1] = getColumnBumpiness(board, x);
+	}
+
+	return output;
 }
 
 // calculates heirustics score by giving a penality for every imperfection with varied weights
 // Note: perfect calculation is achieved only by actively teaching for best penality coefficients
-int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
-	// should sum to 20
-	const unsigned int height_penalty = 5;
-	const unsigned int max_height_penality = 10;
-	const unsigned int holes_penality = 6;
 
-	std::vector<int> heightScores = boardHeights(board);
-	std::vector<int> holesScores = boardHoles(board);
+/*
+	const unsigned int height_penalty = 5;
+	const unsigned int max_height_penality = 20;
+	const unsigned int holes_penality = 100;
+	const unsigned int bumpiness_penality = 10;
+
+*/
+int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
+	const unsigned int height_penalty = 5;
+	const unsigned int max_height_penality = 20;
+	const unsigned int holes_penality = 100;
+	const unsigned int bumpiness_penality = 10;
+
+	std::array<int, Settings::DEFAULT_BOARD_WIDTH> heightScores = boardHeights(board);
+	std::array<int, Settings::DEFAULT_BOARD_WIDTH> holesScores = boardHoles(board);
+	std::array<int, Settings::DEFAULT_BOARD_WIDTH> bumpinessScores = boardBumpiness(board);
+
 	int max_height = heightScores[0];
 	int total_score = 0;
-	for (int i = 1; i < heightScores.size(); i++) {
+	for (int i = 0; i < heightScores.size(); i++) {
 		total_score -= height_penalty * heightScores[i];
 
 		if (max_height < heightScores[i]) {
 			max_height = heightScores[i];
 		}
+	}
 
+	for (int i = 0; i < bumpinessScores.size(); i++) {
+		total_score -= bumpiness_penality * bumpinessScores[i];
 	}
 	
-	total_score -= max_height_penality * max_height;
 	for (int i = 0; i < holesScores.size(); i++) {
 		total_score -= holes_penality * holesScores[i];
 	}
+
+	total_score -= max_height_penality * max_height;
 
 	return total_score;
 
@@ -186,7 +228,7 @@ void AITetrisGame::estimateBestMove(){
 	int best_rotation = 0;
 	int currScore;
 	int bestScore = INT_MIN;
-	Tetromino tetrominoCopy = *(this->currentMino); // copy to track after width and offset for each rotation
+	Tetromino tetrominoCopy = *(this->currentMino); // copy to track after the width and offset for each rotation
 	
 	// Iterate through all possible moves (rotations and positions)
 	for (int rotation = 0; rotation < 4; rotation++) {
@@ -200,6 +242,10 @@ void AITetrisGame::estimateBestMove(){
 			
 			AITetrisGame simulatedGame(*this);
 			simulatedGame.currentMino->assignTransform(x, 0, rotation);
+
+			if (not simulatedGame.checkCollision(0, 0, 0)) {
+				continue;
+			}
 
 			// push piece down until it collides
 			while (simulatedGame.checkCollision(0, 1, 0)) {

@@ -10,8 +10,10 @@ class AITetrisGame :
     int getBestRot();
     void setBestX(int x);
     void setBestRot(int rot);
-    std::vector<int> boardHeights(TetrisBoard* board) const;
-    std::vector<int> boardHoles(TetrisBoard* board) const;
+    std::array<int, Settings::DEFAULT_BOARD_WIDTH> boardHeights(TetrisBoard* board) const;
+    std::array<int, Settings::DEFAULT_BOARD_WIDTH> boardHoles(TetrisBoard* board) const;
+    int getColumnBumpiness(TetrisBoard* board, const int x) const;
+    std::array<int, Settings::DEFAULT_BOARD_WIDTH> boardBumpiness(TetrisBoard* board) const;
     int getColumnHeight(TetrisBoard* board, const int x) const;
     int getColumnHoles(TetrisBoard* board, const int x) const;
     int calculateHeuristicScore(TetrisBoard* board) const;

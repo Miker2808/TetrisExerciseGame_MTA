@@ -1,10 +1,10 @@
 #include "TetrisBoard.h"
 
 // Constructor: Initializes a dynamic 2D array and sets the position and dimensions of the Tetris board
-TetrisBoard::TetrisBoard(int pos_x, int pos_y, int width, int height)
+TetrisBoard::TetrisBoard(int pos_x, int pos_y, size_t width, size_t height)
 	: board_start_x(pos_x), board_start_y(pos_y), board_width(width), board_height(height)
 {
-	allocateBoard(height, width);
+	initializeBoard();
 }
 
 // Copy constructor for TetrisBoard
@@ -12,8 +12,6 @@ TetrisBoard::TetrisBoard(const TetrisBoard& other)
 	: board_start_x(other.board_start_x), board_start_y(other.board_start_y),
 	board_width(other.board_width), board_height(other.board_height)
 {
-	// Allocate memory for the new Tetris board
-	allocateBoard(board_height, board_width);
 
 	// Copy the content of the original board to the new one
 	for (int i = 0; i < board_height; i++) {
@@ -24,21 +22,24 @@ TetrisBoard::TetrisBoard(const TetrisBoard& other)
 }
 
 // Allocates dynamic memory for the board and initializes it with "empty spaces"
-void TetrisBoard::allocateBoard(size_t rows, size_t cols)
+void TetrisBoard::initializeBoard()
 {
-	this->board = std::vector<std::vector<unsigned char>>(rows, std::vector<unsigned char>(cols, Settings::DEFAULT_EMPTY));
 
-	for (size_t i = 0; i < rows; i++) {
+	for (size_t row = 0; row < this->board_height; row++) {
 
-		this->board[i][0] = Settings::DEFAULT_WALL_SIGN;
-		this->board[i][cols - 1] = Settings::DEFAULT_WALL_SIGN;
+		board[row].fill(Settings::DEFAULT_EMPTY);
+
+		// walls
+		this->board[row][0] = Settings::DEFAULT_WALL_SIGN;
+		this->board[row][this->board_width - 1] = Settings::DEFAULT_WALL_SIGN;
 	}
-	for (size_t j = 0; j < cols; j++) {
-		this->board[rows - 1][j] = Settings::DEFAULT_WALL_SIGN;
+	// floor
+	for (size_t i = 0; i < this->board_width; i++) {
+		this->board[this->board_height - 1][i] = Settings::DEFAULT_WALL_SIGN;
 	}
 }
 
-// Frees the dynamic memory allocated for the Tetris board
+// Destructor
 TetrisBoard::~TetrisBoard() {
 	
 }
@@ -132,19 +133,11 @@ bool TetrisBoard::isALine(int y_coor) const {
 
 // Destroys a filled line on the Tetris board at the given y coordinate
 void TetrisBoard::destroyLine(int y_coor) {
-	/* // temp delete as it inteferes with the AI calculations
-	for (int x = 1; x < board_width - 1; x++) {
-		board[y_coor][x] = '=';
-	}
-	this->printBoard();
-	Sleep(Settings::TICKS_TIME * 2 * global_settings.game_speed); // Makes the remove speed variable
-	*/
+
 	for (int x = 1; x < board_width - 1; x++) {
 		board[y_coor][x] = Settings::DEFAULT_EMPTY;
 	}
-	
-	// temp delete
-	//this->printBoard();
+
 }
 
 // Shifts the entire Tetris board down after clearing a line

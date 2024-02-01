@@ -110,24 +110,6 @@ void MultiplayerTetris::gameOverLogic(unsigned int games_in_play) {
         }
     }
 
-    /*
-    //if no one survived
-    else {
-        winning_game = games_arr[0];
-        for (unsigned int i = 0; i < curr_num_of_games; i++) {
-            //check ticks survived
-            if (games_arr[i]->ticks_survived > winning_game->ticks_survived)
-                winning_game = games_arr[i];
-            else {
-                //if ticks survived are equal check score
-                if(games_arr[i]->ticks_survived == winning_game->ticks_survived)
-                    if(games_arr[i]->player->score > winning_game->player->score)
-                        winning_game = games_arr[i];
-            }
-        }
-    }
-    */
-
     game_state = GameState::NO_GAME_STATE;
     if (winning_game != nullptr) {
         menu.printGameOverMenu(winning_game->player->id, winning_game->player->score);

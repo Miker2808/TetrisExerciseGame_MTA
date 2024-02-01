@@ -141,7 +141,7 @@ void TetrisGame::movementHandler( unsigned char curr_key)
             this->currentMino->transform(0, 0, -1);
     }
     else if (curr_key == this->player->my_ctrl.DROP_KEY_1 || curr_key == this->player->my_ctrl.DROP_KEY_2) {
-        movePiceDown();
+        movePieceDown();
     }
     
 }
@@ -195,7 +195,7 @@ void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot
 // Function to force the tetromino down every game tick, affected by game speed
 void TetrisGame::movePieceDownAfterTick() {
     if (this->tick_counter > this->ticks_per_drop) {
-        movePiceDown();
+        movePieceDown();
     }
 }
 
@@ -215,7 +215,7 @@ void TetrisGame::printGameStats() {
 
 
 // Function to move the tetromino down and handle collision
-void TetrisGame::movePiceDown() {
+void TetrisGame::movePieceDown() {
 
     if (checkCollision(0, 1, 0))
         this->currentMino->transform(0, 1, 0);
