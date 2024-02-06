@@ -27,10 +27,6 @@ void MultiplayerTetris::setUpNewGame() {
         freeGames();
         games_arr.clear();
     }
-    if (not ai_games_arr.empty()){
-        freeAIGames();
-        ai_games_arr.clear();
-    }
 
     TetrisGame::game_counter = 0;
     allocateGames();

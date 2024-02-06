@@ -16,6 +16,31 @@ AITetrisGame::AITetrisGame(const AITetrisGame& other) :
 
 }
 
+// best_x getter
+int AITetrisGame::getBestX()
+{
+	return this->best_x;
+}
+
+// best_rotation getter
+int AITetrisGame::getBestRot()
+{
+	return this->best_rotation;
+}
+
+// best_x setter
+void AITetrisGame::setBestX(int x)
+{
+	this->best_x = x;
+}
+
+// best_rotation setter
+void AITetrisGame::setBestRot(int rot)
+{
+	this->best_rotation = rot;
+}
+
+
 // Handles the movemenent for the CPU game
 // rotates to desired rotation and then moves to best X
 // moves only if not collision is interfered, otherwise it falls.
@@ -87,41 +112,23 @@ int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) const{
 	return 0;
 }
 
-// returns array of max block height for each column
-std::array<int, AITetrisGame::playable_width> AITetrisGame::boardHeights(TetrisBoard* board) const{
+
+// returns the sum of all heights, and the maximum height by reference to maximum
+unsigned int AITetrisGame::getBoardHeightSum(TetrisBoard* board, unsigned int& maximum) const {
 	size_t height = board->getBoardHeight();
 	size_t width = board->getBoardWidth();
-	std::array<int, AITetrisGame::playable_width> output; //initialized in getColumnHeight
-
+	int curr;
+	unsigned int sum = 0;
+	maximum = 0;
 	for (size_t x = 1; x < width - 1; x++) {
-		output[x - 1] = getColumnHeight(board, x);
+		curr = getColumnHeight(board, x);
+		if (curr > maximum) {
+			maximum = curr;
+		}
+		sum += curr;
 	}
 
-	return output;
-}
-
-// best_x getter
-int AITetrisGame::getBestX()
-{
-	return this->best_x;
-}
-
-// best_rotation getter
-int AITetrisGame::getBestRot()
-{
-	return this->best_rotation;
-}
-
-// best_x setter
-void AITetrisGame::setBestX(int x)
-{
-	this->best_x = x;
-}
-
-// best_rotation setter
-void AITetrisGame::setBestRot(int rot)
-{
-	this->best_rotation = rot;
+	return sum;
 }
 
 
@@ -138,88 +145,63 @@ int AITetrisGame::getColumnHoles(TetrisBoard* board, const int x) const{
 	return holes;
 }
 
-// creates a vector that counts the number of holes on each column
-std::array<int, AITetrisGame::playable_width> AITetrisGame::boardHoles(TetrisBoard* board) const{
+// returns the some of holes in the board
+unsigned int AITetrisGame::getBoardHolesSum(TetrisBoard* board) const {
 	size_t width = board->getBoardWidth();
-	std::array<int, AITetrisGame::playable_width> holes; //initialized in getColumnHoles
+	unsigned int sum = 0;
 
 	for (unsigned int x = 1; x < width - 1; x++) {
-		holes[x - 1] = getColumnHoles(board, x);
+		sum += getColumnHoles(board, x);
 	}
-	
-	return holes;
+
+	return sum;
 }
 
 // calculates bumpiness relative to left and right columns in terms of blocks from highest block
 // in the column
 int AITetrisGame::getColumnBumpiness(TetrisBoard* board, const int x) const {
-	int leftDifference = 0;
-	int rightDifference = 0;
+	int difference = 0;
+
 	int xHeight = getColumnHeight(board, x);
 
 	if ((x > 1) and x < (AITetrisGame::playable_width)) {
-		leftDifference = abs(xHeight - getColumnHeight(board, x + 1));
+		difference = abs(xHeight - getColumnHeight(board, x + 1));
 	}
 
-	return leftDifference + rightDifference;
+	return difference;
 }
 
-std::array<int, AITetrisGame::playable_width> AITetrisGame::boardBumpiness(TetrisBoard* board) const {
+unsigned int AITetrisGame::getBoardBumpinessSum(TetrisBoard* board) const {
 	size_t width = board->getBoardWidth();
-	std::array<int, AITetrisGame::playable_width> output; //initialized in getColumnBumpiness
+	unsigned int sum = 0;
 
 	for (unsigned int x = 1; x < width - 1; x++) {
-		output[x - 1] = getColumnBumpiness(board, x);
+		sum += getColumnBumpiness(board, x);
 	}
 
-	return output;
+	return sum;
 }
 
+
+
 // calculates heirustics score by giving a penality for every imperfection with varied weights
-// Note: perfect calculation is achieved only by actively teaching for best penality coefficients
-
-/*
-	const unsigned int height_penalty = 5;
-	const unsigned int max_height_penality = 20;
-	const unsigned int holes_penality = 100;
-	const unsigned int bumpiness_penality = 10;
-
-*/
 int AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
-	const unsigned int height_penalty = 5;
-	const unsigned int max_height_penality = 20;
-	const unsigned int holes_penality = 100;
-	const unsigned int bumpiness_penality = 10;
-
-	std::array<int, AITetrisGame::playable_width> heightScores = boardHeights(board);
-	std::array<int, AITetrisGame::playable_width> holesScores = boardHoles(board);
-	std::array<int, AITetrisGame::playable_width> bumpinessScores = boardBumpiness(board);
-
-	int max_height = heightScores[0];
+	unsigned int max_height;
+	unsigned int heightScores = getBoardHeightSum(board, max_height);
+	unsigned int holesScores = getBoardHolesSum(board);
+	unsigned int bumpinessScores = getBoardBumpinessSum(board);
 	int total_score = 0;
-	for (int i = 0; i < heightScores.size(); i++) {
-		total_score -= height_penalty * heightScores[i];
 
-		if (max_height < heightScores[i]) {
-			max_height = heightScores[i];
-		}
-	}
-
-	for (int i = 0; i < bumpinessScores.size(); i++) {
-		total_score -= bumpiness_penality * bumpinessScores[i];
-	}
-	
-	for (int i = 0; i < holesScores.size(); i++) {
-		total_score -= holes_penality * holesScores[i];
-	}
-
-	total_score -= max_height_penality * max_height;
+	total_score -= heightScores * height_penalty;
+	total_score -= holesScores * holes_penality;
+	total_score -= bumpinessScores * bumpiness_penality;
+	total_score -= pow(max_height_penality,max_height);
 
 	return total_score;
 
 }
 
-// returns by reference best rotation and best x position
+// estimates best_x and best_rotation based on maximum algorithm with scoring
 void AITetrisGame::estimateBestMove(){
 	int best_x = 0;
 	int best_rotation = 0;
@@ -238,8 +220,10 @@ void AITetrisGame::estimateBestMove(){
 		for (int x = 1 - collision_offset; x < Settings::DEFAULT_BOARD_WIDTH - (collision_offset + shape_width); x++) {
 			
 			AITetrisGame simulatedGame(*this);
+
 			simulatedGame.currentMino->assignTransform(x, 0, rotation);
 
+			// move to next x if this column is full
 			if (not simulatedGame.checkCollision(0, 0, 0)) {
 				continue;
 			}
