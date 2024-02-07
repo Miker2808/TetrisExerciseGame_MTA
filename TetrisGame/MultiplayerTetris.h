@@ -16,17 +16,10 @@ private:
 	MenuManager menu;
 
 	void setUpNewGame();
-
 	void gameplayLoop();
-
 	void gameOverLogic(unsigned int games_in_play);
-	
 	void freeGames();
-
-	void freeAIGames();
-
 	void allocateGames();
-
 	void updateBoardOffsetPos(unsigned int gameindex , unsigned int& x_pos , unsigned int& y_pos);
 
 public:

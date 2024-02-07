@@ -57,13 +57,6 @@ void MultiplayerTetris::gameplayLoop() {
             }
         }
 
-        for (size_t i = 0; i < ai_games_arr.size(); i++) {
-            if (!ai_games_arr[i]->isGameOver()) {
-                ai_games_arr[i]->play(curr_key); // temp for compiling
-                games_in_play++;
-            }
-        }
-
         // Check if the "ESC" key is pressed to pause the game
         if (curr_key == 27) {
             game_state = GameState::PAUSED_GAME;
@@ -71,10 +64,6 @@ void MultiplayerTetris::gameplayLoop() {
             for (size_t i = 0; i < games_arr.size(); i++) {
                 if (!games_arr[i]->isGameOver())
                     games_arr[i]->setGameStart(true);
-            }
-            for (size_t i = 0; i < ai_games_arr.size(); i++) {
-                if (!ai_games_arr[i]->isGameOver())
-                    ai_games_arr[i]->setGameStart(true);
             }
         }
 
@@ -90,18 +79,12 @@ void MultiplayerTetris::gameplayLoop() {
 
 // Handles game-over logic and displays the game over menu.
 void MultiplayerTetris::gameOverLogic(unsigned int games_in_play) {
-    TetrisGame* winning_game = nullptr; // works due to polymorphism of AITetrisGame
+    TetrisGame* winning_game = nullptr;
     //if one player survived
     if (games_in_play == 1) {
         for (size_t i = 0; i < games_arr.size(); i++) {
             if (!games_arr[i]->isGameOver()) {
                 winning_game = games_arr[i];
-            }
-        }
-
-        for (size_t i = 0; i < ai_games_arr.size(); i++) {
-            if (!ai_games_arr[i]->isGameOver()) {
-                winning_game = ai_games_arr[i];
             }
         }
     }
@@ -118,11 +101,6 @@ void MultiplayerTetris::freeGames() {
         delete games_arr[i];
 }
 
-void MultiplayerTetris::freeAIGames() {
-    for (size_t i = 0; i < ai_games_arr.size(); i++) {
-        delete ai_games_arr[i];
-    }
-}
 
 // allocates memory for all the AITetrisGames and TetrisGames objects
 void MultiplayerTetris::allocateGames() {
