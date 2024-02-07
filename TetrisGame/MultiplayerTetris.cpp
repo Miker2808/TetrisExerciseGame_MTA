@@ -59,7 +59,7 @@ void MultiplayerTetris::gameplayLoop() {
 
         for (size_t i = 0; i < ai_games_arr.size(); i++) {
             if (!ai_games_arr[i]->isGameOver()) {
-                ai_games_arr[i]->play();
+                ai_games_arr[i]->play(curr_key); // temp for compiling
                 games_in_play++;
             }
         }
@@ -138,7 +138,7 @@ void MultiplayerTetris::allocateGames() {
     //allocate the rest of the games as CPU games
     for (unsigned int j = 0; j < global_settings.num_of_bots; j++) {
         updateBoardOffsetPos(j + i, board_offset_x, board_offset_y);
-        ai_games_arr.push_back(new AITetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false));
+        games_arr.push_back(new AITetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false));
     }
 }
 

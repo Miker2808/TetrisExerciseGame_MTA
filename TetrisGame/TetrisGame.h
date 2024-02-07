@@ -33,7 +33,7 @@ public:
 	TetrisGame(int start_x, int start_y, bool bombs, bool human_player);
 	TetrisGame(const TetrisGame& other);
 	~TetrisGame();
-	void play(unsigned char curr_key);
+	virtual void play(unsigned char curr_key);
 	
 	// for the heuristics
 	bool isGameOver();
@@ -46,7 +46,7 @@ protected:
 	bool checkCollision(int move_x, int move_y, int move_rot);
 	void updateBoardStatus();
 	void movePieceDownAfterTick();
-	void movementHandler(unsigned char curr_key);
+	virtual void movementHandler(unsigned char curr_key);
 	void findAndDestroyLines(int obj_y_pos);
 	void writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index);
 	void blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot);

@@ -5,7 +5,7 @@ class AITetrisGame :
 {
     
     const unsigned int height_penalty = 0;
-    const double max_height_penality = 1.4;
+    const double max_height_penality = 2;
     const unsigned int holes_penality = 100;
     const unsigned int bumpiness_penality = 10;
 
@@ -30,7 +30,7 @@ class AITetrisGame :
 public:
     AITetrisGame(int start_x, int start_y, bool bombs, bool human_player);
     AITetrisGame(const AITetrisGame& other);
-    void play();
+    void play(unsigned char curr_key);
 
     
 

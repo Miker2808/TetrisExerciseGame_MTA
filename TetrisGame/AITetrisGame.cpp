@@ -69,8 +69,8 @@ void AITetrisGame::movementHandler() {
 }
 
 
-// Runs a single cycle of playing the Tetris game
-void AITetrisGame::play() {
+// Runs a single cycle of playing the Tetris game - overrides TetrisGame::play method
+void AITetrisGame::play(unsigned char curr_key) {
 
 	if (this->current_tetromino_ticks == 0) {
 		this->estimateBestMove();
