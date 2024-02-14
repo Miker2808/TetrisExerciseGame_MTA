@@ -4,10 +4,10 @@ class AITetrisGame :
     public TetrisGame
 {
     
-    const double height_penalty = 0;
-    const double max_height_penality = 0.5;
-    const double holes_penality = 0.100;
-    const double bumpiness_penality = 0.010;
+    double height_penalty = 0;
+    double max_height_penality = 0.5;
+    double holes_penality = 0.100;
+    double bumpiness_penality = 0.010;
 
     int best_x = 0; // track best x position to have
     int best_rotation = 0; // track best rotation to have
@@ -30,7 +30,9 @@ class AITetrisGame :
 public:
     AITetrisGame(int start_x, int start_y, bool bombs, bool human_player);
     AITetrisGame(const AITetrisGame& other);
+    AITetrisGame();
     void play(unsigned char curr_key);
+    void setAIWeights(double height_penalty , double max_height_penality, double holes_penality, double bumpiness_penality);
 
     
 

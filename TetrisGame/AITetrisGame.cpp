@@ -7,7 +7,6 @@ AITetrisGame::AITetrisGame(int start_x, int start_y, bool bombs, bool human_play
 
 }
 
-
 AITetrisGame::AITetrisGame(const AITetrisGame& other) : 
 	TetrisGame(other), 
 	best_x(other.best_x), 
@@ -77,7 +76,7 @@ void AITetrisGame::play(unsigned char curr_key) {
 	}
 
 	if (start_flag) {
-        this->board->printBoard();
+        //this->board->printBoard();
         start_flag = false;
     }
 
@@ -86,7 +85,7 @@ void AITetrisGame::play(unsigned char curr_key) {
         this->ticks_survived += 1;
 		this->current_tetromino_ticks += 1;
 
-        this->currentMino->erase();
+        //this->currentMino->erase();
 
         this->movementHandler();
 
@@ -95,8 +94,8 @@ void AITetrisGame::play(unsigned char curr_key) {
 
         // Check for collision with the bottom or other blocks
 
-        this->currentMino->print();
-        this->printGameStats();
+        //this->currentMino->print();
+        //this->printGameStats();
     }
 }
 
@@ -249,4 +248,11 @@ void AITetrisGame::estimateBestMove(){
 	this->best_x = best_x;
 	this->best_rotation = best_rotation;
 	
+}
+
+void AITetrisGame::setAIWeights(double height_penalty, double max_height_penality, double holes_penality, double bumpiness_penality) {
+	this->height_penalty = height_penalty;
+	this->max_height_penality = max_height_penality;
+	this->holes_penality = holes_penality;
+	this->bumpiness_penality = bumpiness_penality;
 }

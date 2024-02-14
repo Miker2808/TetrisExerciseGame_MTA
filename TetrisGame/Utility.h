@@ -8,6 +8,8 @@
 #include <string>
 #include <conio.h>
 #include <array>
+#include <random>
+#include <algorithm>
 
 #include "Settings.h"
 

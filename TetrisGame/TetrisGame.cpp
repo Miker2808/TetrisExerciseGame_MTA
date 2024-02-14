@@ -224,7 +224,7 @@ void TetrisGame::movePieceDown() {
         this->current_tetromino_ticks = 0;
         updateBoardStatus();
         this->currentMino->resetTetromino();
-        this->board->printBoard();
+        //this->board->printBoard();
 
         // Check for collision after resetting the tetromino
         // If there is a collision, the board is full, and the player has lost
