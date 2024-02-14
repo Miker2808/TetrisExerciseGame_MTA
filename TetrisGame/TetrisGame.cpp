@@ -243,6 +243,13 @@ void TetrisGame::bombLogic(int obj_x_pos, int obj_y_pos, int obj_rot) {
 
     findBombCell(obj_rot, bomb_cell_x_off , bomb_cell_y_off);
     this->board->blowUpBomb(obj_x_pos + bomb_cell_x_off, obj_y_pos + bomb_cell_y_off);
+    //TODO maybe change it
+    findAndDestroyLines(0);
+    findAndDestroyLines(4);
+    findAndDestroyLines(8);
+    findAndDestroyLines(12);
+    findAndDestroyLines(16);
+    
 }
 
 //finds the bomb index within the bomb tetromino string
