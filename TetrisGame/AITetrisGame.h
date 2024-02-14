@@ -4,10 +4,10 @@ class AITetrisGame :
     public TetrisGame
 {
     
-    const unsigned int height_penalty = 0;
-    const double max_height_penality = 2;
-    const unsigned int holes_penality = 100;
-    const unsigned int bumpiness_penality = 10;
+    const double height_penalty = 0;
+    const double max_height_penality = 0.5;
+    const double holes_penality = 0.100;
+    const double bumpiness_penality = 0.010;
 
     int best_x = 0; // track best x position to have
     int best_rotation = 0; // track best rotation to have
@@ -23,7 +23,7 @@ class AITetrisGame :
     int getColumnHeight(TetrisBoard* board, const int x) const;
     int getColumnHoles(TetrisBoard* board, const int x) const;
     unsigned int getBoardHolesSum(TetrisBoard* board) const;
-    int calculateHeuristicScore(TetrisBoard* board) const;
+    double calculateHeuristicScore(TetrisBoard* board) const;
     void estimateBestMove();
     void movementHandler();
 
