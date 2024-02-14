@@ -239,13 +239,19 @@ void TetrisGame::movePieceDown() {
 
 //function that blows up the bomb Tetromino
 void TetrisGame::blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot) {
+    int bomb_cell_x_off = 0, bomb_cell_y_off = 0;
     int pixel;
     for (int y_off = 1; y_off < 3; y_off++) {
         for (int x_off = 1; x_off < 3; x_off++) {
             pixel = this->currentMino->getCell(x_off, y_off, obj_rot);
-            if (Tetromino::tetromino_shapes[7][pixel] != Settings::DEFAULT_SPACE)
-                this->board->blowUpBomb(obj_x_pos + x_off, obj_y_pos + y_off);
+            if (Tetromino::tetromino_shapes[7][pixel] != Settings::DEFAULT_SPACE) {
+                bomb_cell_x_off = x_off;
+                bomb_cell_y_off = y_off;
+            }
+                
         }
     }
+    this->board->blowUpBomb(obj_x_pos + bomb_cell_x_off, obj_y_pos + bomb_cell_y_off);
+
 }
 
