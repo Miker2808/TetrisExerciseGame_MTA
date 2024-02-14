@@ -202,4 +202,34 @@ void TetrisBoard::blowUpBomb(int x, int y) {
 			}
 		}
 	}
+	boardBombShift(x, y);
 }
+
+//shifts the columns affected by the bomb
+//results in colums with no holes in them (all the filled spaces are at the bottom)
+void TetrisBoard::boardBombShift(int x, int y) {
+	shiftCol(x);
+	for (int x_off = 1; x_off <= 4; x_off++) {
+		shiftCol(x - x_off);
+		shiftCol(x + x_off);
+	}
+}
+
+//shift columns down , columns will have no more holes in them
+void TetrisBoard::shiftCol(int col) {
+	if (col < 1 || col > board_width - 2)
+		return;
+	int shift = 0;
+	for (int y = 17; y >= 0; y--) {
+		if (board[y][col] == Settings::DEFAULT_EMPTY)
+			shift++;
+		else {
+			if (shift > 0) {
+				board[y + shift][col] = board[y][col];
+				board[y][col] = Settings::DEFAULT_EMPTY;
+			}
+		}
+	}
+
+}
+

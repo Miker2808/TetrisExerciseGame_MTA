@@ -40,10 +40,8 @@ private:
 	void printBoardColor() const;
 	void printBoardBNW() const;
 	void initializeBoard();
-	
-	
-	
-
+	void boardBombShift(int x, int y);
+	void shiftCol(int col);
 
 };
 
