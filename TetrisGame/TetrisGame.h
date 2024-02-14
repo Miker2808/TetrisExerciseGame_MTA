@@ -49,7 +49,8 @@ protected:
 	virtual void movementHandler(unsigned char curr_key);
 	void findAndDestroyLines(int obj_y_pos);
 	void writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index);
-	void blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot);
+	void bombLogic(int obj_x_pos, int obj_y_pos, int obj_rot);
+	void findBombCell(const int obj_rot, int& bomb_cell_x_off, int& bomb_cell_y_off);
 	void printGameStats();
 	void movePieceDown();
 	

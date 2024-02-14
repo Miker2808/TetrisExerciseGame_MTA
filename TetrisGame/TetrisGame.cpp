@@ -153,7 +153,7 @@ void TetrisGame::updateBoardStatus() {
     this->currentMino->getTransform(obj_x_pos, obj_y_pos, obj_rot);
     this->currentMino->getShapeIndex(obj_shape_index);
     if (obj_shape_index == 7) {
-        blowBombUp(obj_x_pos, obj_y_pos, obj_rot);
+        bombLogic(obj_x_pos, obj_y_pos, obj_rot);
     }
     else {
         writeTetrominoToBoard(obj_x_pos, obj_y_pos, obj_rot, obj_shape_index);
@@ -238,8 +238,16 @@ void TetrisGame::movePieceDown() {
 
 
 //function that blows up the bomb Tetromino
-void TetrisGame::blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot) {
+void TetrisGame::bombLogic(int obj_x_pos, int obj_y_pos, int obj_rot) {
     int bomb_cell_x_off = 0, bomb_cell_y_off = 0;
+
+    findBombCell(obj_rot, bomb_cell_x_off , bomb_cell_y_off);
+
+    this->board->blowUpBomb(obj_x_pos + bomb_cell_x_off, obj_y_pos + bomb_cell_y_off);
+
+}
+
+void TetrisGame::findBombCell(const int obj_rot , int& bomb_cell_x_off , int& bomb_cell_y_off) {
     int pixel;
     for (int y_off = 1; y_off < 3; y_off++) {
         for (int x_off = 1; x_off < 3; x_off++) {
@@ -248,10 +256,8 @@ void TetrisGame::blowBombUp(int obj_x_pos, int obj_y_pos, int obj_rot) {
                 bomb_cell_x_off = x_off;
                 bomb_cell_y_off = y_off;
             }
-                
+
         }
     }
-    this->board->blowUpBomb(obj_x_pos + bomb_cell_x_off, obj_y_pos + bomb_cell_y_off);
-
 }
 
