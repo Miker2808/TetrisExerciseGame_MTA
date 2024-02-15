@@ -3,21 +3,21 @@
 class AITetrisGame :
     public TetrisGame
 {
-    
-    const double height_penalty = 0;
-    const double max_height_penality = 0.5;
-    const double holes_penality = 0.100;
-    const double bumpiness_penality = 0.010;
+
+    static constexpr double max_height_penality = 0.2;
+    static constexpr double holes_penality = 0.100;
+    static constexpr double bumpiness_penality = 0.010;
 
     int best_x = 0; // track best x position to have
     int best_rotation = 0; // track best rotation to have
     static constexpr size_t playable_width = Settings::DEFAULT_BOARD_WIDTH - 2;
+    static constexpr size_t playable_height = Settings::DEFAULT_BOARD_HEIGHT - 2;
 
     int getBestX();
     int getBestRot();
     void setBestX(int x);
     void setBestRot(int rot);
-    unsigned int getBoardHeightSum(TetrisBoard* board, unsigned int& maximum) const;
+    unsigned int getBoardMaxHeight(TetrisBoard* board) const;
     int getColumnBumpiness(TetrisBoard* board, const int x) const;
     unsigned int getBoardBumpinessSum(TetrisBoard* board) const;
     int getColumnHeight(TetrisBoard* board, const int x) const;

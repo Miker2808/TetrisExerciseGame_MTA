@@ -114,21 +114,19 @@ int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) const{
 
 
 // returns the sum of all heights, and the maximum height by reference to maximum
-unsigned int AITetrisGame::getBoardHeightSum(TetrisBoard* board, unsigned int& maximum) const {
+unsigned int AITetrisGame::getBoardMaxHeight(TetrisBoard* board) const {
 	size_t height = board->getBoardHeight();
 	size_t width = board->getBoardWidth();
 	int curr;
-	unsigned int sum = 0;
-	maximum = 0;
+	unsigned int maximum = 0;
 	for (size_t x = 1; x < width - 1; x++) {
 		curr = getColumnHeight(board, x);
 		if (curr > maximum) {
 			maximum = curr;
 		}
-		sum += curr;
 	}
 
-	return sum;
+	return maximum;
 }
 
 
@@ -183,19 +181,16 @@ unsigned int AITetrisGame::getBoardBumpinessSum(TetrisBoard* board) const {
 }
 
 
-
 // calculates heirustics score by giving a penality for every imperfection with varied weights
 double AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
-	unsigned int max_height;
-	unsigned int heightScores = getBoardHeightSum(board, max_height);
+	unsigned int max_height = getBoardMaxHeight(board);
 	unsigned int holesScores = getBoardHolesSum(board);
 	unsigned int bumpinessScores = getBoardBumpinessSum(board);
 	double total_score = 0;
 
-	total_score -= heightScores * height_penalty;
 	total_score -= holesScores * holes_penality;
 	total_score -= bumpinessScores * bumpiness_penality;
-	total_score -= pow((max_height_penality),17 - max_height);
+	total_score -= pow(max_height_penality, -1 * max_height);
 
 	return total_score;
 
@@ -206,7 +201,7 @@ void AITetrisGame::estimateBestMove(){
 	int best_x = 0;
 	int best_rotation = 0;
 	double currScore;
-	double bestScore = INT_MIN;
+	double bestScore = -DBL_MAX; // most negative value in double
 	Tetromino tetrominoCopy = *(this->currentMino); // copy to track after the width and offset for each rotation
 	
 	// Iterate through all possible moves (rotations and positions)
