@@ -13,7 +13,7 @@ void Solution::fit() {
 			game.play(0);
 			ticks_survived++;
 		}
-		fitness_score += ticks_survived /100000;
+		fitness_score += ((double)ticks_survived) /100000;
 		// fitness_score =  0 - std::abs(10000 - ticks_survived)/100;
 		// fitness_score =  0 - std::abs(100 - ticks_survived)/100;
 	}
