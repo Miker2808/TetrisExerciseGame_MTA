@@ -74,26 +74,49 @@ void Trainer::crossSolutions() {
 	std::uniform_real_distribution<double> distribution(0, 1);
 
 	gen_number++;
+	double totalFitness = calculateTotalFitness();
+
 	for (int i = 0; i < SOL_NUM; i++) {
-
-		//TODO - ADD THE CROSSOVER RATE VARUBLE
-		if (distribution(device) < CROSS_RATE)
-			solutions.push_back(Solution{
-				sample[cross(device)].height_penalty,
-				sample[cross(device)].max_height_penality,
-				sample[cross(device)].holes_penality,
-				sample[cross(device)].bumpiness_penality,
-				0
-				});
-		else
-			solutions.push_back(sample[cross(device)]);
-
-
-
+		double randNum = distribution(device);
+		Solution parent = selectParentForCrossover(randNum, totalFitness);
+		if (randNum < CROSS_RATE) {
+			Solution otherParent = sample[cross(device)];
+			Solution offspring = performCrossover(parent, otherParent);
+			solutions.push_back(offspring);
+		}
+		else {
+			solutions.push_back(parent);
+		}
 	}
-
 }
 
+double Trainer::calculateTotalFitness() {
+	double totalFitness = 0.0;
+	for (const auto& s : sample) {
+		totalFitness += s.fitness_score;
+	}
+	return totalFitness;
+}
+
+Solution Trainer::selectParentForCrossover(double randNum, double totalFitness) {
+	double accumulatedFitness = 0.0;
+	for (const auto& s : sample) {
+		accumulatedFitness += s.fitness_score / totalFitness;
+		if (randNum <= accumulatedFitness) {
+			return s;
+		}
+	}
+	// Default return if no parent is selected (should not happen)
+	return sample[0];
+}
+
+Solution Trainer::performCrossover(const Solution& parent1, const Solution& parent2) {
+	double height_penalty = (parent1.height_penalty + parent2.height_penalty) / 2.0;
+	double max_height_penality = (parent1.max_height_penality + parent2.max_height_penality) / 2.0;
+	double holes_penality = (parent1.holes_penality + parent2.holes_penality) / 2.0;
+	double bumpiness_penality = (parent1.bumpiness_penality + parent2.bumpiness_penality) / 2.0;
+	return Solution{ height_penalty, max_height_penality, holes_penality, bumpiness_penality, 0 };
+}
 
 void Trainer::sortSolutions() {
 	std::sort(solutions.begin(), solutions.end(), [](const auto& lhs, const auto& rhs) {return lhs.fitness_score > rhs.fitness_score; });

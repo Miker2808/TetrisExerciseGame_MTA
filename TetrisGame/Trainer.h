@@ -24,6 +24,9 @@ public:
 	void sampleSolutions();
 	void mutateSamples();
 	void crossSolutions();
+	double calculateTotalFitness();
+	Solution selectParentForCrossover(double randNum, double totalFitness);
+	Solution performCrossover(const Solution& parent1, const Solution& parent2);
 	void loadSample();
 
 };
