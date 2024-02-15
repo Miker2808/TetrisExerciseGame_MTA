@@ -4,7 +4,7 @@
 
 void Solution::fit() {
 
-	for (int i = 0; i < 100; i++){
+	for (int i = 0; i < 10; i++){
 		int ticks_survived = 0;
 		AITetrisGame game(0, 0, false, false);
 		game.setAIWeights(height_penalty, max_height_penality, holes_penality, bumpiness_penality);
@@ -13,7 +13,7 @@ void Solution::fit() {
 			game.play(0);
 			ticks_survived++;
 		}
-		fitness_score += ((double)ticks_survived) /100000;
+		fitness_score += ((double)ticks_survived) /10000;
 		// fitness_score =  0 - std::abs(10000 - ticks_survived)/100;
 		// fitness_score =  0 - std::abs(100 - ticks_survived)/100;
 	}

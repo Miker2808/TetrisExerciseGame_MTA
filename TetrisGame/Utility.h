@@ -10,6 +10,7 @@
 #include <array>
 #include <random>
 #include <algorithm>
+#include <fstream>
 
 #include "Settings.h"
 
