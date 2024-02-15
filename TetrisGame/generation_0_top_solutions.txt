@@ -1,0 +1,80 @@
+Generation number: 0
+Solution index: 0
+Score: 0.068256
+Height penalty: 0.032643
+Max height penalty: 0.634507
+Holes penalty: 0.950783
+Bumpiness penalty: 0.190885
+
+Generation number: 0
+Solution index: 1
+Score: 0.064854
+Height penalty: 0.189090
+Max height penalty: 0.804720
+Holes penalty: 0.980356
+Bumpiness penalty: 0.249102
+
+Generation number: 0
+Solution index: 2
+Score: 0.063452
+Height penalty: 0.746042
+Max height penalty: 0.260676
+Holes penalty: 0.181785
+Bumpiness penalty: 0.148626
+
+Generation number: 0
+Solution index: 3
+Score: 0.061256
+Height penalty: 0.842444
+Max height penalty: 0.308783
+Holes penalty: 0.702338
+Bumpiness penalty: 0.361717
+
+Generation number: 0
+Solution index: 4
+Score: 0.061075
+Height penalty: 0.936141
+Max height penalty: 0.416821
+Holes penalty: 0.656514
+Bumpiness penalty: 0.297874
+
+Generation number: 0
+Solution index: 5
+Score: 0.060032
+Height penalty: 0.898316
+Max height penalty: 0.501276
+Holes penalty: 0.871235
+Bumpiness penalty: 0.298016
+
+Generation number: 0
+Solution index: 6
+Score: 0.058773
+Height penalty: 0.752077
+Max height penalty: 0.325869
+Holes penalty: 0.531982
+Bumpiness penalty: 0.381371
+
+Generation number: 0
+Solution index: 7
+Score: 0.051712
+Height penalty: 0.746946
+Max height penalty: 0.556925
+Holes penalty: 0.613966
+Bumpiness penalty: 0.252442
+
+Generation number: 0
+Solution index: 8
+Score: 0.049825
+Height penalty: 0.984405
+Max height penalty: 0.807966
+Holes penalty: 0.292577
+Bumpiness penalty: 0.204662
+
+Generation number: 0
+Solution index: 9
+Score: 0.048194
+Height penalty: 0.703412
+Max height penalty: 0.872389
+Holes penalty: 0.086546
+Bumpiness penalty: 0.192489
+

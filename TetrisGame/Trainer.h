@@ -5,8 +5,10 @@
 
 class Trainer{
 	const int SOL_NUM = 100;
-	const int gen_sample_size = 10;
+	const int SAMPLE_SIZE = 10;
 	const int logged_samples_per_generation = 10;
+	const double MUT_RATE = 0.3;
+	const double CROSS_RATE = 0.9;
 
 	std::random_device device;
 

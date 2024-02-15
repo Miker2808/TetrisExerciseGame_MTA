@@ -48,7 +48,7 @@ void Trainer::logSolutions() {
 void Trainer::sampleSolutions() {
 	std::copy(
 		solutions.begin(),
-		solutions.begin() + gen_sample_size,
+		solutions.begin() + SAMPLE_SIZE,
 		std::back_inserter(sample));
 
 	solutions.clear();
@@ -56,27 +56,42 @@ void Trainer::sampleSolutions() {
 
 void Trainer::mutateSamples() {
 	std::uniform_real_distribution<double> mutator(0.9, 1.1);
+	double rate = 0.9 + MUT_RATE / 5;
+
 	std::for_each(sample.begin(), sample.end(), [&](auto& s) {
-		s.height_penalty *= mutator(device);
-		s.max_height_penality *= mutator(device);
-		s.holes_penality *= mutator(device);
-		s.bumpiness_penality *= mutator(device);
+		if (mutator(device) < rate) {
+			s.height_penalty *= mutator(device);
+			s.max_height_penality *= mutator(device);
+			s.holes_penality *= mutator(device);
+			s.bumpiness_penality *= mutator(device);
+		}
 		});
 }
 
 
 void Trainer::crossSolutions() {
-	std::uniform_int_distribution<int> cross(0, gen_sample_size - 1);
+	std::uniform_int_distribution<int> cross(0, SAMPLE_SIZE - 1);
+	std::uniform_real_distribution<double> distribution(0, 1);
 
 	gen_number++;
-	for (int i = 0; i < SOL_NUM; i++)
-		solutions.push_back(Solution{
-		sample[cross(device)].height_penalty,
-		sample[cross(device)].max_height_penality,
-		sample[cross(device)].holes_penality,
-		sample[cross(device)].bumpiness_penality,
-		0
-			});
+	for (int i = 0; i < SOL_NUM; i++) {
+
+		//TODO - ADD THE CROSSOVER RATE VARUBLE
+		if (distribution(device) < CROSS_RATE)
+			solutions.push_back(Solution{
+				sample[cross(device)].height_penalty,
+				sample[cross(device)].max_height_penality,
+				sample[cross(device)].holes_penality,
+				sample[cross(device)].bumpiness_penality,
+				0
+				});
+		else
+			solutions.push_back(sample[cross(device)]);
+
+
+
+	}
+
 }
 
 
