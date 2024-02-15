@@ -11,6 +11,7 @@
 #include <random>
 #include <algorithm>
 #include <fstream>
+#include <thread>
 
 #include "Settings.h"
 
