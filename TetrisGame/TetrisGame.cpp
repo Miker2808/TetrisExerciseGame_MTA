@@ -28,7 +28,7 @@ TetrisGame::TetrisGame(const TetrisGame& other)
     is_player(other.is_player),
     tick_counter(other.tick_counter),
     ticks_per_drop(other.ticks_per_drop),
-    ticks_survived(other.ticks_survived) {
+    blocks_placed(other.blocks_placed) {
 
     // Create dynamic objects for the copied game (board, tetromino, and player)
     this->bombs_present = other.bombs_present;
@@ -53,7 +53,6 @@ void TetrisGame::play(unsigned char curr_key) {
     }
     if (!game_over) {
         this->tick_counter += 1;
-        this->ticks_survived += 1;
         this->current_tetromino_ticks += 1;
 
         this->currentMino->erase();
@@ -224,6 +223,7 @@ void TetrisGame::movePieceDown() {
         this->current_tetromino_ticks = 0;
         updateBoardStatus();
         this->currentMino->resetTetromino();
+        blocks_placed++;
         //this->board->printBoard();
 
         // Check for collision after resetting the tetromino

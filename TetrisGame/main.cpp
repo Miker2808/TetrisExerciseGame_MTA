@@ -14,6 +14,7 @@ int main()
 		trainer.logSolutions();
 		trainer.sampleSolutions();
 		trainer.crossSolutions();
+		trainer.partialRestart();
 	}
 
 

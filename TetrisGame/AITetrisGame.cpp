@@ -82,7 +82,6 @@ void AITetrisGame::play(unsigned char curr_key) {
 
     if (!game_over) {
         this->tick_counter += 1;
-        this->ticks_survived += 1;
 		this->current_tetromino_ticks += 1;
 
         //this->currentMino->erase();

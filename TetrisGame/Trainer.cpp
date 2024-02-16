@@ -51,24 +51,25 @@ void Trainer::sampleSolutions() {
 	solutions.clear();
 };
 
-void Trainer::mutateSolution(Solution * s) {
+Solution Trainer::makeMutatedCopy(Solution s) {
+	Solution nutated_s = s;
 	double upper = 1 + (0.01 * SINGLE_SOLUTION_MUTATION_PRECENT);
 	double lower = 1 - (0.01 * SINGLE_SOLUTION_MUTATION_PRECENT);
 	std::uniform_real_distribution<double> mutator(lower, upper);
-	s->max_height_penality *= mutator(device);
-	s->holes_penality *= mutator(device);
-	s->bumpiness_penality *= mutator(device);
+	nutated_s.max_height_penality *= mutator(device);
+	nutated_s.holes_penality *= mutator(device);
+	nutated_s.bumpiness_penality *= mutator(device);
+	return nutated_s;
 }
 
 
 void Trainer::crossSolutions() {
 	std::uniform_int_distribution<int> cross(0, SAMPLE_SIZE - 1);
 	std::uniform_real_distribution<double> distribution(0, 1);
-
 	gen_number++;
 	double totalFitness = calculateTotalFitness();
 
-	for (int i = 0; i < SOL_NUM; i++) {
+	for (int i = 0; i < SOL_NUM - RESTARTED_POP; i++) {
 		double randNum = distribution(device);
 		Solution parent = selectParentForCrossover(randNum, totalFitness);
 		if (randNum < CROSS_RATE) {
@@ -77,10 +78,16 @@ void Trainer::crossSolutions() {
 			solutions.push_back(offspring);
 		}
 		else {
-			solutions.push_back(Solution{ distribution(device), distribution(device), distribution(device) });
+			solutions.push_back(makeMutatedCopy(parent));
 		}
 	}
 	sample.clear();
+}
+
+void Trainer::partialRestart() {
+	std::uniform_real_distribution<double> unif(0, 1);
+	for (int i = 0; i < RESTARTED_POP; i++)
+		solutions.push_back(Solution{ unif(device), unif(device), unif(device), 0 });
 }
 
 double Trainer::calculateTotalFitness() {

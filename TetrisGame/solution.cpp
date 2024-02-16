@@ -6,16 +6,14 @@
 void Solution::fit(const int num_of_simulations) {
 
 	for (int i = 0; i < num_of_simulations; i++) {
-		int ticks_survived = 0;
 		AITetrisGame game(0, 0, false, false);
 		game.setAIWeights( max_height_penality, holes_penality, bumpiness_penality);
 		while (!game.isGameOver())
 		{
 			game.play(0);
-			ticks_survived++;
 			
 		}
-		fitness_score +=  (double)ticks_survived / 1000000;
+		fitness_score +=  (double)game.blocks_placed / num_of_simulations;
 		// fitness_score =  0 - std::abs(10000 - ticks_survived)/100;
 		// fitness_score =  0 - std::abs(100 - ticks_survived)/100;
 	}
