@@ -103,8 +103,10 @@ Solution Trainer::selectParentForCrossover(double randNum, double totalFitness) 
 }
 
 Solution Trainer::performCrossover(const Solution& parent1, const Solution& parent2) {
+	double upper = 1 + (0.01 * CROSSOVER_MUTATION_PRECENT);
+	double lower = 1 - (0.01 * CROSSOVER_MUTATION_PRECENT);
 	std::uniform_real_distribution<double> distribution(0.0, 1.0);
-	std::uniform_real_distribution<double> mutator(0.95, 1.05);
+	std::uniform_real_distribution<double> mutator(upper, lower);
 
 	double max_height_penalty;
 	double holes_penalty;
