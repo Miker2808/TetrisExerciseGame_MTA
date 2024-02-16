@@ -5,7 +5,7 @@
 
 class Trainer{
 	const int SOL_NUM = 20;
-	const int SAMPLE_SIZE = 15;
+	const int SAMPLE_SIZE = 10;
 	const int SIMULATIONS_PER_SOLUTION = 10;
 	const int NUM_OF_LOGGED_TOP_SOLUTIONS = 10;
 	const double SINGLE_SOLUTION_MUTATION_PRECENT = 5;

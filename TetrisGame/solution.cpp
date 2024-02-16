@@ -3,39 +3,58 @@
 
 
 
-std::mutex fitness_mutex;
-
 void Solution::fit(const int num_of_simulations) {
-    const int num_simulations = num_of_simulations;
-    const int num_threads = std::thread::hardware_concurrency();
-    std::vector<std::thread> threads(num_threads);
 
-    auto simulateGame = [this, num_simulations]() {
-        for (int i = 0; i < num_simulations; ++i) {
-            int ticks_survived = 0;
-            AITetrisGame game(0, 0, false, false);
-            game.setAIWeights(max_height_penality, holes_penality, bumpiness_penality);
-            while (!game.isGameOver()) {
-                game.play(0);
-                ticks_survived++;
-            }
-            {
-                std::lock_guard<std::mutex> lock(fitness_mutex);
-                fitness_score += static_cast<double>(ticks_survived) / 1000000;
-            }
-        }
-        };
+	for (int i = 0; i < num_of_simulations; i++) {
+		int ticks_survived = 0;
+		AITetrisGame game(0, 0, false, false);
+		game.setAIWeights( max_height_penality, holes_penality, bumpiness_penality);
+		while (!game.isGameOver())
+		{
+			game.play(0);
+			ticks_survived++;
+			
+		}
+		fitness_score +=  (double)ticks_survived / 1000000;
+		// fitness_score =  0 - std::abs(10000 - ticks_survived)/100;
+		// fitness_score =  0 - std::abs(100 - ticks_survived)/100;
+	}
+};
 
-    // Start threads to run game simulations
-    for (int i = 0; i < num_threads; ++i) {
-        threads[i] = std::thread(simulateGame);
-    }
 
-    // Join threads to wait for them to finish
-    for (int i = 0; i < num_threads; ++i) {
-        threads[i].join();
-    }
-}
+//std::mutex fitness_mutex;
+//
+//void Solution::fit(const int num_of_simulations) {
+//    const int num_simulations = num_of_simulations;
+//    const int num_threads = std::thread::hardware_concurrency();
+//    std::vector<std::thread> threads(num_threads);
+//
+//    auto simulateGame = [this, num_simulations]() {
+//        for (int i = 0; i < num_simulations; ++i) {
+//            int ticks_survived = 0;
+//            AITetrisGame game(0, 0, false, false);
+//            game.setAIWeights(max_height_penality, holes_penality, bumpiness_penality);
+//            while (!game.isGameOver()) {
+//                game.play(0);
+//                ticks_survived++;
+//            }
+//            {
+//                std::lock_guard<std::mutex> lock(fitness_mutex);
+//                fitness_score += static_cast<double>(ticks_survived) / 1000000;
+//            }
+//        }
+//        };
+//
+//    // Start threads to run game simulations
+//    for (int i = 0; i < num_threads; ++i) {
+//        threads[i] = std::thread(simulateGame);
+//    }
+//
+//    // Join threads to wait for them to finish
+//    for (int i = 0; i < num_threads; ++i) {
+//        threads[i].join();
+//    }
+//}
 
 
 

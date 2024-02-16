@@ -106,7 +106,7 @@ Solution Trainer::performCrossover(const Solution& parent1, const Solution& pare
 	double upper = 1 + (0.01 * CROSSOVER_MUTATION_PRECENT);
 	double lower = 1 - (0.01 * CROSSOVER_MUTATION_PRECENT);
 	std::uniform_real_distribution<double> distribution(0.0, 1.0);
-	std::uniform_real_distribution<double> mutator(upper, lower);
+	std::uniform_real_distribution<double> mutator(lower , upper);
 
 	double max_height_penalty;
 	double holes_penalty;
