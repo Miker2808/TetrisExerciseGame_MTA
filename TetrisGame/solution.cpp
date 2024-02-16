@@ -5,12 +5,12 @@
 
 std::mutex fitness_mutex;
 
-void Solution::fit(int num_of_simulations) {
-    int num_simulations = num_of_simulations;
+void Solution::fit(const int num_of_simulations) {
+    const int num_simulations = num_of_simulations;
     const int num_threads = std::thread::hardware_concurrency();
     std::vector<std::thread> threads(num_threads);
 
-    auto simulateGame = [this]() {
+    auto simulateGame = [this, num_simulations]() {
         for (int i = 0; i < num_simulations; ++i) {
             int ticks_survived = 0;
             AITetrisGame game(0, 0, false, false);
