@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <fstream>
 #include <thread>
+#include <mutex> // For std::mutex
+#include <atomic> // For std::atomic
 
 #include "Settings.h"
 

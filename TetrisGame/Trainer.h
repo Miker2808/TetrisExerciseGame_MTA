@@ -4,9 +4,9 @@
 #include "Utility.h"
 
 class Trainer{
-	const int SOL_NUM = 100;
-	const int SAMPLE_SIZE = 10;
-	const int logged_samples_per_generation = 10;
+	const int SOL_NUM = 20;
+	const int SAMPLE_SIZE = 15;
+	const int logged_samples_per_generation = 15;
 	const double MUT_RATE = 0.3;
 	const double CROSS_RATE = 0.9;
 

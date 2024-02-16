@@ -5,6 +5,7 @@ Settings global_settings;
 
 int main()
 {
+	srand((unsigned int)time(NULL));
 	Trainer trainer;
 	trainer.generateStartingBach();
 	while (true) {

@@ -6,7 +6,7 @@
 void Trainer::generateStartingBach() {
 	std::uniform_real_distribution<double> unif(0, 1);
 	for (int i = 0; i < SOL_NUM; i++)
-		solutions.push_back(Solution{ unif(device), unif(device), unif(device), unif(device), 0 });
+		solutions.push_back(Solution{unif(device), unif(device), unif(device), 0 });
 }
 
 void Trainer::fitSolutions() {
@@ -16,7 +16,7 @@ void Trainer::fitSolutions() {
 	for (auto& s : solutions) {
 		//debug
 		gotoxy(0, 2);
-		std::cout << "progress: "<< (solution_ittrator/ (SOL_NUM/100)) << "%" << "\n";
+		std::cout << "progress: "<< ((solution_ittrator)*100/ (SOL_NUM) ) << "%" << "\n";
 		solution_ittrator++;
 		//debug over
 		s.fit();
@@ -35,7 +35,6 @@ void Trainer::logSolutions() {
 				<< "Generation number: " << gen_number << '\n'
 				<< "Solution index: " << i << '\n'
 				<< "Score: " << s.fitness_score << '\n'
-				<< "Height penalty: " << s.height_penalty << '\n'
 				<< "Max height penalty: " << s.max_height_penality << '\n'
 				<< "Holes penalty: " << s.holes_penality << '\n'
 				<< "Bumpiness penalty: " << s.bumpiness_penality << "\n\n";
@@ -60,7 +59,6 @@ void Trainer::mutateSamples() {
 
 	std::for_each(sample.begin(), sample.end(), [&](auto& s) {
 		if (mutator(device) < rate) {
-			s.height_penalty *= mutator(device);
 			s.max_height_penality *= mutator(device);
 			s.holes_penality *= mutator(device);
 			s.bumpiness_penality *= mutator(device);
@@ -88,6 +86,7 @@ void Trainer::crossSolutions() {
 			solutions.push_back(parent);
 		}
 	}
+	sample.clear();
 }
 
 double Trainer::calculateTotalFitness() {
@@ -111,11 +110,11 @@ Solution Trainer::selectParentForCrossover(double randNum, double totalFitness) 
 }
 
 Solution Trainer::performCrossover(const Solution& parent1, const Solution& parent2) {
-	double height_penalty = (parent1.height_penalty + parent2.height_penalty) / 2.0;
-	double max_height_penality = (parent1.max_height_penality + parent2.max_height_penality) / 2.0;
-	double holes_penality = (parent1.holes_penality + parent2.holes_penality) / 2.0;
-	double bumpiness_penality = (parent1.bumpiness_penality + parent2.bumpiness_penality) / 2.0;
-	return Solution{ height_penalty, max_height_penality, holes_penality, bumpiness_penality, 0 };
+	std::uniform_real_distribution<double> mutator(0.95, 1.05);
+	double max_height_penality = ((parent1.max_height_penality + parent2.max_height_penality) * mutator(device)) / 2.0;
+	double holes_penality = ((parent1.holes_penality + parent2.holes_penality) * mutator(device)) / 2.0;
+	double bumpiness_penality = ((parent1.bumpiness_penality + parent2.bumpiness_penality) * mutator(device)) / 2.0;
+	return Solution{max_height_penality, holes_penality, bumpiness_penality, 0 };
 }
 
 void Trainer::sortSolutions() {

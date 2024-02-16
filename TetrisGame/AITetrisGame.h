@@ -4,7 +4,6 @@ class AITetrisGame :
     public TetrisGame
 {
     
-    double height_penalty = 0;
     double max_height_penality = 0.5;
     double holes_penality = 0.100;
     double bumpiness_penality = 0.010;
@@ -32,7 +31,7 @@ public:
     AITetrisGame(const AITetrisGame& other);
     AITetrisGame();
     void play(unsigned char curr_key);
-    void setAIWeights(double height_penalty , double max_height_penality, double holes_penality, double bumpiness_penality);
+    void setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality);
 
     
 

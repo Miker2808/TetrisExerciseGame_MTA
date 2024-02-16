@@ -191,7 +191,6 @@ double AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
 	unsigned int bumpinessScores = getBoardBumpinessSum(board);
 	double total_score = 0;
 
-	total_score -= heightScores * height_penalty;
 	total_score -= holesScores * holes_penality;
 	total_score -= bumpinessScores * bumpiness_penality;
 	total_score -= pow((max_height_penality),17 - max_height);
@@ -250,8 +249,7 @@ void AITetrisGame::estimateBestMove(){
 	
 }
 
-void AITetrisGame::setAIWeights(double height_penalty, double max_height_penality, double holes_penality, double bumpiness_penality) {
-	this->height_penalty = height_penalty;
+void AITetrisGame::setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality) {
 	this->max_height_penality = max_height_penality;
 	this->holes_penality = holes_penality;
 	this->bumpiness_penality = bumpiness_penality;
