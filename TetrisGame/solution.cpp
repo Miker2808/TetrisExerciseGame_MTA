@@ -5,8 +5,8 @@
 
 std::mutex fitness_mutex;
 
-void Solution::fit() {
-    const int num_simulations = 10;
+void Solution::fit(int num_of_simulations) {
+    int num_simulations = num_of_simulations;
     const int num_threads = std::thread::hardware_concurrency();
     std::vector<std::thread> threads(num_threads);
 

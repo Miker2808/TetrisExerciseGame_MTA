@@ -14,12 +14,10 @@ void Trainer::fitSolutions() {
 	std::cout << "Generation number: " << gen_number ;
 	int solution_ittrator = 0;
 	for (auto& s : solutions) {
-		//debug
 		gotoxy(0, 2);
 		std::cout << "progress: "<< ((solution_ittrator)*100/ (SOL_NUM) ) << "%" << "\n";
 		solution_ittrator++;
-		//debug over
-		s.fit();
+		s.fit(SIMULATIONS_PER_SOLUTION);
 	}
 }
 

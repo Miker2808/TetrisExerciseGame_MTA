@@ -9,5 +9,5 @@ struct Solution {
 
     double fitness_score;
     
-    void fit();
+    void fit(int num_of_simulations);
 };
