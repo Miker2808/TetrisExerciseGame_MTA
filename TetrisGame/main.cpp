@@ -13,7 +13,6 @@ int main()
 		trainer.sortSolutions();
 		trainer.logSolutions();
 		trainer.sampleSolutions();
-		trainer.mutateSamples();
 		trainer.crossSolutions();
 	}
 

@@ -27,7 +27,7 @@ void Trainer::logSolutions() {
 
 	if (of.is_open()) {
 		// Iterate over the top solutions and write their information to the file
-		for (int i = 0; i < logged_samples_per_generation && i < solutions.size(); ++i) {
+		for (int i = 0; i < NUM_OF_LOGGED_TOP_SOLUTIONS && i < solutions.size(); ++i) {
 			const auto& s = solutions[i];
 			of << std::fixed
 				<< "Generation number: " << gen_number << '\n'
@@ -51,17 +51,13 @@ void Trainer::sampleSolutions() {
 	solutions.clear();
 };
 
-void Trainer::mutateSamples() {
-	std::uniform_real_distribution<double> mutator(0.9, 1.1);
-	double rate = 0.9 + MUT_RATE / 5;
-
-	std::for_each(sample.begin(), sample.end(), [&](auto& s) {
-		if (mutator(device) < rate) {
-			s.max_height_penality *= mutator(device);
-			s.holes_penality *= mutator(device);
-			s.bumpiness_penality *= mutator(device);
-		}
-		});
+void Trainer::mutateSolution(Solution * s) {
+	double upper = 1 + (0.01 * SINGLE_SOLUTION_MUTATION_PRECENT);
+	double lower = 1 - (0.01 * SINGLE_SOLUTION_MUTATION_PRECENT);
+	std::uniform_real_distribution<double> mutator(lower, upper);
+	s->max_height_penality *= mutator(device);
+	s->holes_penality *= mutator(device);
+	s->bumpiness_penality *= mutator(device);
 }
 
 
@@ -81,7 +77,7 @@ void Trainer::crossSolutions() {
 			solutions.push_back(offspring);
 		}
 		else {
-			solutions.push_back(parent);
+			solutions.push_back(Solution{ distribution(device), distribution(device), distribution(device) });
 		}
 	}
 	sample.clear();
@@ -103,17 +99,40 @@ Solution Trainer::selectParentForCrossover(double randNum, double totalFitness) 
 			return s;
 		}
 	}
-	// Default return if no parent is selected (should not happen)
 	return sample[0];
 }
 
 Solution Trainer::performCrossover(const Solution& parent1, const Solution& parent2) {
+	std::uniform_real_distribution<double> distribution(0.0, 1.0);
 	std::uniform_real_distribution<double> mutator(0.95, 1.05);
-	double max_height_penality = ((parent1.max_height_penality + parent2.max_height_penality) * mutator(device)) / 2.0;
-	double holes_penality = ((parent1.holes_penality + parent2.holes_penality) * mutator(device)) / 2.0;
-	double bumpiness_penality = ((parent1.bumpiness_penality + parent2.bumpiness_penality) * mutator(device)) / 2.0;
-	return Solution{max_height_penality, holes_penality, bumpiness_penality, 0 };
+
+	double max_height_penalty;
+	double holes_penalty;
+	double bumpiness_penalty;
+
+	if (distribution(device) < 0.5)
+		max_height_penalty = parent1.max_height_penality;
+	else
+		max_height_penalty = parent2.max_height_penality;
+
+	if (distribution(device) < 0.5)
+		holes_penalty = parent1.holes_penality;
+	else
+		holes_penalty = parent2.holes_penality;
+
+	if (distribution(device) < 0.5)
+		bumpiness_penalty = parent1.bumpiness_penality;
+	else
+		bumpiness_penalty = parent2.bumpiness_penality;
+
+	// Apply mutation
+	max_height_penalty *= mutator(device);
+	holes_penalty *= mutator(device);
+	bumpiness_penalty *= mutator(device);
+
+	return Solution{ max_height_penalty, holes_penalty, bumpiness_penalty, 0 };
 }
+
 
 void Trainer::sortSolutions() {
 	std::sort(solutions.begin(), solutions.end(), [](const auto& lhs, const auto& rhs) {return lhs.fitness_score > rhs.fitness_score; });
