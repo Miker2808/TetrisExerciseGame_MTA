@@ -32,7 +32,7 @@ public:
     AITetrisGame(int start_x, int start_y, bool bombs, bool human_player);
     AITetrisGame(const AITetrisGame& other);
     void play(unsigned char curr_key);
-
+    void setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality, double lines_reward);
     
 
     
