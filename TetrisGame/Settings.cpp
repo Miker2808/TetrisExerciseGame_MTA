@@ -11,6 +11,6 @@ const Controls Settings::ctrl_presets[2] = {
 // Each defines the heuristic weights for the AI.
 const TetrisAIProfile Settings::bot_difficulties[3] = {
 	{0.627633 , 0.756441 , 0.254815, 0.9763},//Novice
-	{0.618981 , 0.762115 , 0.253861, 0.974763},//Good
+	{0.926435 , 0.778338 , 0.404692, 0.579211},//Good
 	{0.626957 , 0.830306 , 0.552015, 0.195814}//Best
 };
