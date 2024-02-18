@@ -144,7 +144,6 @@
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="MultiplayerTetris.cpp" />
     <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="TetrisBotProfile.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="TetrisBoard.cpp" />
     <ClCompile Include="TetrisGame.cpp" />
