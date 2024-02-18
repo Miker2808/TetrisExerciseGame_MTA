@@ -23,7 +23,7 @@ class AITetrisGame :
     int getColumnHeight(TetrisBoard* board, const int x) const;
     int getColumnHoles(TetrisBoard* board, const int x) const;
     unsigned int getBoardHolesSum(TetrisBoard* board) const;
-    double calculateHeuristicScore(TetrisBoard* board) const;
+    double calculateHeuristicScore(TetrisBoard* board, int lines_cleard) const;
     void estimateBestMove();
     void movementHandler();
 

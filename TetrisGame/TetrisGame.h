@@ -28,6 +28,7 @@ protected:
 	bool is_player = false;
 	size_t current_tetromino_ticks = 0; // lifetime of current tetromino piece
 	unsigned int ticks_survived = 0;
+	int last_tetromino_lines_destroyed = 0;
 
 public:
 	TetrisGame(int start_x, int start_y, bool bombs, bool human_player);
@@ -53,6 +54,7 @@ protected:
 	void findBombCell(const int obj_rot, int& bomb_cell_x_off, int& bomb_cell_y_off);
 	void printGameStats();
 	void movePieceDown();
+	int getLinesDestroyed();
 	
 
 };

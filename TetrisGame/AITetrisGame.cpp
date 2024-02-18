@@ -182,7 +182,7 @@ unsigned int AITetrisGame::getBoardBumpinessSum(TetrisBoard* board) const {
 
 
 // calculates heirustics score by giving a penality for every imperfection with varied weights
-double AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
+double AITetrisGame::calculateHeuristicScore(TetrisBoard* board , int lines_cleard) const{
 	unsigned int max_height = getBoardMaxHeight(board);
 	unsigned int holesScores = getBoardHolesSum(board);
 	unsigned int bumpinessScores = getBoardBumpinessSum(board);
