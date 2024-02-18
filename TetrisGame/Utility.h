@@ -14,6 +14,7 @@
 #include <thread>
 #include <mutex> // For std::mutex
 #include <atomic> // For std::atomic
+#include <cmath>
 
 #include "Settings.h"
 
