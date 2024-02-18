@@ -1,5 +1,6 @@
 #pragma once
 #include "Controls.h"
+#include "TetrisBotProfile.h"
 
 //Holds static settings for startup configurations and dynamic settings for runtime modification in the Tetris game.
 class Settings
@@ -53,6 +54,8 @@ public:
 
 	static const Controls ctrl_presets[2];
 
+	static const TetrisBotProfile bot_difficulties[3];
+
 	// keys to access menu features
 	static constexpr unsigned char MENU_ONE = '1';
 	static constexpr unsigned char MENU_TWO = '2';
@@ -64,6 +67,8 @@ public:
 	static constexpr unsigned char MENU_PAUSE = 27;
 
 	// dynamic settings for runtime modification
+
+	int chosen_bot_difficulty[2] = { 0 , 0 };
 
 	// Game speed modifier, affecting the overall speed of the Tetris game
 	int game_speed = 1;

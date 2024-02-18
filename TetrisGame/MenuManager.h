@@ -26,6 +26,8 @@ private:
 	void printMainMenu() const;
 	void printControls() const;
 	void printOptionsMenu() const;
+	void printBotDifficultyMenu() const;
+	void BotDifficultyMenu();
 
 
 };

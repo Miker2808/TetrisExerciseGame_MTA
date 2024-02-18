@@ -137,8 +137,8 @@ void MenuManager::printOptionsMenu() const{
 	}
 
 
-
-	std::cout << "[" << Settings::MENU_THREE << "] Back\n";
+	std::cout << "[" << Settings::MENU_THREE << "] Bot Difficulties\n";
+	std::cout << "[" << Settings::MENU_FOUR << "] Back\n";
 	std::cout << "[" << Settings::MENU_EXIT << "] Exit Game\n";
 
 }
@@ -162,6 +162,8 @@ void MenuManager::optionsMenu() {
 				global_settings.bombs = !(global_settings.bombs);
 				break;
 		case Settings::MENU_THREE:
+				BotDifficultyMenu();
+		case Settings::MENU_FOUR:
 				return;
 		case Settings::MENU_EXIT:
 				current_state = GameState::EXIT_GAME;
@@ -187,4 +189,67 @@ void MenuManager::printGameOverMenu(int player_indx, int score)
 	std::cout << "Press any key to continue\n";
 	(void)_getch(); // press any key
 	system("cls");
+}
+
+
+
+void MenuManager::printBotDifficultyMenu() const {
+	system("cls");
+	std::cout << "\n\n   Tetris\n";
+	std::cout << "   Options->Bot Difficulty\n";
+	std::cout << "~~~~~~~~~~~~~~\n";
+	std::cout << "(Choose the CPU to cycle through its difficulties)\n";
+	std::cout << "Choose key:\n";
+	std::cout << "[" << Settings::MENU_ONE << "] CPU 1 Difficulty: ";
+
+	if(global_settings.chosen_bot_difficulty[0] == 0)
+		std::cout << "Novice\n";
+	else if(global_settings.chosen_bot_difficulty[0] == 1)
+		std::cout << "Good\n";
+	else
+		std::cout << "Best\n";
+
+
+	std::cout << "[" << Settings::MENU_TWO << "] CPU 2 Difficulty: ";
+
+	if (global_settings.chosen_bot_difficulty[1] == 0)
+		std::cout << "Novice\n";
+	else if (global_settings.chosen_bot_difficulty[1] == 1)
+		std::cout << "Good\n";
+	else
+		std::cout << "Best\n";
+
+
+	std::cout << "[" << Settings::MENU_THREE << "] Back\n";
+	std::cout << "[" << Settings::MENU_EXIT << "] Exit Game\n";
+
+}
+
+
+void MenuManager::BotDifficultyMenu() {
+	unsigned char curr_key = 0;
+
+	while (true)
+	{
+		this->printBotDifficultyMenu();
+
+		curr_key = _getch();
+
+		switch (curr_key) {
+		case Settings::MENU_ONE:
+			global_settings.chosen_bot_difficulty[0] = (global_settings.chosen_bot_difficulty[0] + 1) % 3;
+			break;
+		case Settings::MENU_TWO:
+			global_settings.chosen_bot_difficulty[1] = (global_settings.chosen_bot_difficulty[1] + 1) % 3;
+			break;
+		case Settings::MENU_THREE:
+			return;
+		case Settings::MENU_EXIT:
+			current_state = GameState::EXIT_GAME;
+			return;
+		}
+
+		// reset key - keep at bottom
+		curr_key = 0;
+	}
 }

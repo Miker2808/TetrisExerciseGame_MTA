@@ -16,6 +16,13 @@ AITetrisGame::AITetrisGame(const AITetrisGame& other) :
 
 }
 
+void AITetrisGame::setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality, double lines_reward) {
+	this->max_height_penality = max_height_penality;
+	this->holes_penality = holes_penality;
+	this->bumpiness_penality = bumpiness_penality;
+	this->lines_reward = lines_reward;
+}
+
 // best_x getter
 int AITetrisGame::getBestX()
 {
