@@ -14,6 +14,7 @@ const char Tetromino::tetromino_shapes[8][17] = {
 
 // Randomly generate a tetromino piece, places it at (start_x, start_y) relative to (board_x, board_y)
 Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_start_y, bool bombs_flag) {
+	this->bombs_present = bombs_flag;
 	this->shape_index = initShapeindex();
 	this->start_pos_x = start_x;
 	this->start_pos_y = start_y;
@@ -22,7 +23,6 @@ Tetromino::Tetromino(int start_x, int start_y, int board_start_x, int board_star
 	this->rotation = 0;
 	this->board_offset_x = board_start_x ;
 	this->board_offset_y = board_start_y ;
-	this->bombs_present = bombs_flag;
 
 }
 
