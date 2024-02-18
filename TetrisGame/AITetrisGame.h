@@ -4,9 +4,10 @@ class AITetrisGame :
     public TetrisGame
 {
 
-    static constexpr double max_height_penality = 0.2;
-    static constexpr double holes_penality = 0.100;
-    static constexpr double bumpiness_penality = 0.010;
+    double max_height_penality = 0.626957;
+    double holes_penality = 0.830306;
+    double bumpiness_penality = 0.195814;
+    double lines_reward = 0.552015;
 
     int best_x = 0; // track best x position to have
     int best_rotation = 0; // track best rotation to have

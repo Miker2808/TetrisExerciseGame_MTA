@@ -191,6 +191,7 @@ double AITetrisGame::calculateHeuristicScore(TetrisBoard* board , int lines_clea
 	total_score -= holesScores * holes_penality;
 	total_score -= bumpinessScores * bumpiness_penality;
 	total_score -= pow(max_height_penality, -1 * max_height);
+	total_score += pow((lines_cleard * lines_reward), max_height);
 
 	return total_score;
 
@@ -231,7 +232,7 @@ void AITetrisGame::estimateBestMove(){
 			simulatedGame.updateBoardStatus();
 
 			// Calculate heuristic score for the simulated board
-			currScore = calculateHeuristicScore(simulatedGame.board);
+			currScore = calculateHeuristicScore(simulatedGame.board, simulatedGame.getLinesDestroyed());
 			// Update best move if the score is better
 			if (currScore > bestScore) {
 				bestScore = currScore;
