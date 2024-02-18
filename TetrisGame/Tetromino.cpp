@@ -1,5 +1,6 @@
 #include "Tetromino.h"
 
+// Define the shapes of tetrominos as 2D arrays of characters
 const char Tetromino::tetromino_shapes[8][17] = {
 		{"  A   A   A   A "}, // vertical line shape
 		{"     BB  BB     "}, // square shape
@@ -44,7 +45,7 @@ Tetromino::~Tetromino() {
 
 }
 
-
+// Initialize the shape index of the tetromino piece based on whether bombs are present
 int Tetromino::initShapeindex() const{
 	if (!bombs_present)
 		return rand() % 7;

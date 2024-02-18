@@ -6,7 +6,9 @@ const Controls Settings::ctrl_presets[2] = {
 	{'l','L','j','J','k','K','i','I','m','M'}  // Controls for player 2
 };
 
-
+// Holds the AI profile settings for three difficulty levels: Novice, Good, and Best. 
+// Each element of the array is an instance of the TetrisAIProfile struct.
+// Each defines the heuristic weights for the AI.
 const TetrisAIProfile Settings::bot_difficulties[3] = {
 	{0.627633 , 0.756441 , 0.254815, 0.9763},//Novice
 	{0.618981 , 0.762115 , 0.253861, 0.974763},//Good

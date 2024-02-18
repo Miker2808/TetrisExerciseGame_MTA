@@ -68,6 +68,7 @@ public:
 
 	// dynamic settings for runtime modification
 
+	//Array storing the chosen difficulty levels for CPU players.
 	int chosen_bot_difficulty[2] = { 0 , 0 };
 
 	// Game speed modifier, affecting the overall speed of the Tetris game

@@ -16,25 +16,25 @@ AITetrisGame::AITetrisGame(const AITetrisGame& other) :
 
 }
 
-// best_x getter
+// Getter for best_x
 int AITetrisGame::getBestX()
 {
 	return this->best_x;
 }
 
-// best_rotation getter
+// Getter for best_rotation
 int AITetrisGame::getBestRot()
 {
 	return this->best_rotation;
 }
 
-// best_x setter
+// Setter for best_x
 void AITetrisGame::setBestX(int x)
 {
 	this->best_x = x;
 }
 
-// best_rotation setter
+// Setter for best_rotation
 void AITetrisGame::setBestRot(int rot)
 {
 	this->best_rotation = rot;
@@ -100,7 +100,7 @@ void AITetrisGame::play(unsigned char curr_key) {
     }
 }
 
-// returns the height of given column 'x' from board at given pointer
+// Returns the height of given column 'x' from board at given pointer
 int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) const{
 
 	for (int y = 0; y < board->getBoardHeight(); y++) {
@@ -113,7 +113,7 @@ int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) const{
 }
 
 
-// returns the sum of all heights, and the maximum height by reference to maximum
+// Returns the sum of all heights, and the maximum height by reference to maximum
 unsigned int AITetrisGame::getBoardMaxHeight(TetrisBoard* board) const {
 	size_t height = board->getBoardHeight();
 	size_t width = board->getBoardWidth();
@@ -130,7 +130,7 @@ unsigned int AITetrisGame::getBoardMaxHeight(TetrisBoard* board) const {
 }
 
 
-// returns number of holes at given column "x" from pointer of "board"
+// Returns number of holes at given column "x" from pointer of "board"
 int AITetrisGame::getColumnHoles(TetrisBoard* board, const int x) const{
 	int columnHeight = getColumnHeight(board, x);
 	int board_height = board->getBoardHeight();
@@ -143,7 +143,7 @@ int AITetrisGame::getColumnHoles(TetrisBoard* board, const int x) const{
 	return holes;
 }
 
-// returns the some of holes in the board
+// Returns the some of holes in the board
 unsigned int AITetrisGame::getBoardHolesSum(TetrisBoard* board) const {
 	size_t width = board->getBoardWidth();
 	unsigned int sum = 0;
@@ -155,7 +155,7 @@ unsigned int AITetrisGame::getBoardHolesSum(TetrisBoard* board) const {
 	return sum;
 }
 
-// calculates bumpiness relative to left and right columns in terms of blocks from highest block
+// Calculates bumpiness relative to left and right columns in terms of blocks from highest block
 // in the column
 int AITetrisGame::getColumnBumpiness(TetrisBoard* board, const int x) const {
 	int difference = 0;
@@ -169,6 +169,7 @@ int AITetrisGame::getColumnBumpiness(TetrisBoard* board, const int x) const {
 	return difference;
 }
 
+// Calculates the sum of bumpiness in all columns of the board
 unsigned int AITetrisGame::getBoardBumpinessSum(TetrisBoard* board) const {
 	size_t width = board->getBoardWidth();
 	unsigned int sum = 0;

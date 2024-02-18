@@ -3,13 +3,18 @@
 class AITetrisGame :
     public TetrisGame
 {
+    // Stores the profile of the Tetris AI
     TetrisAIProfile profile;
 
-    int best_x = 0; // track best x position to have
-    int best_rotation = 0; // track best rotation to have
+    // Tracks the best x position and rotation to have
+    int best_x = 0;
+    int best_rotation = 0;
+
+    // Constants defining the playable width and height of the game board
     static constexpr size_t playable_width = Settings::DEFAULT_BOARD_WIDTH - 2;
     static constexpr size_t playable_height = Settings::DEFAULT_BOARD_HEIGHT - 2;
 
+    // Private member functions
     int getBestX();
     int getBestRot();
     void setBestX(int x);

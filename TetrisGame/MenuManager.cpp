@@ -163,6 +163,7 @@ void MenuManager::optionsMenu() {
 				break;
 		case Settings::MENU_THREE:
 				BotDifficultyMenu();
+				break;
 		case Settings::MENU_FOUR:
 				return;
 		case Settings::MENU_EXIT:
@@ -192,7 +193,7 @@ void MenuManager::printGameOverMenu(int player_indx, int score)
 }
 
 
-
+// Prints bot difficulty menu options.
 void MenuManager::printBotDifficultyMenu() const {
 	system("cls");
 	std::cout << "\n\n   Tetris\n";
@@ -225,7 +226,7 @@ void MenuManager::printBotDifficultyMenu() const {
 
 }
 
-
+// Controls bot difficulty menu logic.
 void MenuManager::BotDifficultyMenu() {
 	unsigned char curr_key = 0;
 
