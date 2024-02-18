@@ -106,6 +106,7 @@ void MultiplayerTetris::freeGames() {
 void MultiplayerTetris::allocateGames() {
     unsigned int  board_offset_x = 0 , board_offset_y = 0;
     unsigned int i;
+    int dif_inedx;
 
     //allocate human player games first
     for (i = 0; i < global_settings.num_of_human_players; i++) {
@@ -116,7 +117,8 @@ void MultiplayerTetris::allocateGames() {
     //allocate the rest of the games as CPU games
     for (unsigned int j = 0; j < global_settings.num_of_bots; j++) {
         updateBoardOffsetPos(j + i, board_offset_x, board_offset_y);
-        games_arr.push_back(new AITetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false));
+        dif_inedx = global_settings.chosen_bot_difficulty[j];
+        games_arr.push_back(new AITetrisGame(board_offset_x, board_offset_y, global_settings.bombs, false , global_settings.bot_difficulties[dif_inedx]));
     }
 }
 

@@ -1,5 +1,5 @@
 #pragma once
-struct TetrisBotProfile
+struct TetrisAIProfile
 {
     double max_height_penality = 0;
     double holes_penality = 0;

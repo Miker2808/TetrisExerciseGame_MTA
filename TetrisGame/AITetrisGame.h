@@ -3,11 +3,7 @@
 class AITetrisGame :
     public TetrisGame
 {
-
-    double max_height_penality = 0.626957;
-    double holes_penality = 0.830306;
-    double bumpiness_penality = 0.195814;
-    double lines_reward = 0.552015;
+    TetrisAIProfile profile;
 
     int best_x = 0; // track best x position to have
     int best_rotation = 0; // track best rotation to have
@@ -29,7 +25,7 @@ class AITetrisGame :
     void movementHandler();
 
 public:
-    AITetrisGame(int start_x, int start_y, bool bombs, bool human_player);
+    AITetrisGame(int start_x, int start_y, bool bombs, bool human_player, TetrisAIProfile ai_profile);
     AITetrisGame(const AITetrisGame& other);
     void play(unsigned char curr_key);
     void setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality, double lines_reward);

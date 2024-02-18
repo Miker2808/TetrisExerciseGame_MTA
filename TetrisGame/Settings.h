@@ -54,7 +54,7 @@ public:
 
 	static const Controls ctrl_presets[2];
 
-	static const TetrisBotProfile bot_difficulties[3];
+	static const TetrisAIProfile bot_difficulties[3];
 
 	// keys to access menu features
 	static constexpr unsigned char MENU_ONE = '1';

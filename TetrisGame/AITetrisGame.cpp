@@ -1,10 +1,10 @@
 
 #include "AITetrisGame.h"
 
-AITetrisGame::AITetrisGame(int start_x, int start_y, bool bombs, bool human_player) : 
+AITetrisGame::AITetrisGame(int start_x, int start_y, bool bombs, bool human_player, TetrisAIProfile ai_profile) :
 	TetrisGame(start_x, start_y, bombs, false)
 {
-
+	profile = ai_profile;
 }
 
 
@@ -14,13 +14,6 @@ AITetrisGame::AITetrisGame(const AITetrisGame& other) :
 	best_rotation(other.best_rotation)
 {
 
-}
-
-void AITetrisGame::setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality, double lines_reward) {
-	this->max_height_penality = max_height_penality;
-	this->holes_penality = holes_penality;
-	this->bumpiness_penality = bumpiness_penality;
-	this->lines_reward = lines_reward;
 }
 
 // best_x getter
@@ -195,10 +188,10 @@ double AITetrisGame::calculateHeuristicScore(TetrisBoard* board , int lines_clea
 	unsigned int bumpinessScores = getBoardBumpinessSum(board);
 	double total_score = 0;
 
-	total_score -= holesScores * holes_penality;
-	total_score -= bumpinessScores * bumpiness_penality;
-	total_score -= pow(max_height_penality, -1 * max_height);
-	total_score += pow((lines_cleard * lines_reward), max_height);
+	total_score -= holesScores * this->profile.holes_penality;
+	total_score -= bumpinessScores * profile.bumpiness_penality;
+	total_score -= pow(profile.max_height_penality, -1 * max_height);
+	total_score += pow((lines_cleard * profile.lines_reward), max_height);
 
 	return total_score;
 
