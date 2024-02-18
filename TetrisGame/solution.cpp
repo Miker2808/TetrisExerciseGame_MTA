@@ -1,86 +1,38 @@
 #include "solution.h"
 
 
-
-
+// Evaluate the fitness of the solution by simulating Tetris games
 void Solution::fit(const int num_of_simulations) {
+	// Variable to store the average number of blocks placed in simulations
+	double avg_blocks_placed = 0;
+	double game_too_long_penalty = 5000;
 
+	// Perform simulations to evaluate the solution's fitness
 	for (int i = 0; i < num_of_simulations; i++) {
-		AITetrisGame game(0, 0, false, false);
-		game.setAIWeights( max_height_penality, holes_penality, bumpiness_penality);
-		while (!game.isGameOver())
+		// Create a Tetris game instance
+		AITetrisGame game(0, 0,  true ,false);
+		// Flag to indicate if the game lasts too long
+		bool game_to_long = false;
+		game.setAIWeights( max_height_penality, holes_penality, bumpiness_penality, lines_reward);
+
+		// Simulate the Tetris game until game over or game lasts too long
+		while (!game.isGameOver() && !game_to_long)
 		{
 			game.play(0);
-			
+
+			if (game.blocks_placed > 500)
+				game_to_long = true;
 		}
-		fitness_score +=  (double)game.blocks_placed / num_of_simulations;
-		// fitness_score =  0 - std::abs(10000 - ticks_survived)/100;
-		// fitness_score =  0 - std::abs(100 - ticks_survived)/100;
+		if(!game_to_long)
+			avg_blocks_placed += (double)game.blocks_placed / num_of_simulations;
+		else
+			avg_blocks_placed += game_too_long_penalty / num_of_simulations;
+
 	}
+
+	// Update the fitness score based on the average blocks placed
+	if (avg_blocks_placed == 400)
+		fitness_score = 99999999;
+	else
+		fitness_score += 1 / (abs(400 - avg_blocks_placed));
 };
-
-
-//std::mutex fitness_mutex;
-//
-//void Solution::fit(const int num_of_simulations) {
-//    const int num_simulations = num_of_simulations;
-//    const int num_threads = std::thread::hardware_concurrency();
-//    std::vector<std::thread> threads(num_threads);
-//
-//    auto simulateGame = [this, num_simulations]() {
-//        for (int i = 0; i < num_simulations; ++i) {
-//            int ticks_survived = 0;
-//            AITetrisGame game(0, 0, false, false);
-//            game.setAIWeights(max_height_penality, holes_penality, bumpiness_penality);
-//            while (!game.isGameOver()) {
-//                game.play(0);
-//                ticks_survived++;
-//            }
-//            {
-//                std::lock_guard<std::mutex> lock(fitness_mutex);
-//                fitness_score += static_cast<double>(ticks_survived) / 1000000;
-//            }
-//        }
-//        };
-//
-//    // Start threads to run game simulations
-//    for (int i = 0; i < num_threads; ++i) {
-//        threads[i] = std::thread(simulateGame);
-//    }
-//
-//    // Join threads to wait for them to finish
-//    for (int i = 0; i < num_threads; ++i) {
-//        threads[i].join();
-//    }
-//}
-
-
-
-//void Solution::fit() {
-//    const int num_simulations = 10;
-//    const int num_threads = std::thread::hardware_concurrency();
-//    std::vector<std::thread> threads(num_threads);
-//
-//    auto simulateGame = [&](int threadId) {
-//        for (int i = threadId; i < num_simulations; i += num_threads) {
-//            int ticks_survived = 0;
-//            AITetrisGame game(0, 0, false, false);
-//            game.setAIWeights(height_penalty, max_height_penality, holes_penality, bumpiness_penality);
-//            while (!game.isGameOver()) {
-//                game.play(0);
-//                ticks_survived++;
-//            }
-//            fitness_score += static_cast<double>(ticks_survived) / 1000000;
-//        }
-//        };
-//
-//    // Start threads to run game simulations
-//    for (int i = 0; i < num_threads; ++i) {
-//        threads[i] = std::thread(simulateGame, i);
-//    }
-//
-//    // Join threads to wait for them to finish
-//    for (int i = 0; i < num_threads; ++i) {
-//        threads[i].join();
-//    }
-//}

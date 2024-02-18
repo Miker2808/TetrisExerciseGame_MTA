@@ -7,6 +7,7 @@ class AITetrisGame :
     double max_height_penality = 0.5;
     double holes_penality = 0.100;
     double bumpiness_penality = 0.010;
+    double lines_reward = 0.1;
 
     int best_x = 0; // track best x position to have
     int best_rotation = 0; // track best rotation to have
@@ -22,7 +23,7 @@ class AITetrisGame :
     int getColumnHeight(TetrisBoard* board, const int x) const;
     int getColumnHoles(TetrisBoard* board, const int x) const;
     unsigned int getBoardHolesSum(TetrisBoard* board) const;
-    double calculateHeuristicScore(TetrisBoard* board) const;
+    double calculateHeuristicScore(TetrisBoard* board, int lines_cleard) const;
     void estimateBestMove();
     void movementHandler();
 
@@ -31,7 +32,7 @@ public:
     AITetrisGame(const AITetrisGame& other);
     AITetrisGame();
     void play(unsigned char curr_key);
-    void setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality);
+    void setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality , double lines_reward);
 
     
 

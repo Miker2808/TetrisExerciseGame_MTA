@@ -183,7 +183,7 @@ unsigned int AITetrisGame::getBoardBumpinessSum(TetrisBoard* board) const {
 
 
 // calculates heirustics score by giving a penality for every imperfection with varied weights
-double AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
+double AITetrisGame::calculateHeuristicScore(TetrisBoard* board , int lines_cleard) const{
 	unsigned int max_height;
 	unsigned int heightScores = getBoardHeightSum(board, max_height);
 	unsigned int holesScores = getBoardHolesSum(board);
@@ -193,6 +193,7 @@ double AITetrisGame::calculateHeuristicScore(TetrisBoard* board) const{
 	total_score -= holesScores * holes_penality;
 	total_score -= bumpinessScores * bumpiness_penality;
 	total_score -= pow((max_height_penality),17 - max_height);
+	total_score +=  pow((lines_cleard* lines_reward), max_height);
 
 	return total_score;
 
@@ -233,7 +234,7 @@ void AITetrisGame::estimateBestMove(){
 			simulatedGame.updateBoardStatus();
 
 			// Calculate heuristic score for the simulated board
-			currScore = calculateHeuristicScore(simulatedGame.board);
+			currScore = calculateHeuristicScore(simulatedGame.board, simulatedGame.destroyed_lines_last_placment);
 			// Update best move if the score is better
 			if (currScore > bestScore) {
 				bestScore = currScore;
@@ -248,8 +249,9 @@ void AITetrisGame::estimateBestMove(){
 	
 }
 
-void AITetrisGame::setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality) {
+void AITetrisGame::setAIWeights(double max_height_penality, double holes_penality, double bumpiness_penality , double lines_reward) {
 	this->max_height_penality = max_height_penality;
 	this->holes_penality = holes_penality;
 	this->bumpiness_penality = bumpiness_penality;
+	this->lines_reward = lines_reward;
 }

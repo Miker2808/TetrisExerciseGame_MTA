@@ -16,6 +16,7 @@ public:
 	Tetromino* currentMino;
 	Player* player;
 	unsigned int blocks_placed = 0;
+	int destroyed_lines_last_placment = 0;
 
 protected:
 	// protected members
@@ -28,6 +29,7 @@ protected:
 	bool start_flag = true;
 	bool is_player = false;
 	size_t current_tetromino_ticks = 0; // lifetime of current tetromino piece
+	
 
 public:
 	TetrisGame(int start_x, int start_y, bool bombs, bool human_player);

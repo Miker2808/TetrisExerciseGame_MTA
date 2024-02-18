@@ -173,6 +173,7 @@ void TetrisGame::findAndDestroyLines(int obj_y_pos) {
                 this->player->score += (this->base_score_inc) * 4 * destroyed_lines;
             }
     }
+    destroyed_lines_last_placment = destroyed_lines;
     if (destroyed_lines == 0)
         this->player->score += this->base_score_inc;
 }
