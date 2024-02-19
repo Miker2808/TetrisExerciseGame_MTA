@@ -27,8 +27,8 @@ TetrisGame::TetrisGame(const TetrisGame& other)
     start_flag(other.start_flag),
     is_player(other.is_player),
     tick_counter(other.tick_counter),
-    ticks_per_drop(other.ticks_per_drop),
-    ticks_survived(other.ticks_survived) {
+    ticks_per_drop(other.ticks_per_drop)
+{
 
     // Create dynamic objects for the copied game (board, tetromino, and player)
     this->bombs_present = other.bombs_present;
@@ -55,9 +55,7 @@ void TetrisGame::playHandler(char curr_key)
     }
     if (!game_over) {
         this->tick_counter += 1;
-        this->ticks_survived += 1;
         this->current_tetromino_ticks += 1;
-
         this->currentTetromino->erase();
 
         movementHandler(curr_key);
@@ -253,12 +251,11 @@ void TetrisGame::bombLogic(int obj_x_pos, int obj_y_pos, int obj_rot) {
 
     findBombCell(obj_rot, bomb_cell_x_off , bomb_cell_y_off);
     this->board->blowUpBomb(obj_x_pos + bomb_cell_x_off, obj_y_pos + bomb_cell_y_off);
-    //TODO maybe change it
-    findAndDestroyLines(0);
-    findAndDestroyLines(4);
-    findAndDestroyLines(8);
-    findAndDestroyLines(12);
-    findAndDestroyLines(16);
+    
+    // scan the board for lines to destroy
+    for (unsigned int i = 0; i < Settings::DEFAULT_BOARD_HEIGHT; i += 4) {
+        findAndDestroyLines(i);
+    }
     
 }
 

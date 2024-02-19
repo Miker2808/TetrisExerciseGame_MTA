@@ -16,19 +16,24 @@ class AITetrisGame :
     static constexpr size_t playable_height = Settings::DEFAULT_BOARD_HEIGHT - 2;
 
     // Private member functions
-    
     void setBestX(int x);
     void setBestRot(int rot);
     void estimateBestMove();
     void movementHandler(unsigned char curr_key) override;
 
 public:
+    // constructors
     AITetrisGame(int start_x, int start_y, bool bombs, bool human_player, TetrisAIProfile ai_profile);
     AITetrisGame(const AITetrisGame& other);
+    AITetrisGame& operator=(const AITetrisGame& other) = delete;
+
+    // destructors
     ~AITetrisGame();
 
+    // methods
     void play(unsigned char curr_key) override;
-
+    
+    // const methods
     int getColumnBumpiness(TetrisBoard* board, const int x) const;
     int getColumnHeight(TetrisBoard* board, const int x) const;
     int getColumnHoles(TetrisBoard* board, const int x) const;

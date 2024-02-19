@@ -1,12 +1,13 @@
 #include "AITetrisGame.h"
 
-
+// constructor for the AITetrisGame
 AITetrisGame::AITetrisGame(int start_x, int start_y, bool bombs, bool human_player, TetrisAIProfile ai_profile) :
 	TetrisGame(start_x, start_y, bombs, false), profile(ai_profile)
 {
 	
 }
 
+// Copy constructor for the AITetrisGame
 AITetrisGame::AITetrisGame(const AITetrisGame& other) :
 	TetrisGame(other),
 	best_x(other.best_x),
@@ -16,6 +17,7 @@ AITetrisGame::AITetrisGame(const AITetrisGame& other) :
 
 }
 
+// Destructor
 AITetrisGame::~AITetrisGame() {
 
 }
