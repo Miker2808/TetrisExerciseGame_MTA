@@ -102,7 +102,7 @@ int AITetrisGame::getColumnHeight(TetrisBoard* board, const int x) const{
 unsigned int AITetrisGame::getBoardMaxHeight(TetrisBoard* board) const {
 	size_t height = board->getBoardHeight();
 	size_t width = board->getBoardWidth();
-	int curr;
+	unsigned int curr;
 	unsigned int maximum = 0;
 	for (size_t x = 1; x < width - 1; x++) {
 		curr = getColumnHeight(board, x);
