@@ -7,18 +7,10 @@
 
 
 // TetrisGame class represents the main logic and state of a Tetris game.
-// NOTE: Each user has its own game instance, allowing multiple players to play games with independent in game tick rates.
+// Each user has its own game instance, allowing multiple players to play games with independent in game tick rates.
 class TetrisGame {
-public:
-	static unsigned int game_counter;
 
-	TetrisBoard* board;
-	Tetromino* currentMino;
-	Player* player;
-
-protected:
-	// protected members
-	
+private:
 	unsigned int tick_counter = 0; // counts iterations each for given game session;
 	unsigned int ticks_per_drop = Settings::TICKS_PER_DROP; // kept as a variable to potentionally control drop speed
 	int base_score_inc = Settings::BASE_SCORE_INCREMENT;
@@ -30,31 +22,37 @@ protected:
 	unsigned int ticks_survived = 0;
 	int last_tetromino_lines_destroyed = 0;
 
-public:
-	TetrisGame(int start_x, int start_y, bool bombs, bool human_player);
-	TetrisGame(const TetrisGame& other);
-	~TetrisGame();
-	virtual void play(unsigned char curr_key);
-	
-	// for the heuristics
-	bool isGameOver();
-	void setGameOver(bool flag);
-	bool isGameStart();
-	void setGameStart(bool flag);
-
 protected:
+	
+	TetrisBoard* board;
+	Tetromino* currentTetromino;
 
-	bool checkCollision(int move_x, int move_y, int move_rot);
-	void updateBoardStatus();
+	void playHandler(char curr_key);
 	void movePieceDownAfterTick();
-	virtual void movementHandler(unsigned char curr_key);
+	void updateBoardStatus();
 	void findAndDestroyLines(int obj_y_pos);
 	void writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot, int obj_shape_index);
 	void bombLogic(int obj_x_pos, int obj_y_pos, int obj_rot);
-	void findBombCell(const int obj_rot, int& bomb_cell_x_off, int& bomb_cell_y_off);
-	void printGameStats();
+	virtual void movementHandler(unsigned char curr_key);
+
+public:
+	static unsigned int game_counter;
+	Player* player;
+
+	TetrisGame(int start_x, int start_y, bool bombs, bool human_player);
+	TetrisGame(const TetrisGame& other);
+	virtual ~TetrisGame();
+
+	virtual void play(unsigned char curr_key);
+	bool isGameOver() const;
+	void setGameOver(bool flag);
+	bool isGameStart() const;
+	void setGameStart(bool flag);
+	void printGameStats() const;
+	bool checkCollision(int move_x, int move_y, int move_rot) const;
 	void movePieceDown();
-	int getLinesDestroyed();
-	
+	int getLinesDestroyed() const;
+	void findBombCell(const int obj_rot, int& bomb_cell_x_off, int& bomb_cell_y_off) const;
+	size_t getCurrentTetrominoTicks() const;
 
 };

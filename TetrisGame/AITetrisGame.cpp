@@ -1,29 +1,33 @@
-
 #include "AITetrisGame.h"
 
+
 AITetrisGame::AITetrisGame(int start_x, int start_y, bool bombs, bool human_player, TetrisAIProfile ai_profile) :
-	TetrisGame(start_x, start_y, bombs, false)
+	TetrisGame(start_x, start_y, bombs, false), profile(ai_profile)
 {
-	profile = ai_profile;
+	
 }
 
-
-AITetrisGame::AITetrisGame(const AITetrisGame& other) : 
-	TetrisGame(other), 
-	best_x(other.best_x), 
-	best_rotation(other.best_rotation)
+AITetrisGame::AITetrisGame(const AITetrisGame& other) :
+	TetrisGame(other),
+	best_x(other.best_x),
+	best_rotation(other.best_rotation),
+	profile(other.profile)
 {
+
+}
+
+AITetrisGame::~AITetrisGame() {
 
 }
 
 // Getter for best_x
-int AITetrisGame::getBestX()
+int AITetrisGame::getBestX() const
 {
 	return this->best_x;
 }
 
 // Getter for best_rotation
-int AITetrisGame::getBestRot()
+int AITetrisGame::getBestRot() const
 {
 	return this->best_rotation;
 }
@@ -44,22 +48,22 @@ void AITetrisGame::setBestRot(int rot)
 // Handles the movemenent for the CPU game
 // rotates to desired rotation and then moves to best X
 // moves only if not collision is interfered, otherwise it falls.
-void AITetrisGame::movementHandler() {
+void AITetrisGame::movementHandler(unsigned char curr_key) {
 
 	int current_x, current_y, current_rot;
 
-	this->currentMino->getTransform(current_x, current_y, current_rot);
+	currentTetromino->getTransform(current_x, current_y, current_rot);
 	// rotate to desired position
 	if (current_rot != this->best_rotation && this->checkCollision(0, 0, 1)) {
-		this->currentMino->transform(0, 0, 1);
+		currentTetromino->transform(0, 0, 1);
 		
 	}
 	// move only after completing the rotations
 	else if (current_x > this->best_x and this->checkCollision(-1, 0, 0)) {
-		this->currentMino->transform(-1, 0, 0);
+		currentTetromino->transform(-1, 0, 0);
 	}
 	else if (current_x < this->best_x and this->checkCollision(1, 0, 0)) {
-		this->currentMino->transform(1, 0, 0);
+		currentTetromino->transform(1, 0, 0);
 	}
 	else {
 		// drop the piece down
@@ -72,32 +76,11 @@ void AITetrisGame::movementHandler() {
 // Runs a single cycle of playing the Tetris game - overrides TetrisGame::play method
 void AITetrisGame::play(unsigned char curr_key) {
 
-	if (this->current_tetromino_ticks == 0) {
+	if (getCurrentTetrominoTicks() == 0) {
 		this->estimateBestMove();
 	}
 
-	if (start_flag) {
-        this->board->printBoard();
-        start_flag = false;
-    }
-
-    if (!game_over) {
-        this->tick_counter += 1;
-        this->ticks_survived += 1;
-		this->current_tetromino_ticks += 1;
-
-        this->currentMino->erase();
-
-        this->movementHandler();
-
-        // Move the tetromino down automatically at a regular interval
-        movePieceDownAfterTick();
-
-        // Check for collision with the bottom or other blocks
-
-        this->currentMino->print();
-        this->printGameStats();
-    }
+	this->playHandler(curr_key);
 }
 
 // Returns the height of given column 'x' from board at given pointer
@@ -204,7 +187,7 @@ void AITetrisGame::estimateBestMove(){
 	int best_rotation = 0;
 	double currScore;
 	double bestScore = -DBL_MAX; // most negative value in double
-	Tetromino tetrominoCopy = *(this->currentMino); // copy to track after the width and offset for each rotation
+	Tetromino tetrominoCopy = *(currentTetromino); // copy to track after the width and offset for each rotation
 	
 	// Iterate through all possible moves (rotations and positions)
 	for (int rotation = 0; rotation < 4; rotation++) {
@@ -218,7 +201,7 @@ void AITetrisGame::estimateBestMove(){
 			
 			AITetrisGame simulatedGame(*this);
 
-			simulatedGame.currentMino->assignTransform(x, 0, rotation);
+			simulatedGame.currentTetromino->assignTransform(x, 0, rotation);
 
 			// move to next x if this column is full
 			if (not simulatedGame.checkCollision(0, 0, 0)) {
@@ -227,7 +210,7 @@ void AITetrisGame::estimateBestMove(){
 
 			// push piece down until it collides
 			while (simulatedGame.checkCollision(0, 1, 0)) {
-				simulatedGame.currentMino->transform(0, 1, 0);
+				simulatedGame.currentTetromino->transform(0, 1, 0);
 			}
 
 			simulatedGame.updateBoardStatus();

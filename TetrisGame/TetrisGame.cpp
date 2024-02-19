@@ -9,7 +9,7 @@ TetrisGame::TetrisGame(int start_x, int start_y, bool bombs , bool human_player)
     this->is_player = human_player;
     bombs_present = bombs;
     this->board = new TetrisBoard(start_x, start_y); // start board and set it to be x=10,y=10 relative to console
-    this->currentMino = new Tetromino(5, 0, start_x, start_y , bombs_present); // relative to the board
+    this->currentTetromino = new Tetromino(5, 0, start_x, start_y , bombs_present); // relative to the board
     this->game_counter += 1;
     if (this->is_player) {
         this->player = new Player(Settings::ctrl_presets[game_counter - 1], game_counter);
@@ -33,20 +33,22 @@ TetrisGame::TetrisGame(const TetrisGame& other)
     // Create dynamic objects for the copied game (board, tetromino, and player)
     this->bombs_present = other.bombs_present;
     this->board = new TetrisBoard(*other.board); // Assuming TetrisBoard has a copy constructor
-    this->currentMino = new Tetromino(*other.currentMino); // Assuming Tetromino has a copy constructor
+    this->currentTetromino = new Tetromino(*other.currentTetromino); // Assuming Tetromino has a copy constructor
     this->player = new Player(*other.player); // Assuming Player has a copy constructor
 }
 
 // Destructor for the TetrisGame object, frees dynamically allocated memory
 TetrisGame::~TetrisGame() {
     delete this->board;
-    delete this->currentMino;
+    delete this->currentTetromino;
     delete this->player;
     this->game_counter -= 1;
 }
 
-// Runs a single cycle of playing the Tetris game
-void TetrisGame::play(unsigned char curr_key) {
+
+// more generic version of play() method
+void TetrisGame::playHandler(char curr_key)
+{
     if (start_flag) {
         this->board->printBoard();
         start_flag = false;
@@ -56,32 +58,33 @@ void TetrisGame::play(unsigned char curr_key) {
         this->ticks_survived += 1;
         this->current_tetromino_ticks += 1;
 
-        this->currentMino->erase();
+        this->currentTetromino->erase();
 
-        this->movementHandler(curr_key);
+        movementHandler(curr_key);
 
         // Move the tetromino down automatically at a regular interval
         movePieceDownAfterTick();
 
         // Check for collision with the bottom or other blocks
 
-        this->currentMino->print();
+        this->currentTetromino->print();
         this->printGameStats();
-        
 
     }
-    else {
-        //print game over on the board
-    }
+}
+
+// Runs a single cycle of playing the Tetris game
+void TetrisGame::play(unsigned char curr_key) {
+    playHandler(curr_key);
 }
 
 
 // Function to check for collision of the tetromino with the board or other blocks
-bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
+bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) const{
     // Calculate the next position and rotation of the tetromino based on the provided movement offsets
     int next_x, next_y, next_rot , shape_index;
-    this->currentMino->getTransform(next_x, next_y, next_rot);
-    this->currentMino->getShapeIndex(shape_index);
+    this->currentTetromino->getTransform(next_x, next_y, next_rot);
+    this->currentTetromino->getShapeIndex(shape_index);
     next_x += move_x;
     next_y += move_y;
     next_rot = pyMod((next_rot + move_rot), 4); // map rotation by using modulu
@@ -90,7 +93,7 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     int pixel;
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
-            pixel = this->currentMino->getCell(x_off , y_off, next_rot);
+            pixel = this->currentTetromino->getCell(x_off , y_off, next_rot);
             if (Tetromino::tetromino_shapes[shape_index][pixel] != ' ' && this->board->getBoardCell(next_x + x_off, next_y + y_off) != '.') {
                 return false;
             }
@@ -100,7 +103,7 @@ bool TetrisGame::checkCollision(int move_x, int move_y , int move_rot ) {
     return true;
 }
 
-bool TetrisGame::isGameOver()
+bool TetrisGame::isGameOver() const
 {
     return this->game_over;
 }
@@ -110,7 +113,7 @@ void TetrisGame::setGameOver(bool flag)
     this->game_over = flag;
 }
 
-bool TetrisGame::isGameStart()
+bool TetrisGame::isGameStart() const
 {
     return this->start_flag;
 }
@@ -126,19 +129,19 @@ void TetrisGame::movementHandler( unsigned char curr_key)
 {
     if (curr_key == this->player->my_ctrl.MOVE_LEFT_KEY_1 || curr_key == this->player->my_ctrl.MOVE_LEFT_KEY_2) {
         if (checkCollision(-1 , 0 , 0))
-            this->currentMino->transform(-1, 0, 0);
+            this->currentTetromino->transform(-1, 0, 0);
     }
     else if (curr_key == this->player->my_ctrl.MOVE_RIGHT_KEY_1 || curr_key == this->player->my_ctrl.MOVE_RIGHT_KEY_2){
         if (checkCollision(1, 0, 0))
-            this->currentMino->transform(1, 0, 0);
+            this->currentTetromino->transform(1, 0, 0);
     }
     else if (curr_key == this->player->my_ctrl.ROT_RIGHT_KEY_1 || curr_key == this->player->my_ctrl.ROT_RIGHT_KEY_2) {
         if (checkCollision(0, 0, 1))
-            this->currentMino->transform(0, 0, 1);
+            this->currentTetromino->transform(0, 0, 1);
     }
     else if (curr_key == this->player->my_ctrl.ROT_LEFT_KEY_1 || curr_key == this->player->my_ctrl.ROT_LEFT_KEY_2) {
         if (checkCollision(0, 0, -1))
-            this->currentMino->transform(0, 0, -1);
+            this->currentTetromino->transform(0, 0, -1);
     }
     else if (curr_key == this->player->my_ctrl.DROP_KEY_1 || curr_key == this->player->my_ctrl.DROP_KEY_2) {
         movePieceDown();
@@ -150,8 +153,8 @@ void TetrisGame::movementHandler( unsigned char curr_key)
 // Function to fix a tetromino to the board and reset the tetromino object to the top
 void TetrisGame::updateBoardStatus() {
     int obj_x_pos, obj_y_pos, obj_rot, obj_shape_index, lines_destroyed = 0;
-    this->currentMino->getTransform(obj_x_pos, obj_y_pos, obj_rot);
-    this->currentMino->getShapeIndex(obj_shape_index);
+    this->currentTetromino->getTransform(obj_x_pos, obj_y_pos, obj_rot);
+    this->currentTetromino->getShapeIndex(obj_shape_index);
     if (obj_shape_index == 7) {
         bombLogic(obj_x_pos, obj_y_pos, obj_rot);
     }
@@ -185,12 +188,13 @@ void TetrisGame::writeTetrominoToBoard(int obj_x_pos, int obj_y_pos, int obj_rot
     
     for (int y_off = 0; y_off < 4; y_off++) {
         for (int x_off = 0; x_off < 4; x_off++) {
-            pixel = this->currentMino->getCell(x_off, y_off, obj_rot);
+            pixel = this->currentTetromino->getCell(x_off, y_off, obj_rot);
             if (Tetromino::tetromino_shapes[obj_shape_index][pixel] != Settings::DEFAULT_SPACE)
                 this->board->writeCellToBoard(obj_x_pos + x_off, obj_y_pos + y_off, Tetromino::tetromino_shapes[obj_shape_index][pixel]);
         }
     }
 }
+
 
 
 // Function to force the tetromino down every game tick, affected by game speed
@@ -202,7 +206,7 @@ void TetrisGame::movePieceDownAfterTick() {
 
 
 // Function to print the game statistics below the game board
-void TetrisGame::printGameStats() {
+void TetrisGame::printGameStats() const{
     int print_x = this->board->getBoardStartX();
     int print_y = this->board->getBoardStartY() + this->board->getBoardHeight() + 1;
     gotoxy(print_x, print_y);
@@ -219,12 +223,12 @@ void TetrisGame::printGameStats() {
 void TetrisGame::movePieceDown() {
 
     if (checkCollision(0, 1, 0))
-        this->currentMino->transform(0, 1, 0);
+        this->currentTetromino->transform(0, 1, 0);
     else {
         // Update the game board status and reset the tetromino
         this->current_tetromino_ticks = 0;
         updateBoardStatus();
-        this->currentMino->resetTetromino();
+        this->currentTetromino->resetTetromino();
         this->board->printBoard();
 
         // Check for collision after resetting the tetromino
@@ -235,6 +239,11 @@ void TetrisGame::movePieceDown() {
 
     //reset the tick counter
     this->tick_counter = 0;
+}
+
+size_t TetrisGame::getCurrentTetrominoTicks() const
+{
+    return this->current_tetromino_ticks;
 }
 
 
@@ -254,11 +263,11 @@ void TetrisGame::bombLogic(int obj_x_pos, int obj_y_pos, int obj_rot) {
 }
 
 //finds the bomb index within the bomb tetromino string
-void TetrisGame::findBombCell(const int obj_rot , int& bomb_cell_x_off , int& bomb_cell_y_off) {
+void TetrisGame::findBombCell(const int obj_rot , int& bomb_cell_x_off , int& bomb_cell_y_off) const{
     int pixel;
     for (int y_off = 1; y_off < 3; y_off++) {
         for (int x_off = 1; x_off < 3; x_off++) {
-            pixel = this->currentMino->getCell(x_off, y_off, obj_rot);
+            pixel = this->currentTetromino->getCell(x_off, y_off, obj_rot);
             if (Tetromino::tetromino_shapes[7][pixel] != Settings::DEFAULT_SPACE) {
                 bomb_cell_x_off = x_off;
                 bomb_cell_y_off = y_off;
@@ -268,7 +277,7 @@ void TetrisGame::findBombCell(const int obj_rot , int& bomb_cell_x_off , int& bo
     }
 }
 
-int TetrisGame::getLinesDestroyed() {
+int TetrisGame::getLinesDestroyed() const{
     return last_tetromino_lines_destroyed;
 }
 

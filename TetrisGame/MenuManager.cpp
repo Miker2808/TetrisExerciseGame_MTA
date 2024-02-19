@@ -201,6 +201,7 @@ void MenuManager::printBotDifficultyMenu() const {
 	std::cout << "~~~~~~~~~~~~~~\n";
 	std::cout << "(Choose the CPU to cycle through its difficulties)\n";
 	std::cout << "(In a Player vs CPU game, select CPU 1)\n";
+	std::cout << "(Effect is taken after restarting the game)\n";
 	std::cout << "Choose key:\n";
 	std::cout << "[" << Settings::MENU_ONE << "] CPU 1 Difficulty: ";
 

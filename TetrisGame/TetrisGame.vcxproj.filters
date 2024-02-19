@@ -74,5 +74,8 @@
     <ClInclude Include="AITetrisGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TetrisAIProfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

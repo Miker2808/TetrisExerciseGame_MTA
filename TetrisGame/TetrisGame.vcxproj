@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -157,7 +157,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="TetrisBoard.h" />
-    <ClInclude Include="TetrisBotProfile.h" />
+    <ClInclude Include="TetrisAIProfile.h" />
     <ClInclude Include="TetrisGame.h" />
     <ClInclude Include="Tetromino.h" />
     <ClInclude Include="Utility.h" />

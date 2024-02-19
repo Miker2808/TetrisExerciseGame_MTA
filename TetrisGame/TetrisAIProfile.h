@@ -1,4 +1,5 @@
 #pragma once
+
 struct TetrisAIProfile
 {
     double max_height_penality = 0;

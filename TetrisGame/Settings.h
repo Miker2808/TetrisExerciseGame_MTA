@@ -1,6 +1,6 @@
 #pragma once
 #include "Controls.h"
-#include "TetrisBotProfile.h"
+#include "TetrisAIProfile.h"
 
 //Holds static settings for startup configurations and dynamic settings for runtime modification in the Tetris game.
 class Settings
